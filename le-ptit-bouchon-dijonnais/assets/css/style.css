@@ -782,7 +782,7 @@ a { color: inherit; }
 }
 .mobile-menu.is-open { display: flex; }
 .mobile-menu ul { list-style: none; padding: 0; margin: 0 0 32px; display: grid; gap: 4px; }
-.mobile-menu a {
+.mobile-menu ul a {
   display: block;
   padding: 16px 4px;
   font-family: var(--font-serif);
