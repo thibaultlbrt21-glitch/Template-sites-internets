@@ -4,6 +4,12 @@ Les visuels livrés (`.svg`) sont des **ambiances art-dirigées** générées à
 main (dégradés chauds, flou, grain), pas des photographies. Ils servent à ce
 que le template soit montrable immédiatement.
 
+> **Deux façons de changer les photos.** Le client, lui, passe par
+> l'espace `/admin/` : il téléverse ses images sans toucher aux noms de
+> fichiers, et ce qu'il choisit l'emporte sur tout ce qui suit. La méthode
+> ci-dessous reste la plus rapide quand c'est vous qui préparez le site
+> avant la livraison. Voir `ADMIN.md`.
+
 ## Passer aux vraies photos (2 minutes)
 
 1. Déposez vos photos dans ce dossier avec **exactement ces noms** :
