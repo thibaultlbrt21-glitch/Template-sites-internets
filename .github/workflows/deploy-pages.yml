@@ -6,6 +6,7 @@ name: Deploy sites to GitHub Pages
 #   /                                   -> le-ptit-bouchon-dijonnais/ (unchanged)
 #   /webly-template-restaurant/         -> webly-template-restaurant/
 #   /webly-template-restaurant-mini/    -> webly-template-restaurant-mini/
+#   /webly-template-restaurant-premium/ -> webly-template-restaurant-premium/
 #
 # To add another site later: add one more `cp -r` line in "Assemble
 # combined site" below, and its own path filter under `paths:`.
@@ -19,6 +20,7 @@ on:
       - "le-ptit-bouchon-dijonnais/**"
       - "webly-template-restaurant/**"
       - "webly-template-restaurant-mini/**"
+      - "webly-template-restaurant-premium/**"
       - ".github/workflows/deploy-pages.yml"
   workflow_dispatch: {}
 
@@ -53,6 +55,8 @@ jobs:
           cp -r webly-template-restaurant/. _site/webly-template-restaurant/
           mkdir -p _site/webly-template-restaurant-mini
           cp -r webly-template-restaurant-mini/. _site/webly-template-restaurant-mini/
+          mkdir -p _site/webly-template-restaurant-premium
+          cp -r webly-template-restaurant-premium/. _site/webly-template-restaurant-premium/
 
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
