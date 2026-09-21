@@ -1,4 +1,13 @@
-name: Deploy Le P'tit Bouchon Dijonnais to GitHub Pages
+name: Deploy sites to GitHub Pages
+
+# Publishes multiple independent static sites from this repo under one
+# GitHub Pages deployment, each at its own path, so adding a new site
+# never breaks the URL of an existing one:
+#   /                              -> le-ptit-bouchon-dijonnais/ (unchanged)
+#   /webly-template-restaurant/    -> webly-template-restaurant/
+#
+# To add another site later: add one more `cp -r` line in "Assemble
+# combined site" below, and its own path filter under `paths:`.
 
 on:
   push:
@@ -7,6 +16,7 @@ on:
       - claude/everything-claude-code-t5ohfd
     paths:
       - "le-ptit-bouchon-dijonnais/**"
+      - "webly-template-restaurant/**"
       - ".github/workflows/deploy-pages.yml"
   workflow_dispatch: {}
 
@@ -32,10 +42,18 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
+      - name: Assemble combined site
+        run: |
+          set -e
+          mkdir -p _site
+          cp -r le-ptit-bouchon-dijonnais/. _site/
+          mkdir -p _site/webly-template-restaurant
+          cp -r webly-template-restaurant/. _site/webly-template-restaurant/
+
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: le-ptit-bouchon-dijonnais
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment

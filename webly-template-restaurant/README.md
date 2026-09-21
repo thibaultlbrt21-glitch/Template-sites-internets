@@ -1,4 +1,6 @@
-# La Table Dijonnaise — Template de site vitrine restaurant (Dijon)
+# Webly — Template de site vitrine restaurant (Dijon)
+
+Nom du produit : **Webly — La Table Dijonnaise**
 
 Template **réutilisable et modifiable** de site vitrine pour restaurant à Dijon.
 Projet **indépendant** du site `le-ptit-bouchon-dijonnais/` du dépôt — pas de
@@ -52,7 +54,7 @@ var SITE_CONFIG = {
 ## Structure
 
 ```
-template-restaurant-dijon/
+webly-template-restaurant/
 ├── index.html                      Accueil
 ├── carte.html                      La carte (entrées / plats / desserts / vins)
 ├── restaurant.html                 Storytelling, savoir-faire, avis clients
@@ -96,7 +98,7 @@ conversation (couleurs, nom, sections à ajouter/retirer, ton du texte...).
 ## Aperçu local
 
 ```bash
-cd template-restaurant-dijon
+cd webly-template-restaurant
 python3 -m http.server 8080
 # puis ouvrir http://localhost:8080
 ```
