@@ -14,6 +14,7 @@ aucune dépendance, aucun build step.
 | Animations | Reveal simple | Reveal simple | Reveal simple | **Rideau, masques, parallaxe, compteurs** |
 | Réservation | Placeholder | Formulaire inline | Formulaire compact | **Modale accessible** |
 | Signature | — | — | — | **Aperçu photo au survol de la carte** |
+| Espace client | — | — | — | **Oui — `/admin/`, le client édite son site** |
 
 Aucun fichier partagé entre les quatre projets : chacun est autonome.
 
@@ -30,6 +31,20 @@ Aucun fichier partagé entre les quatre projets : chacun est autonome.
 - **Modale de réservation** accessible : piège de focus, `Échap`, retour du
   focus au bouton d'origine.
 - Tout est désactivé si `prefers-reduced-motion: reduce`.
+
+## Espace client (`/admin/`)
+
+Le restaurateur modifie lui-même sa carte, ses horaires, ses photos et ses
+coordonnées depuis `votre-site.fr/admin/`. Chaque enregistrement écrit un
+commit dans `content/site.json` et le site se redéploie tout seul. Aucun
+serveur, aucune base de données, aucun abonnement.
+
+👉 **Procédure d'activation complète : voir `ADMIN.md`** (compter 15 à 30
+minutes la première fois).
+
+Le contenu du HTML reste complet et sert de repli : si `content/site.json`
+est absent ou que le réseau échoue, la page s'affiche exactement comme
+livrée — bon pour le référencement et les navigateurs sans JavaScript.
 
 ## Les images
 
@@ -51,7 +66,9 @@ fonctionnel immédiatement, et sans compte tiers. Pour brancher un vrai backend
 `assets/js/main.js` — voir le README de `webly-template-restaurant/` pour le
 détail.
 
-Adresse de réception à définir en haut de `assets/js/main.js` :
+Adresse de réception : renseignez-la dans l'espace client
+(*Bandeau de réservation → Email qui reçoit les demandes*), ou à défaut en
+haut de `assets/js/main.js`. La valeur du CMS l'emporte.
 
 ```js
 var SITE_CONFIG = {
@@ -77,12 +94,19 @@ var SITE_CONFIG = {
 ```
 webly-template-restaurant-premium/
 ├── index.html                      Page unique (hero, maison, carte, galerie, chef, chiffres, avis, réservation, infos)
+├── ADMIN.md                        Guide d'activation de l'espace client
 ├── mentions-legales.html
 ├── politique-de-confidentialite.html
 ├── robots.txt
 ├── sitemap.xml
+├── content/
+│   └── site.json                   Contenu modifiable (source de vérité)
+├── admin/
+│   ├── index.html                  Espace client (Decap CMS)
+│   └── config.yml                  Champs éditables, en français
 └── assets/
     ├── css/style.css               Design system noir & laiton
+    ├── js/content.js               Injecte content/site.json dans la page
     ├── js/main.js                  Preloader, reveals, parallaxe, aperçu carte, compteurs, modale, formulaire
     └── images/                      Visuels d'ambiance + README pour les vraies photos
 ```
@@ -93,4 +117,12 @@ webly-template-restaurant-premium/
 cd webly-template-restaurant-premium
 python3 -m http.server 8080
 # puis ouvrir http://localhost:8080
+```
+
+Pour essayer l'espace client sans rien configurer (utile en démonstration
+chez un prospect) :
+
+```bash
+npx decap-server          # dans un autre terminal
+# puis ouvrir http://localhost:8080/admin/
 ```

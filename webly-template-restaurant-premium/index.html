@@ -82,6 +82,7 @@
   <section class="hero">
     <div class="hero__media">
       <img src="assets/images/hero.svg" data-photo="assets/images/hero.jpg"
+           data-cms-image="images.hero"
            alt="Ambiance de la salle du restaurant en soirée" fetchpriority="high" decoding="async">
     </div>
     <div class="hero__scrim"></div>
@@ -92,8 +93,8 @@
         <span class="line-mask delay-1"><span>Comptoir</span></span>
         <span class="line-mask delay-2"><span>des Ducs</span></span>
       </h1>
-      <p class="line-mask delay-3"><span class="hero__tagline">La Bourgogne, servie à la table d'aujourd'hui.</span></p>
-      <p class="hero__desc reveal reveal-d3">
+      <p class="line-mask delay-3"><span class="hero__tagline" data-cms="hero.accroche">La Bourgogne, servie à la table d'aujourd'hui.</span></p>
+      <p class="hero__desc reveal reveal-d3" data-cms="hero.description">
         Une cuisine de saison signée au plus près des producteurs bourguignons,
         une cave qui raconte la région, une salle pensée pour qu'on y reste.
       </p>
@@ -122,18 +123,19 @@
     <div class="container split">
       <figure class="media media--parallax media--wipe split__media" style="margin:0;">
         <img src="assets/images/salle.svg" data-photo="assets/images/salle.jpg"
+             data-cms-image="images.salle"
              alt="La salle du restaurant, tables dressées" loading="lazy" decoding="async">
         <figcaption class="media__caption">Salle — visuel d'exemple</figcaption>
       </figure>
       <div class="split__body">
         <span class="label reveal">La maison</span>
-        <h2 class="reveal reveal-d1">Une table, pas une vitrine</h2>
-        <p class="reveal reveal-d1">
+        <h2 class="reveal reveal-d1" data-cms="maison.titre">Une table, pas une vitrine</h2>
+        <p class="reveal reveal-d1" data-cms="maison.paragraphe_1">
           Le Comptoir occupe une ancienne maison de ville dijonnaise : pierre claire,
           poutres sombres, comptoir de laiton qui traverse la salle et sert de ligne
           directrice au service.
         </p>
-        <p class="reveal reveal-d2">
+        <p class="reveal reveal-d2" data-cms="maison.paragraphe_2">
           On y vient pour un déjeuner rapide et bien fait comme pour un dîner qui
           s'étire. La carte change au fil des arrivages ; l'accueil, lui, ne change pas.
         </p>
@@ -149,14 +151,14 @@
     <div class="container">
       <div class="section__head">
         <span class="label reveal">La carte</span>
-        <h2 class="reveal reveal-d1">Quelques signatures</h2>
-        <p class="reveal reveal-d1">
+        <h2 class="reveal reveal-d1" data-cms="carte.titre">Quelques signatures</h2>
+        <p class="reveal reveal-d1" data-cms="carte.introduction" data-cms-optional>
           Survolez un plat pour en voir le visuel. Carte d'exemple —
           à remplacer par la carte réelle et les tarifs en vigueur du restaurant.
         </p>
       </div>
 
-      <ul class="menu-list reveal reveal-d2">
+      <ul class="menu-list reveal reveal-d2" data-cms-list="carte.plats">
         <li class="menu-row" data-preview="assets/images/plat-1.svg">
           <span class="menu-row__num">01</span>
           <div>
@@ -224,7 +226,7 @@
     </div>
 
     <div class="rail-wrap reveal reveal-d1">
-      <div class="rail" id="rail">
+      <div class="rail" id="rail" data-cms-list="galerie">
         <figure class="rail__item" style="margin:0;">
           <div class="media"><img src="assets/images/plat-1.svg" data-photo="assets/images/plat-1.jpg" alt="Plat signature" loading="lazy" decoding="async"></div>
           <figcaption>Entrée signature</figcaption>
@@ -259,17 +261,18 @@
     <div class="container split split--reverse">
       <figure class="media media--parallax media--wipe split__media" style="margin:0;">
         <img src="assets/images/chef.svg" data-photo="assets/images/chef.jpg"
+             data-cms-image="images.chef"
              alt="Le chef en cuisine" loading="lazy" decoding="async">
         <figcaption class="media__caption">Portrait — visuel d'exemple</figcaption>
       </figure>
       <div class="split__body">
         <span class="label reveal">En cuisine</span>
-        <h2 class="reveal reveal-d1">Le geste avant l'effet</h2>
-        <p class="reveal reveal-d1">
+        <h2 class="reveal reveal-d1" data-cms="cuisine.titre">Le geste avant l'effet</h2>
+        <p class="reveal reveal-d1" data-cms="cuisine.paragraphe_1">
           Une brigade courte, des cuissons tenues, des sauces montées à la minute.
           La cuisine est ouverte sur la salle : ce qui s'y passe fait partie du repas.
         </p>
-        <p class="reveal reveal-d2">
+        <p class="reveal reveal-d2" data-cms="cuisine.paragraphe_2">
           Les fournisseurs sont locaux quand c'est possible, choisis quand ça ne l'est pas —
           jamais l'inverse.
         </p>
@@ -280,7 +283,7 @@
   <!-- ============ CHIFFRES ============ -->
   <section class="section section--tint">
     <div class="container">
-      <div class="figures reveal">
+      <div class="figures reveal" data-cms-list="chiffres">
         <div class="figure">
           <span class="figure__num" data-count="32" data-suffix=""></span>
           <span class="figure__label">Couverts</span>
@@ -298,18 +301,18 @@
           <span class="figure__label">Services par jour</span>
         </div>
       </div>
-      <p class="quotes-note">Chiffres d'exemple — à remplacer par ceux du restaurant.</p>
+      <p class="quotes-note" data-cms="chiffres_note" data-cms-optional>Chiffres d'exemple — à remplacer par ceux du restaurant.</p>
     </div>
   </section>
 
   <!-- ============ AVIS ============ -->
-  <section class="section">
+  <section class="section" id="avis">
     <div class="container">
       <div class="section__head section__head--center">
         <span class="label reveal">Avis</span>
         <h2 class="reveal reveal-d1">Ce qu'en disent nos convives</h2>
       </div>
-      <div class="quotes-grid reveal reveal-d1">
+      <div class="quotes-grid reveal reveal-d1" data-cms-list="avis">
         <article class="quote-card">
           <div class="quote-card__stars" aria-label="Note à intégrer">★★★★★</div>
           <p class="quote-card__text">« Avis client à intégrer »</p>
@@ -326,7 +329,7 @@
           <p class="quote-card__name">Prénom N. — source à préciser</p>
         </article>
       </div>
-      <p class="quotes-note">
+      <p class="quotes-note" data-cms="avis_note" data-cms-optional>
         Emplacements réservés aux avis réels — à connecter à Google Avis / TripAdvisor.
         Aucun avis n'est inventé ici.
       </p>
@@ -336,13 +339,13 @@
   <!-- ============ BANDEAU RÉSERVATION ============ -->
   <section class="cta-band">
     <div class="cta-band__media">
-      <img src="assets/images/ambiance.svg" data-photo="assets/images/ambiance.jpg" alt="" loading="lazy" decoding="async">
+      <img src="assets/images/ambiance.svg" data-photo="assets/images/ambiance.jpg" data-cms-image="images.ambiance" alt="" loading="lazy" decoding="async">
     </div>
     <div class="cta-band__scrim"></div>
     <div class="container cta-band__content">
       <span class="label reveal">Réservation</span>
-      <h2 class="reveal reveal-d1">Votre table vous attend</h2>
-      <p class="reveal reveal-d1" style="max-width:520px;margin:0 auto 32px;">
+      <h2 class="reveal reveal-d1" data-cms="reservation.titre">Votre table vous attend</h2>
+      <p class="reveal reveal-d1" style="max-width:520px;margin:0 auto 32px;" data-cms="reservation.texte">
         Choisissez votre date, votre service et le nombre de couverts —
         la demande part en une minute.
       </p>
@@ -362,15 +365,15 @@
       <div class="info-grid reveal reveal-d1">
         <div class="info-block">
           <span class="info-block__label">Adresse</span>
-          <p>Adresse à renseigner<br>21000 Dijon, France</p>
+          <p><span data-cms="infos.adresse_ligne_1">Adresse à renseigner</span><br><span data-cms="infos.adresse_ligne_2">21000 Dijon, France</span></p>
         </div>
         <div class="info-block">
           <span class="info-block__label">Contact</span>
-          <p>Téléphone à renseigner<br>Email à renseigner</p>
+          <p><span data-cms="infos.telephone">Téléphone à renseigner</span><br><span data-cms="infos.email">Email à renseigner</span></p>
         </div>
         <div class="info-block">
           <span class="info-block__label">Horaires</span>
-          <table class="hours">
+          <table class="hours" data-cms-list="infos.horaires">
             <tr><td>Mardi — Samedi</td><td>Horaires à renseigner</td></tr>
             <tr><td>Dimanche</td><td>Horaires à renseigner</td></tr>
             <tr><td>Lundi</td><td>Horaires à renseigner</td></tr>
@@ -493,6 +496,7 @@
   <button type="button" class="btn" data-open-reservation>Réserver une table</button>
 </div>
 
+<script src="assets/js/content.js"></script>
 <script src="assets/js/main.js"></script>
 </body>
 </html>

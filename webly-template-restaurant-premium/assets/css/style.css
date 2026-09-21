@@ -25,6 +25,11 @@
 }
 
 * { box-sizing: border-box; }
+
+/* Sections et mentions masquées quand le CMS ne les remplit pas
+   (voir assets/js/content.js) : prioritaire sur les règles de mise
+   en page comme .figures ou .quotes-grid, qui imposent un display. */
+[hidden] { display: none !important; }
 html { scroll-behavior: smooth; }
 
 body {

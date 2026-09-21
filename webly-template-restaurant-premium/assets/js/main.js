@@ -15,6 +15,15 @@
     usePhotos: false,
   };
 
+  /* =========================================================
+     boot() — tout le comportement de la page.
+     Appelé une fois content.js a fini d'injecter le contenu de
+     content/site.json (ou après un court délai de sécurité), pour
+     que les animations et les écouteurs s'appliquent au contenu
+     réellement affiché. Voir la fin du fichier.
+     ========================================================= */
+  function boot() {
+
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var finePointer = window.matchMedia("(pointer: fine)").matches;
 
@@ -305,7 +314,11 @@
         data.message ? ("Message : " + data.message) : null
       ].filter(Boolean).join("\n");
 
-      window.location.href = "mailto:" + encodeURIComponent(SITE_CONFIG.reservationEmail) +
+      var content = window.WEBLY_CONTENT;
+      var recipient = (content && content.reservation && content.reservation.email_reception) ||
+        SITE_CONFIG.reservationEmail;
+
+      window.location.href = "mailto:" + encodeURIComponent(recipient) +
         "?subject=" + encodeURIComponent(subject) +
         "&body=" + encodeURIComponent(body);
     }
@@ -336,4 +349,19 @@
   /* ---------- Année ---------- */
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  } /* fin de boot() */
+
+  /* =========================================================
+     Départ — on attend content.js, sans jamais le laisser bloquer
+     la page : au-delà de 1,5 s, on démarre avec le contenu du HTML.
+     ========================================================= */
+  var ready = window.WEBLY_CONTENT_READY;
+
+  if (ready && typeof ready.then === "function") {
+    var timeout = new Promise(function (resolve) { window.setTimeout(resolve, 1500); });
+    Promise.race([ready, timeout]).then(boot, boot);
+  } else {
+    boot();
+  }
 })();
