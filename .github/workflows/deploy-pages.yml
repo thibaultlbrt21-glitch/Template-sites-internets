@@ -3,8 +3,9 @@ name: Deploy sites to GitHub Pages
 # Publishes multiple independent static sites from this repo under one
 # GitHub Pages deployment, each at its own path, so adding a new site
 # never breaks the URL of an existing one:
-#   /                              -> le-ptit-bouchon-dijonnais/ (unchanged)
-#   /webly-template-restaurant/    -> webly-template-restaurant/
+#   /                                   -> le-ptit-bouchon-dijonnais/ (unchanged)
+#   /webly-template-restaurant/         -> webly-template-restaurant/
+#   /webly-template-restaurant-mini/    -> webly-template-restaurant-mini/
 #
 # To add another site later: add one more `cp -r` line in "Assemble
 # combined site" below, and its own path filter under `paths:`.
@@ -17,6 +18,7 @@ on:
     paths:
       - "le-ptit-bouchon-dijonnais/**"
       - "webly-template-restaurant/**"
+      - "webly-template-restaurant-mini/**"
       - ".github/workflows/deploy-pages.yml"
   workflow_dispatch: {}
 
@@ -49,6 +51,8 @@ jobs:
           cp -r le-ptit-bouchon-dijonnais/. _site/
           mkdir -p _site/webly-template-restaurant
           cp -r webly-template-restaurant/. _site/webly-template-restaurant/
+          mkdir -p _site/webly-template-restaurant-mini
+          cp -r webly-template-restaurant-mini/. _site/webly-template-restaurant-mini/
 
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
