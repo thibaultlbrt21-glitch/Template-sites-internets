@@ -30,6 +30,7 @@ Trois fichiers portent tout le mécanisme :
 | `content/site.json` | Le contenu modifiable. C'est la source de vérité. |
 | `assets/js/content.js` | Injecte ce contenu dans la page au chargement. |
 | `admin/config.yml` | Décrit les champs affichés dans l'espace client. |
+| `admin/demo.html` | Aperçu autonome de cet espace, généré depuis le fichier ci-dessus (§ 8). |
 
 L'interface elle-même est **Decap CMS**, un logiciel libre (licence MIT),
 gratuit et sans limite d'usage.
@@ -246,7 +247,12 @@ Autant être précis, vous allez vendre ce travail.
   fonctionnent sur le contenu injecté (le script attend le chargement du
   contenu, avec un garde-fou de 1,5 s pour ne jamais bloquer la page) ;
 - la page `/admin/` affiche un message d'explication lisible si
-  l'interface ne peut pas se charger.
+  l'interface ne peut pas se charger ;
+- **l'aperçu `/admin/demo.html`** : les 12 groupes de champs se construisent
+  depuis `config.yml`, l'ajout / la suppression / le réordonnancement d'un
+  plat fonctionnent, les résumés se recalculent, l'aperçu du site reflète les
+  modifications, vider les avis masque bien la section, et le JSON produit est
+  valide. Vérifié en 1440 px et en 820 px (iPad), sans erreur JavaScript.
 
 **Non testé ici, à vérifier de votre côté :**
 
@@ -265,9 +271,35 @@ client. Comptez 20 minutes.
 
 ---
 
-## 8. Annexe — essayer l'interface en local
+## 8. Montrer l'espace client sans rien installer
 
-`admin/config.yml` contient déjà `local_backend: true`. Sur votre machine :
+`admin/demo.html` est un **aperçu de l'espace client**, autonome : aucune
+dépendance, aucun compte, aucune connexion. Il s'ouvre depuis n'importe quel
+navigateur, y compris sur iPad.
+
+👉 `votre-site.fr/admin/demo.html`
+
+On y retrouve les mêmes champs, les mêmes libellés et les mêmes aides que
+l'espace réel — et pour cause : la page est **générée depuis
+`admin/config.yml`**, l'interface réelle et l'aperçu ne peuvent donc pas
+diverger. Le site s'affiche à côté et se met à jour à chaque
+enregistrement.
+
+Après toute modification de `admin/config.yml` :
+
+```bash
+python3 tools/build-admin-demo.py
+```
+
+Ce que l'aperçu ne fait pas : se connecter à GitHub, ni enregistrer quoi que
+ce soit. Les modifications restent dans l'onglet ouvert (le bouton
+« Télécharger » récupère le fichier `site.json` produit). C'est un outil de
+démonstration et de repérage, pas l'espace de production.
+
+### Annexe — l'interface Decap en local
+
+`admin/config.yml` contient déjà `local_backend: true`. Sur une machine avec
+Node.js :
 
 ```bash
 # Terminal 1 — le pont vers les fichiers locaux
@@ -279,8 +311,8 @@ python3 -m http.server 8080
 ```
 
 Puis ouvrez `http://localhost:8080/admin/`. L'interface écrit directement
-dans vos fichiers, sans GitHub, sans connexion. C'est la bonne façon de
-montrer l'espace client à un prospect sans rien configurer.
+dans vos fichiers, sans GitHub, sans connexion. C'est la vraie interface,
+mais elle demande Node.js et un accès au registre npm.
 
 ---
 

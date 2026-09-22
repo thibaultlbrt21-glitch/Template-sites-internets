@@ -103,7 +103,10 @@ webly-template-restaurant-premium/
 │   └── site.json                   Contenu modifiable (source de vérité)
 ├── admin/
 │   ├── index.html                  Espace client (Decap CMS)
-│   └── config.yml                  Champs éditables, en français
+│   ├── config.yml                  Champs éditables, en français
+│   └── demo.html                   Aperçu autonome de l'espace client (généré)
+├── tools/
+│   └── build-admin-demo.py         Regénère demo.html depuis config.yml
 └── assets/
     ├── css/style.css               Design system noir & laiton
     ├── js/content.js               Injecte content/site.json dans la page
@@ -119,8 +122,11 @@ python3 -m http.server 8080
 # puis ouvrir http://localhost:8080
 ```
 
-Pour essayer l'espace client sans rien configurer (utile en démonstration
-chez un prospect) :
+Pour montrer l'espace client à un prospect, sans rien installer :
+ouvrez `http://localhost:8080/admin/demo.html` (ou l'adresse en ligne).
+Mêmes champs que l'espace réel, avec l'aperçu du site à côté.
+
+Pour la vraie interface Decap en local, sur une machine avec Node.js :
 
 ```bash
 npx decap-server          # dans un autre terminal

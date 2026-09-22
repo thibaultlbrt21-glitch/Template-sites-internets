@@ -16,6 +16,9 @@
      data-cms-optional                    -> ...et masque l'élément si le champ est vide
      data-cms-image="chemin.vers.image"   -> remplace le src de l'image
      data-cms-list="carte.plats"          -> conteneur reconstruit par un rendu dédié
+
+   Prévisualisation : si sessionStorage contient une clé "webly:preview",
+   son contenu est utilisé à la place du fichier JSON. Voir admin/demo.html.
    ========================================================================= */
 (function () {
   "use strict";
@@ -249,7 +252,34 @@
     document.body.setAttribute("data-content", "loaded");
   }
 
+  /* ---------- Prévisualisation avant publication ---------- */
+
+  // Une page d'administration peut déposer un contenu temporaire dans
+  // sessionStorage pour voir le rendu avant de publier. Cela ne concerne
+  // que l'onglet en cours et n'affecte jamais les visiteurs du site.
+  function previewContent() {
+    try {
+      var raw = window.sessionStorage.getItem("webly:preview");
+      return raw ? JSON.parse(raw) : null;
+    } catch (error) {
+      // Navigation privée, stockage désactivé : on ignore, sans casser la page.
+      return null;
+    }
+  }
+
   window.WEBLY_CONTENT = null;
+
+  var preview = previewContent();
+  if (preview) {
+    try {
+      hydrate(preview);
+      document.body.setAttribute("data-content", "preview");
+    } catch (error) {
+      console.warn("[Webly] Prévisualisation ignorée :", error);
+    }
+    window.WEBLY_CONTENT_READY = window.Promise ? Promise.resolve(preview) : null;
+    return;
+  }
 
   // main.js attend cette promesse (avec un délai de sécurité) avant de
   // brancher ses animations, pour qu'elles s'appliquent au contenu final.
