@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Votre Nom</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav container">
+    <a href="#accueil" class="logo">Votre Nom</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#accueil">Accueil</a></li>
+      <li><a href="#apropos">À propos</a></li>
+      <li><a href="#projets">Projets</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section id="accueil" class="hero">
+    <div class="container hero-content">
+      <p class="hero-eyebrow">Bonjour, je suis</p>
+      <h1>Votre Nom</h1>
+      <p class="hero-tagline">Développeur / Designer — je crée des expériences web simples et efficaces.</p>
+      <div class="hero-actions">
+        <a href="#projets" class="btn btn-primary">Voir mes projets</a>
+        <a href="#contact" class="btn btn-secondary">Me contacter</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="apropos" class="section">
+    <div class="container">
+      <h2 class="section-title">À propos</h2>
+      <p class="section-text">
+        Remplacez ce texte par votre présentation : votre parcours, vos compétences
+        et ce qui vous motive dans votre métier. Deux ou trois phrases suffisent
+        pour donner un aperçu clair de qui vous êtes.
+      </p>
+      <ul class="skills-list">
+        <li>Compétence 1</li>
+        <li>Compétence 2</li>
+        <li>Compétence 3</li>
+        <li>Compétence 4</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="projets" class="section section-alt">
+    <div class="container">
+      <h2 class="section-title">Projets</h2>
+      <div class="cards-grid">
+        <article class="card">
+          <div class="card-image" aria-hidden="true"></div>
+          <h3>Projet 1</h3>
+          <p>Courte description du projet, des technologies utilisées et du résultat obtenu.</p>
+          <a href="#" class="card-link">Voir le projet →</a>
+        </article>
+        <article class="card">
+          <div class="card-image" aria-hidden="true"></div>
+          <h3>Projet 2</h3>
+          <p>Courte description du projet, des technologies utilisées et du résultat obtenu.</p>
+          <a href="#" class="card-link">Voir le projet →</a>
+        </article>
+        <article class="card">
+          <div class="card-image" aria-hidden="true"></div>
+          <h3>Projet 3</h3>
+          <p>Courte description du projet, des technologies utilisées et du résultat obtenu.</p>
+          <a href="#" class="card-link">Voir le projet →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section">
+    <div class="container">
+      <h2 class="section-title">Contact</h2>
+      <p class="section-text">Une question, un projet en tête ? Envoyez-moi un message.</p>
+      <form class="contact-form" id="contactForm" novalidate>
+        <div class="form-row">
+          <label for="name">Nom</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-row">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-row">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+        <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>&copy; <span id="year"></span> Votre Nom. Tous droits réservés.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

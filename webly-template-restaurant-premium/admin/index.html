@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Espace client — Comptoir des Ducs</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<style>
+  :root { color-scheme: dark; }
+  html, body { margin: 0; height: 100%; background: #0a0a0b; }
+  #fallback {
+    display: none;
+    box-sizing: border-box;
+    min-height: 100%;
+    padding: 48px 24px;
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #f2efe8;
+  }
+  #fallback .box { max-width: 560px; margin: 0 auto; }
+  #fallback h1 { font-size: 1.35rem; font-weight: 600; margin: 0 0 16px; }
+  #fallback p { color: #b9b4aa; margin: 0 0 14px; }
+  #fallback a { color: #d8bd85; }
+  #fallback code {
+    background: #17171a; padding: 2px 6px; border-radius: 4px;
+    font-size: 0.9em; color: #d8bd85;
+  }
+</style>
+</head>
+<body>
+
+<!-- Message affiché uniquement si l'interface n'a pas pu se charger
+     (coupure réseau, CDN bloqué par un pare-feu d'entreprise...). -->
+<div id="fallback">
+  <div class="box">
+    <h1>L'espace client n'a pas pu se charger</h1>
+    <p>
+      L'interface d'administration est chargée depuis un service externe
+      (<code>unpkg.com</code>). Si vous êtes sur un réseau qui le bloque,
+      essayez depuis une connexion mobile ou un autre réseau.
+    </p>
+    <p>
+      Si le problème persiste, la procédure d'installation complète est
+      décrite dans le fichier <code>ADMIN.md</code> du site.
+    </p>
+    <p><a href="../">← Retour au site</a></p>
+  </div>
+</div>
+
+<!-- Interface d'administration Decap CMS (logiciel libre, licence MIT).
+     ^3.0.0 = dernière version 3.x. Pour un site client en production,
+     remplacez-la par un numéro exact (ex. decap-cms@3.8.4) une fois
+     l'espace vérifié : une mise à jour automatique ne pourra plus rien
+     casser. Les champs modifiables sont décrits dans config.yml. -->
+<script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+<script>
+  // Si le script ci-dessus n'a pas pu se charger, on affiche une
+  // explication lisible plutôt qu'une page noire.
+  window.setTimeout(function () {
+    if (!window.CMS) {
+      document.getElementById("fallback").style.display = "block";
+    }
+  }, 4000);
+</script>
+
+</body>
+</html>

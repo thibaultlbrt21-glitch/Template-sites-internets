@@ -1,0 +1,227 @@
+# =============================================================================
+# Webly — Espace client (Decap CMS)
+# -----------------------------------------------------------------------------
+# Ce fichier décrit les champs que le restaurateur peut modifier lui-même
+# depuis /admin/. Chaque enregistrement écrit un commit dans
+# content/site.json, et le site se redéploie tout seul.
+#
+# À ADAPTER POUR CHAQUE CLIENT (3 lignes) :
+#   1. backend.repo    -> le dépôt GitHub du client
+#   2. backend.branch  -> la branche publiée par GitHub Pages
+#   3. backend.base_url-> l'URL du service d'authentification (voir ADMIN.md)
+#
+# La procédure complète d'activation est dans ADMIN.md, à la racine
+# de ce template.
+# =============================================================================
+
+backend:
+  name: github
+  repo: thibaultlbrt21-glitch/Template-sites-internets
+  branch: main
+
+  # Décommentez et remplacez par l'URL de votre service OAuth
+  # (Netlify, Cloudflare Worker, Vercel...). Sans cette ligne,
+  # la connexion GitHub ne peut pas aboutir. Voir ADMIN.md, étape 2.
+  # base_url: https://votre-service-oauth.exemple.fr
+
+  commit_messages:
+    update: "Site : mise à jour de {{collection}} depuis l'espace client"
+    uploadMedia: "Site : ajout de l'image {{path}}"
+    deleteMedia: "Site : suppression de l'image {{path}}"
+
+# Permet de tester l'interface en local avec `npx decap-server`
+# (voir ADMIN.md, annexe « Essayer sans rien configurer »).
+local_backend: true
+
+# Chemins relatifs à la RACINE du dépôt.
+media_folder: "webly-template-restaurant-premium/assets/images"
+# Chemin écrit dans le JSON, relatif à la page d'accueil du site.
+public_folder: "assets/images"
+
+locale: fr
+
+editor:
+  preview: false
+
+collections:
+  - name: "contenu"
+    label: "Contenu du site"
+    editor:
+      preview: false
+    files:
+      - name: "accueil"
+        label: "Page d'accueil"
+        file: "webly-template-restaurant-premium/content/site.json"
+        description: >-
+          Tout ce qui s'affiche sur le site. Laissez un champ vide pour
+          garder le texte déjà en place ; videz une liste entière
+          (la carte, la galerie, les avis) pour masquer la section.
+        fields:
+
+          # ---------------- Bandeau d'accueil ----------------
+          - label: "Bandeau d'accueil"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "Phrase d'accroche", name: "accroche", widget: "string" }
+              - { label: "Texte d'introduction", name: "description", widget: "text" }
+
+          # ---------------- Photos principales ----------------
+          - label: "Photos principales"
+            name: "images"
+            widget: "object"
+            collapsed: true
+            hint: >-
+              Formats conseillés : paysage, 1600 px de large minimum.
+              N'utilisez que des photos dont vous détenez les droits.
+            fields:
+              - { label: "Photo d'accueil (plein écran)", name: "hero", widget: "image", required: false }
+              - { label: "Photo de la salle", name: "salle", widget: "image", required: false }
+              - { label: "Photo en cuisine", name: "chef", widget: "image", required: false }
+              - { label: "Photo d'ambiance (bandeau réservation)", name: "ambiance", widget: "image", required: false }
+
+          # ---------------- La maison ----------------
+          - label: "Section « La maison »"
+            name: "maison"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Titre", name: "titre", widget: "string" }
+              - { label: "Premier paragraphe", name: "paragraphe_1", widget: "text" }
+              - { label: "Second paragraphe", name: "paragraphe_2", widget: "text" }
+
+          # ---------------- La carte ----------------
+          - label: "La carte"
+            name: "carte"
+            widget: "object"
+            fields:
+              - { label: "Titre de la section", name: "titre", widget: "string" }
+              - label: "Texte sous le titre"
+                name: "introduction"
+                widget: "text"
+                required: false
+                hint: "Videz ce champ pour ne rien afficher sous le titre."
+              - label: "Plats"
+                name: "plats"
+                widget: "list"
+                label_singular: "Plat"
+                summary: "{{fields.nom}} — {{fields.prix}}"
+                hint: >-
+                  La numérotation (01, 02, 03...) est automatique.
+                  Videz entièrement la liste pour masquer la section « La carte ».
+                fields:
+                  - { label: "Nom du plat", name: "nom", widget: "string" }
+                  - { label: "Description", name: "description", widget: "string", required: false }
+                  - label: "Prix"
+                    name: "prix"
+                    widget: "string"
+                    required: false
+                    hint: "Écrivez-le tel qu'il doit s'afficher, par exemple : 14 €"
+                  - { label: "Photo du plat", name: "image", widget: "image", required: false }
+
+          # ---------------- La galerie ----------------
+          - label: "Galerie"
+            name: "galerie"
+            widget: "list"
+            label_singular: "Image"
+            collapsed: true
+            summary: "{{fields.legende}}"
+            hint: "Videz entièrement la liste pour masquer la section « Galerie »."
+            fields:
+              - { label: "Image", name: "image", widget: "image" }
+              - { label: "Légende", name: "legende", widget: "string", required: false }
+              - label: "Description pour les lecteurs d'écran"
+                name: "alt"
+                widget: "string"
+                required: false
+                hint: "Ce que montre la photo, en quelques mots. Sert aux personnes malvoyantes et au référencement."
+
+          # ---------------- En cuisine ----------------
+          - label: "Section « En cuisine »"
+            name: "cuisine"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Titre", name: "titre", widget: "string" }
+              - { label: "Premier paragraphe", name: "paragraphe_1", widget: "text" }
+              - { label: "Second paragraphe", name: "paragraphe_2", widget: "text" }
+
+          # ---------------- Chiffres ----------------
+          - label: "Chiffres clés"
+            name: "chiffres"
+            widget: "list"
+            label_singular: "Chiffre"
+            collapsed: true
+            summary: "{{fields.valeur}}{{fields.suffixe}} — {{fields.label}}"
+            hint: >-
+              N'indiquez que des chiffres exacts et vérifiables.
+              Videz la liste pour masquer la section.
+            fields:
+              - { label: "Valeur (nombre)", name: "valeur", widget: "number", value_type: "int" }
+              - label: "Suffixe"
+                name: "suffixe"
+                widget: "string"
+                required: false
+                hint: "Par exemple : + , % , ans. Laissez vide s'il n'y en a pas."
+              - { label: "Intitulé", name: "label", widget: "string" }
+
+          - label: "Mention sous les chiffres"
+            name: "chiffres_note"
+            widget: "text"
+            required: false
+            hint: "Videz ce champ pour faire disparaître la mention du site."
+
+          # ---------------- Avis ----------------
+          - label: "Avis clients"
+            name: "avis"
+            widget: "list"
+            label_singular: "Avis"
+            collapsed: true
+            summary: "{{fields.auteur}} — {{fields.texte}}"
+            hint: >-
+              N'ajoutez que des avis réellement reçus, en citant leur source
+              (Google Avis, TripAdvisor, livre d'or...). Publier un avis inventé
+              est une pratique commerciale trompeuse, sanctionnée par le code de
+              la consommation. Videz la liste pour masquer complètement la section.
+            fields:
+              - { label: "Note sur 5", name: "note", widget: "number", value_type: "int", min: 1, max: 5, required: false }
+              - { label: "Texte de l'avis", name: "texte", widget: "text" }
+              - { label: "Auteur", name: "auteur", widget: "string", required: false }
+              - { label: "Source", name: "source", widget: "string", required: false }
+
+          - label: "Mention sous les avis"
+            name: "avis_note"
+            widget: "text"
+            required: false
+            hint: "Videz ce champ pour faire disparaître la mention du site."
+
+          # ---------------- Réservation ----------------
+          - label: "Bandeau de réservation"
+            name: "reservation"
+            widget: "object"
+            fields:
+              - { label: "Titre", name: "titre", widget: "string" }
+              - { label: "Texte", name: "texte", widget: "text" }
+              - label: "Email qui reçoit les demandes"
+                name: "email_reception"
+                widget: "string"
+                pattern: ['^[^@\s]+@[^@\s]+\.[^@\s]+$', "Saisissez une adresse email valide."]
+                hint: "C'est l'adresse vers laquelle part chaque demande de réservation."
+
+          # ---------------- Infos pratiques ----------------
+          - label: "Infos pratiques"
+            name: "infos"
+            widget: "object"
+            fields:
+              - { label: "Adresse — ligne 1", name: "adresse_ligne_1", widget: "string" }
+              - { label: "Adresse — ligne 2", name: "adresse_ligne_2", widget: "string" }
+              - { label: "Téléphone", name: "telephone", widget: "string" }
+              - { label: "Email", name: "email", widget: "string" }
+              - label: "Horaires"
+                name: "horaires"
+                widget: "list"
+                label_singular: "Ligne d'horaires"
+                summary: "{{fields.jours}} — {{fields.horaire}}"
+                fields:
+                  - { label: "Jours", name: "jours", widget: "string" }
+                  - { label: "Horaires", name: "horaire", widget: "string" }

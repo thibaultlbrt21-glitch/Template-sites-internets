@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" preserveAspectRatio="xMidYMid slice" role="img">
+  <defs>
+    <radialGradient id="bg" cx="34%" cy="30%" r="82%">
+      <stop offset="0%" stop-color="#2a1c16"/>
+      <stop offset="62%" stop-color="#141010"/>
+      <stop offset="100%" stop-color="#08070a"/>
+    </radialGradient>
+    <radialGradient id="vig" cx="50%" cy="48%" r="78%">
+      <stop offset="52%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.66"/>
+    </radialGradient>
+    <filter id="soft" x="-25%" y="-25%" width="150%" height="150%">
+      <feGaussianBlur stdDeviation="59"/>
+    </filter>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.11"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <g filter="url(#soft)">
+      <circle cx="1071" cy="-43" r="117" fill="#f3d9a4" opacity="0.31"/>
+      <circle cx="1410" cy="252" r="147" fill="#f3d9a4" opacity="0.62"/>
+      <circle cx="1108" cy="45" r="246" fill="#8c3a1d" opacity="0.33"/>
+      <circle cx="1310" cy="-51" r="162" fill="#c2582c" opacity="0.68"/>
+      <circle cx="1918" cy="851" r="240" fill="#c2582c" opacity="0.6"/>
+      <circle cx="984" cy="505" r="190" fill="#c2582c" opacity="0.27"/>
+      <circle cx="513" cy="63" r="310" fill="#8c3a1d" opacity="0.3"/>
+      <circle cx="215" cy="978" r="87" fill="#c2582c" opacity="0.7"/>
+      <circle cx="543" cy="945" r="266" fill="#8c3a1d" opacity="0.61"/>
+      <circle cx="1901" cy="500" r="204" fill="#8c3a1d" opacity="0.69"/>
+      <circle cx="1122" cy="424" r="204" fill="#c2582c" opacity="0.37"/>
+      <circle cx="339" cy="506" r="101" fill="#8c3a1d" opacity="0.67"/>
+      <circle cx="1966" cy="56" r="108" fill="#e8a24c" opacity="0.42"/>
+      <circle cx="427" cy="39" r="136" fill="#c2582c" opacity="0.64"/>
+  </g>
+  <rect width="1920" height="1080" fill="url(#vig)"/>
+  <rect width="1920" height="1080" filter="url(#grain)" opacity="0.55"/>
+</svg>

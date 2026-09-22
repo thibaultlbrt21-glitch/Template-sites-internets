@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200" preserveAspectRatio="xMidYMid slice" role="img">
+  <defs>
+    <radialGradient id="bg" cx="34%" cy="30%" r="82%">
+      <stop offset="0%" stop-color="#4a2018"/>
+      <stop offset="62%" stop-color="#1e1211"/>
+      <stop offset="100%" stop-color="#0a0908"/>
+    </radialGradient>
+    <radialGradient id="vig" cx="50%" cy="48%" r="78%">
+      <stop offset="52%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.55"/>
+    </radialGradient>
+    <filter id="soft" x="-25%" y="-25%" width="150%" height="150%">
+      <feGaussianBlur stdDeviation="66"/>
+    </filter>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.11"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="1200" height="1200" fill="url(#bg)"/>
+  <g filter="url(#soft)">
+      <circle cx="85" cy="578" r="306" fill="#7d2a2c" opacity="0.68"/>
+      <circle cx="542" cy="464" r="132" fill="#4a161a" opacity="0.35"/>
+      <circle cx="1010" cy="202" r="119" fill="#e0a05a" opacity="0.65"/>
+      <circle cx="774" cy="877" r="342" fill="#b3443f" opacity="0.54"/>
+      <circle cx="726" cy="217" r="273" fill="#b3443f" opacity="0.73"/>
+      <circle cx="362" cy="898" r="189" fill="#e0a05a" opacity="0.58"/>
+      <circle cx="567" cy="352" r="233" fill="#b3443f" opacity="0.36"/>
+      <circle cx="596" cy="663" r="291" fill="#b3443f" opacity="0.42"/>
+      <circle cx="766" cy="499" r="92" fill="#b3443f" opacity="0.44"/>
+      <circle cx="1177" cy="789" r="112" fill="#4a161a" opacity="0.56"/>
+  </g>
+  <rect width="1200" height="1200" fill="url(#vig)"/>
+  <rect width="1200" height="1200" filter="url(#grain)" opacity="0.55"/>
+</svg>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" width="1200" height="1500" preserveAspectRatio="xMidYMid slice" role="img">
+  <defs>
+    <radialGradient id="bg" cx="34%" cy="30%" r="82%">
+      <stop offset="0%" stop-color="#2c1d14"/>
+      <stop offset="62%" stop-color="#161110"/>
+      <stop offset="100%" stop-color="#090809"/>
+    </radialGradient>
+    <radialGradient id="vig" cx="50%" cy="48%" r="78%">
+      <stop offset="52%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.6"/>
+    </radialGradient>
+    <filter id="soft" x="-25%" y="-25%" width="150%" height="150%">
+      <feGaussianBlur stdDeviation="82"/>
+    </filter>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.11"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="1200" height="1500" fill="url(#bg)"/>
+  <g filter="url(#soft)">
+      <circle cx="1108" cy="267" r="428" fill="#c2582c" opacity="0.7"/>
+      <circle cx="507" cy="905" r="438" fill="#c2582c" opacity="0.79"/>
+      <circle cx="1203" cy="955" r="269" fill="#f3d9a4" opacity="0.49"/>
+      <circle cx="1241" cy="69" r="259" fill="#f3d9a4" opacity="0.42"/>
+      <circle cx="956" cy="32" r="416" fill="#f3d9a4" opacity="0.7"/>
+      <circle cx="514" cy="579" r="389" fill="#c2582c" opacity="0.31"/>
+      <circle cx="54" cy="578" r="250" fill="#c2582c" opacity="0.79"/>
+      <circle cx="75" cy="1460" r="292" fill="#e8a24c" opacity="0.61"/>
+      <circle cx="437" cy="975" r="244" fill="#8c3a1d" opacity="0.25"/>
+      <circle cx="1014" cy="1273" r="260" fill="#f3d9a4" opacity="0.46"/>
+      <circle cx="165" cy="-8" r="291" fill="#e8a24c" opacity="0.28"/>
+  </g>
+  <rect width="1200" height="1500" fill="url(#vig)"/>
+  <rect width="1200" height="1500" filter="url(#grain)" opacity="0.55"/>
+</svg>

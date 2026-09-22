@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comptoir des Ducs — Restaurant gastronomique à Dijon</title>
+<meta name="description" content="Comptoir des Ducs, restaurant à Dijon : cuisine bourguignonne contemporaine, produits de saison, cave de Bourgogne. Réservez votre table en ligne.">
+<link rel="canonical" href="https://votre-domaine-a-renseigner.fr/">
+<meta property="og:type" content="restaurant.restaurant">
+<meta property="og:site_name" content="Comptoir des Ducs">
+<meta property="og:title" content="Comptoir des Ducs — Restaurant à Dijon">
+<meta property="og:description" content="Cuisine bourguignonne contemporaine, cave de Bourgogne, au cœur de Dijon.">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:url" content="https://votre-domaine-a-renseigner.fr/">
+<meta property="og:image" content="https://votre-domaine-a-renseigner.fr/assets/images/hero.jpg">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/style.css">
+
+<!-- Données structurées Schema.org — uniquement les champs vérifiés.
+     Compléter streetAddress, telephone, openingHoursSpecification, geo
+     et priceRange avec les informations réelles (voir README.md). -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Comptoir des Ducs",
+  "servesCuisine": ["French", "Burgundian"],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Dijon",
+    "addressCountry": "FR"
+  },
+  "url": "https://votre-domaine-a-renseigner.fr/",
+  "acceptsReservations": true
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Aller au contenu principal</a>
+
+<div class="preloader" id="preloader" aria-hidden="true">
+  <span class="preloader__mark">Comptoir des Ducs</span>
+</div>
+
+<header class="site-header">
+  <div class="container-wide nav">
+    <a href="#main" class="brand">
+      <span class="brand__name">Comptoir des Ducs</span>
+      <span class="brand__sub">Restaurant · Dijon</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#maison">La maison</a></li>
+      <li><a href="#carte">La carte</a></li>
+      <li><a href="#galerie">Galerie</a></li>
+      <li><a href="#infos">Infos</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button type="button" class="btn btn--sm" data-open-reservation>Réserver</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav id="mobileMenu" class="mobile-menu" aria-label="Menu mobile">
+  <button class="mobile-menu__close" id="mobileMenuClose" aria-label="Fermer le menu">Fermer</button>
+  <ul>
+    <li><a href="#maison">La maison</a></li>
+    <li><a href="#carte">La carte</a></li>
+    <li><a href="#galerie">Galerie</a></li>
+    <li><a href="#infos">Infos</a></li>
+  </ul>
+  <button type="button" class="btn btn--solid" data-open-reservation>Réserver une table</button>
+</nav>
+
+<main id="main">
+
+  <!-- ============ HERO PLEIN ÉCRAN ============ -->
+  <section class="hero">
+    <div class="hero__media">
+      <img src="assets/images/hero.svg" data-photo="assets/images/hero.jpg"
+           data-cms-image="images.hero"
+           alt="Ambiance de la salle du restaurant en soirée" fetchpriority="high" decoding="async">
+    </div>
+    <div class="hero__scrim"></div>
+
+    <div class="container-wide hero__content">
+      <span class="line-mask"><span class="label">Dijon · Bourgogne</span></span>
+      <h1 class="hero__title">
+        <span class="line-mask delay-1"><span>Comptoir</span></span>
+        <span class="line-mask delay-2"><span>des Ducs</span></span>
+      </h1>
+      <p class="line-mask delay-3"><span class="hero__tagline" data-cms="hero.accroche">La Bourgogne, servie à la table d'aujourd'hui.</span></p>
+      <p class="hero__desc reveal reveal-d3" data-cms="hero.description">
+        Une cuisine de saison signée au plus près des producteurs bourguignons,
+        une cave qui raconte la région, une salle pensée pour qu'on y reste.
+      </p>
+      <div class="hero__actions reveal reveal-d3">
+        <button type="button" class="btn btn--solid" data-open-reservation>Réserver une table</button>
+        <a href="#carte" class="btn btn--ghost">Découvrir la carte</a>
+      </div>
+    </div>
+
+    <div class="hero__scroll" aria-hidden="true"><span>Défiler</span><i></i></div>
+  </section>
+
+  <!-- ============ MANIFESTE ============ -->
+  <section class="section">
+    <div class="container">
+      <p class="statement reveal">
+        Nous cuisinons peu de produits, <em>choisis court</em>, travaillés le jour même.
+        Le reste — le service, la lumière, le silence relatif d'une salle bien pensée —
+        n'est là que pour <em>les laisser parler</em>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ LA MAISON ============ -->
+  <section class="section section--tint" id="maison">
+    <div class="container split">
+      <figure class="media media--parallax media--wipe split__media" style="margin:0;">
+        <img src="assets/images/salle.svg" data-photo="assets/images/salle.jpg"
+             data-cms-image="images.salle"
+             alt="La salle du restaurant, tables dressées" loading="lazy" decoding="async">
+        <figcaption class="media__caption">Salle — visuel d'exemple</figcaption>
+      </figure>
+      <div class="split__body">
+        <span class="label reveal">La maison</span>
+        <h2 class="reveal reveal-d1" data-cms="maison.titre">Une table, pas une vitrine</h2>
+        <p class="reveal reveal-d1" data-cms="maison.paragraphe_1">
+          Le Comptoir occupe une ancienne maison de ville dijonnaise : pierre claire,
+          poutres sombres, comptoir de laiton qui traverse la salle et sert de ligne
+          directrice au service.
+        </p>
+        <p class="reveal reveal-d2" data-cms="maison.paragraphe_2">
+          On y vient pour un déjeuner rapide et bien fait comme pour un dîner qui
+          s'étire. La carte change au fil des arrivages ; l'accueil, lui, ne change pas.
+        </p>
+        <div class="reveal reveal-d2" style="margin-top:32px;">
+          <a href="#carte" class="btn">Voir la carte</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LA CARTE ============ -->
+  <section class="section" id="carte">
+    <div class="container">
+      <div class="section__head">
+        <span class="label reveal">La carte</span>
+        <h2 class="reveal reveal-d1" data-cms="carte.titre">Quelques signatures</h2>
+        <p class="reveal reveal-d1" data-cms="carte.introduction" data-cms-optional>
+          Survolez un plat pour en voir le visuel. Carte d'exemple —
+          à remplacer par la carte réelle et les tarifs en vigueur du restaurant.
+        </p>
+      </div>
+
+      <ul class="menu-list reveal reveal-d2" data-cms-list="carte.plats">
+        <li class="menu-row" data-preview="assets/images/plat-1.svg">
+          <span class="menu-row__num">01</span>
+          <div>
+            <div class="menu-row__name">Œufs en meurette</div>
+            <p class="menu-row__desc">Sauce au vin rouge, lard fumé, croûton à l'ail</p>
+          </div>
+          <span class="menu-row__price">14 €</span>
+        </li>
+        <li class="menu-row" data-preview="assets/images/plat-2.svg">
+          <span class="menu-row__num">02</span>
+          <div>
+            <div class="menu-row__name">Jambon persillé</div>
+            <p class="menu-row__desc">Persil plat, gelée au vin blanc, moutarde de Dijon</p>
+          </div>
+          <span class="menu-row__price">13 €</span>
+        </li>
+        <li class="menu-row" data-preview="assets/images/plat-3.svg">
+          <span class="menu-row__num">03</span>
+          <div>
+            <div class="menu-row__name">Bœuf bourguignon</div>
+            <p class="menu-row__desc">Mijoté long, carottes glacées, pommes grenaille</p>
+          </div>
+          <span class="menu-row__price">26 €</span>
+        </li>
+        <li class="menu-row" data-preview="assets/images/plat-4.svg">
+          <span class="menu-row__num">04</span>
+          <div>
+            <div class="menu-row__name">Suprême de volaille</div>
+            <p class="menu-row__desc">Crème à la moutarde, légumes de saison</p>
+          </div>
+          <span class="menu-row__price">24 €</span>
+        </li>
+        <li class="menu-row" data-preview="assets/images/plat-5.svg">
+          <span class="menu-row__num">05</span>
+          <div>
+            <div class="menu-row__name">Époisses affiné</div>
+            <p class="menu-row__desc">Pain de campagne grillé, salade d'herbes</p>
+          </div>
+          <span class="menu-row__price">11 €</span>
+        </li>
+        <li class="menu-row" data-preview="assets/images/plat-6.svg">
+          <span class="menu-row__num">06</span>
+          <div>
+            <div class="menu-row__name">Poire pochée au cassis</div>
+            <p class="menu-row__desc">Sorbet cassis, éclats de pain d'épices</p>
+          </div>
+          <span class="menu-row__price">10 €</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Aperçu flottant (desktop) -->
+  <div class="menu-preview" id="menuPreview" aria-hidden="true">
+    <img src="assets/images/plat-1.svg" alt="">
+  </div>
+
+  <!-- ============ GALERIE HORIZONTALE ============ -->
+  <section class="section section--tint" id="galerie">
+    <div class="container">
+      <div class="section__head section__head--center">
+        <span class="label reveal">Galerie</span>
+        <h2 class="reveal reveal-d1">En images</h2>
+      </div>
+    </div>
+
+    <div class="rail-wrap reveal reveal-d1">
+      <div class="rail" id="rail" data-cms-list="galerie">
+        <figure class="rail__item" style="margin:0;">
+          <div class="media"><img src="assets/images/plat-1.svg" data-photo="assets/images/plat-1.jpg" alt="Plat signature" loading="lazy" decoding="async"></div>
+          <figcaption>Entrée signature</figcaption>
+        </figure>
+        <figure class="rail__item" style="margin:0;">
+          <div class="media"><img src="assets/images/detail.svg" data-photo="assets/images/detail.jpg" alt="Détail de dressage" loading="lazy" decoding="async"></div>
+          <figcaption>Dressage</figcaption>
+        </figure>
+        <figure class="rail__item" style="margin:0;">
+          <div class="media"><img src="assets/images/cave.svg" data-photo="assets/images/cave.jpg" alt="Cave à vins de Bourgogne" loading="lazy" decoding="async"></div>
+          <figcaption>La cave</figcaption>
+        </figure>
+        <figure class="rail__item" style="margin:0;">
+          <div class="media"><img src="assets/images/plat-3.svg" data-photo="assets/images/plat-3.jpg" alt="Plat mijoté" loading="lazy" decoding="async"></div>
+          <figcaption>Le mijoté</figcaption>
+        </figure>
+        <figure class="rail__item" style="margin:0;">
+          <div class="media"><img src="assets/images/ambiance.svg" data-photo="assets/images/ambiance.jpg" alt="Ambiance de la salle en soirée" loading="lazy" decoding="async"></div>
+          <figcaption>Le soir</figcaption>
+        </figure>
+        <figure class="rail__item" style="margin:0;">
+          <div class="media"><img src="assets/images/plat-6.svg" data-photo="assets/images/plat-6.jpg" alt="Dessert" loading="lazy" decoding="async"></div>
+          <figcaption>Le dessert</figcaption>
+        </figure>
+      </div>
+      <p class="rail-hint">Faites défiler horizontalement →</p>
+    </div>
+  </section>
+
+  <!-- ============ LE CHEF ============ -->
+  <section class="section">
+    <div class="container split split--reverse">
+      <figure class="media media--parallax media--wipe split__media" style="margin:0;">
+        <img src="assets/images/chef.svg" data-photo="assets/images/chef.jpg"
+             data-cms-image="images.chef"
+             alt="Le chef en cuisine" loading="lazy" decoding="async">
+        <figcaption class="media__caption">Portrait — visuel d'exemple</figcaption>
+      </figure>
+      <div class="split__body">
+        <span class="label reveal">En cuisine</span>
+        <h2 class="reveal reveal-d1" data-cms="cuisine.titre">Le geste avant l'effet</h2>
+        <p class="reveal reveal-d1" data-cms="cuisine.paragraphe_1">
+          Une brigade courte, des cuissons tenues, des sauces montées à la minute.
+          La cuisine est ouverte sur la salle : ce qui s'y passe fait partie du repas.
+        </p>
+        <p class="reveal reveal-d2" data-cms="cuisine.paragraphe_2">
+          Les fournisseurs sont locaux quand c'est possible, choisis quand ça ne l'est pas —
+          jamais l'inverse.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHIFFRES ============ -->
+  <section class="section section--tint">
+    <div class="container">
+      <div class="figures reveal" data-cms-list="chiffres">
+        <div class="figure">
+          <span class="figure__num" data-count="32" data-suffix=""></span>
+          <span class="figure__label">Couverts</span>
+        </div>
+        <div class="figure">
+          <span class="figure__num" data-count="6" data-suffix=""></span>
+          <span class="figure__label">Plats à la carte</span>
+        </div>
+        <div class="figure">
+          <span class="figure__num" data-count="40" data-suffix="+"></span>
+          <span class="figure__label">Références en cave</span>
+        </div>
+        <div class="figure">
+          <span class="figure__num" data-count="2" data-suffix=""></span>
+          <span class="figure__label">Services par jour</span>
+        </div>
+      </div>
+      <p class="quotes-note" data-cms="chiffres_note" data-cms-optional>Chiffres d'exemple — à remplacer par ceux du restaurant.</p>
+    </div>
+  </section>
+
+  <!-- ============ AVIS ============ -->
+  <section class="section" id="avis">
+    <div class="container">
+      <div class="section__head section__head--center">
+        <span class="label reveal">Avis</span>
+        <h2 class="reveal reveal-d1">Ce qu'en disent nos convives</h2>
+      </div>
+      <div class="quotes-grid reveal reveal-d1" data-cms-list="avis">
+        <article class="quote-card">
+          <div class="quote-card__stars" aria-label="Note à intégrer">★★★★★</div>
+          <p class="quote-card__text">« Avis client à intégrer »</p>
+          <p class="quote-card__name">Prénom N. — source à préciser</p>
+        </article>
+        <article class="quote-card">
+          <div class="quote-card__stars" aria-label="Note à intégrer">★★★★★</div>
+          <p class="quote-card__text">« Avis client à intégrer »</p>
+          <p class="quote-card__name">Prénom N. — source à préciser</p>
+        </article>
+        <article class="quote-card">
+          <div class="quote-card__stars" aria-label="Note à intégrer">★★★★★</div>
+          <p class="quote-card__text">« Avis client à intégrer »</p>
+          <p class="quote-card__name">Prénom N. — source à préciser</p>
+        </article>
+      </div>
+      <p class="quotes-note" data-cms="avis_note" data-cms-optional>
+        Emplacements réservés aux avis réels — à connecter à Google Avis / TripAdvisor.
+        Aucun avis n'est inventé ici.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ BANDEAU RÉSERVATION ============ -->
+  <section class="cta-band">
+    <div class="cta-band__media">
+      <img src="assets/images/ambiance.svg" data-photo="assets/images/ambiance.jpg" data-cms-image="images.ambiance" alt="" loading="lazy" decoding="async">
+    </div>
+    <div class="cta-band__scrim"></div>
+    <div class="container cta-band__content">
+      <span class="label reveal">Réservation</span>
+      <h2 class="reveal reveal-d1" data-cms="reservation.titre">Votre table vous attend</h2>
+      <p class="reveal reveal-d1" style="max-width:520px;margin:0 auto 32px;" data-cms="reservation.texte">
+        Choisissez votre date, votre service et le nombre de couverts —
+        la demande part en une minute.
+      </p>
+      <div class="reveal reveal-d2">
+        <button type="button" class="btn btn--solid" data-open-reservation>Réserver une table</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INFOS ============ -->
+  <section class="section" id="infos">
+    <div class="container">
+      <div class="section__head">
+        <span class="label reveal">Infos pratiques</span>
+        <h2 class="reveal reveal-d1">Nous trouver</h2>
+      </div>
+      <div class="info-grid reveal reveal-d1">
+        <div class="info-block">
+          <span class="info-block__label">Adresse</span>
+          <p><span data-cms="infos.adresse_ligne_1">Adresse à renseigner</span><br><span data-cms="infos.adresse_ligne_2">21000 Dijon, France</span></p>
+        </div>
+        <div class="info-block">
+          <span class="info-block__label">Contact</span>
+          <p><span data-cms="infos.telephone">Téléphone à renseigner</span><br><span data-cms="infos.email">Email à renseigner</span></p>
+        </div>
+        <div class="info-block">
+          <span class="info-block__label">Horaires</span>
+          <table class="hours" data-cms-list="infos.horaires">
+            <tr><td>Mardi — Samedi</td><td>Horaires à renseigner</td></tr>
+            <tr><td>Dimanche</td><td>Horaires à renseigner</td></tr>
+            <tr><td>Lundi</td><td>Horaires à renseigner</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container-wide">
+    <div class="footer-mark">Comptoir des Ducs</div>
+    <div class="footer-cols">
+      <div>
+        <h4>La maison</h4>
+        <p style="max-width:320px;">Restaurant à Dijon — cuisine bourguignonne contemporaine, produits de saison, cave de Bourgogne.</p>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#maison">La maison</a></li>
+          <li><a href="#carte">La carte</a></li>
+          <li><a href="#galerie">Galerie</a></li>
+          <li><a href="#infos">Infos pratiques</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Suivre</h4>
+        <ul>
+          <li><a href="#">Instagram (lien à renseigner)</a></li>
+          <li><a href="#">Facebook (lien à renseigner)</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="year"></span> Comptoir des Ducs. Tous droits réservés.</span>
+      <div class="footer-legal">
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="politique-de-confidentialite.html">Politique de confidentialité</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ MODALE DE RÉSERVATION ============ -->
+<div class="modal" id="reservationModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+  <div class="modal__panel">
+    <button type="button" class="modal__close" data-close-modal aria-label="Fermer">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+
+    <span class="label">Réservation</span>
+    <h2 id="modalTitle" style="font-size:clamp(1.6rem,3vw,2.2rem);">Réserver une table</h2>
+    <p style="margin-bottom:28px;">Votre client mail s'ouvrira avec la demande déjà rédigée — il ne reste qu'à l'envoyer.</p>
+
+    <form id="reservationForm" novalidate>
+      <div class="form-grid">
+        <div class="field">
+          <label for="resName">Nom <span class="req">*</span></label>
+          <input type="text" id="resName" name="name" required autocomplete="name" placeholder="Votre nom">
+          <p class="field__error" id="resNameError" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="resEmail">Email <span class="req">*</span></label>
+          <input type="email" id="resEmail" name="email" required autocomplete="email" placeholder="vous@exemple.fr">
+          <p class="field__error" id="resEmailError" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="resPhone">Téléphone <span class="req">*</span></label>
+          <input type="tel" id="resPhone" name="phone" required autocomplete="tel"
+                 pattern="^[0-9+\(\)\s.\-]{6,20}$" placeholder="06 12 34 56 78">
+          <p class="field__error" id="resPhoneError" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="resDate">Date <span class="req">*</span></label>
+          <input type="date" id="resDate" name="date" required>
+          <p class="field__error" id="resDateError" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="resTime">Service <span class="req">*</span></label>
+          <select id="resTime" name="time" required>
+            <option value="" disabled selected>Choisir un horaire</option>
+            <optgroup label="Déjeuner (exemple — à ajuster)">
+              <option value="12:00">12h00</option>
+              <option value="12:30">12h30</option>
+              <option value="13:00">13h00</option>
+            </optgroup>
+            <optgroup label="Dîner (exemple — à ajuster)">
+              <option value="19:30">19h30</option>
+              <option value="20:00">20h00</option>
+              <option value="20:30">20h30</option>
+              <option value="21:00">21h00</option>
+            </optgroup>
+          </select>
+          <p class="field__error" id="resTimeError" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="resGuests">Couverts <span class="req">*</span></label>
+          <input type="number" id="resGuests" name="guests" min="1" max="12" value="2" required>
+          <p class="field__error" id="resGuestsError" aria-live="polite"></p>
+        </div>
+        <div class="field field--full">
+          <label for="resMessage">Message (optionnel)</label>
+          <textarea id="resMessage" name="message" rows="2" placeholder="Allergies, occasion particulière..."></textarea>
+        </div>
+      </div>
+
+      <div style="margin-top:30px;">
+        <button type="submit" class="btn btn--solid">Envoyer la demande</button>
+        <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+        <p class="form-note">Aucune donnée n'est stockée sur ce site : la demande part depuis votre propre messagerie.</p>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="mobile-cta">
+  <button type="button" class="btn" data-open-reservation>Réserver une table</button>
+</div>
+
+<script src="assets/js/content.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

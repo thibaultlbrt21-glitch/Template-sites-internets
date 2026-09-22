@@ -1,0 +1,165 @@
+{
+  "hero": {
+    "accroche": "La Bourgogne, servie à la table d'aujourd'hui.",
+    "description": "Une cuisine de saison signée au plus près des producteurs bourguignons, une cave qui raconte la région, une salle pensée pour qu'on y reste."
+  },
+  "images": {
+    "hero": "assets/images/hero.svg",
+    "salle": "assets/images/salle.svg",
+    "chef": "assets/images/chef.svg",
+    "ambiance": "assets/images/ambiance.svg"
+  },
+  "maison": {
+    "titre": "Une table, pas une vitrine",
+    "paragraphe_1": "Le Comptoir occupe une ancienne maison de ville dijonnaise : pierre claire, poutres sombres, comptoir de laiton qui traverse la salle et sert de ligne directrice au service.",
+    "paragraphe_2": "On y vient pour un déjeuner rapide et bien fait comme pour un dîner qui s'étire. La carte change au fil des arrivages ; l'accueil, lui, ne change pas."
+  },
+  "carte": {
+    "titre": "Quelques signatures",
+    "introduction": "Survolez un plat pour en voir le visuel. Carte d'exemple — à remplacer par la carte réelle et les tarifs en vigueur du restaurant.",
+    "plats": [
+      {
+        "nom": "Œufs en meurette",
+        "description": "Sauce au vin rouge, lard fumé, croûton à l'ail",
+        "prix": "14 €",
+        "image": "assets/images/plat-1.svg"
+      },
+      {
+        "nom": "Jambon persillé",
+        "description": "Persil plat, gelée au vin blanc, moutarde de Dijon",
+        "prix": "13 €",
+        "image": "assets/images/plat-2.svg"
+      },
+      {
+        "nom": "Bœuf bourguignon",
+        "description": "Mijoté long, carottes glacées, pommes grenaille",
+        "prix": "26 €",
+        "image": "assets/images/plat-3.svg"
+      },
+      {
+        "nom": "Suprême de volaille",
+        "description": "Crème à la moutarde, légumes de saison",
+        "prix": "24 €",
+        "image": "assets/images/plat-4.svg"
+      },
+      {
+        "nom": "Époisses affiné",
+        "description": "Pain de campagne grillé, salade d'herbes",
+        "prix": "11 €",
+        "image": "assets/images/plat-5.svg"
+      },
+      {
+        "nom": "Poire pochée au cassis",
+        "description": "Sorbet cassis, éclats de pain d'épices",
+        "prix": "10 €",
+        "image": "assets/images/plat-6.svg"
+      }
+    ]
+  },
+  "galerie": [
+    {
+      "image": "assets/images/plat-1.svg",
+      "legende": "Entrée signature",
+      "alt": "Plat signature"
+    },
+    {
+      "image": "assets/images/detail.svg",
+      "legende": "Dressage",
+      "alt": "Détail de dressage"
+    },
+    {
+      "image": "assets/images/cave.svg",
+      "legende": "La cave",
+      "alt": "Cave à vins de Bourgogne"
+    },
+    {
+      "image": "assets/images/plat-3.svg",
+      "legende": "Le mijoté",
+      "alt": "Plat mijoté"
+    },
+    {
+      "image": "assets/images/ambiance.svg",
+      "legende": "Le soir",
+      "alt": "Ambiance de la salle en soirée"
+    },
+    {
+      "image": "assets/images/plat-6.svg",
+      "legende": "Le dessert",
+      "alt": "Dessert"
+    }
+  ],
+  "cuisine": {
+    "titre": "Le geste avant l'effet",
+    "paragraphe_1": "Une brigade courte, des cuissons tenues, des sauces montées à la minute. La cuisine est ouverte sur la salle : ce qui s'y passe fait partie du repas.",
+    "paragraphe_2": "Les fournisseurs sont locaux quand c'est possible, choisis quand ça ne l'est pas — jamais l'inverse."
+  },
+  "chiffres": [
+    {
+      "valeur": 32,
+      "suffixe": "",
+      "label": "Couverts"
+    },
+    {
+      "valeur": 6,
+      "suffixe": "",
+      "label": "Plats à la carte"
+    },
+    {
+      "valeur": 40,
+      "suffixe": "+",
+      "label": "Références en cave"
+    },
+    {
+      "valeur": 2,
+      "suffixe": "",
+      "label": "Services par jour"
+    }
+  ],
+  "chiffres_note": "Chiffres d'exemple — à remplacer par ceux du restaurant.",
+  "avis": [
+    {
+      "note": 5,
+      "texte": "Avis client à intégrer",
+      "auteur": "Prénom N.",
+      "source": "source à préciser"
+    },
+    {
+      "note": 5,
+      "texte": "Avis client à intégrer",
+      "auteur": "Prénom N.",
+      "source": "source à préciser"
+    },
+    {
+      "note": 5,
+      "texte": "Avis client à intégrer",
+      "auteur": "Prénom N.",
+      "source": "source à préciser"
+    }
+  ],
+  "avis_note": "Emplacements réservés aux avis réels — à connecter à Google Avis / TripAdvisor. Aucun avis n'est inventé ici.",
+  "reservation": {
+    "titre": "Votre table vous attend",
+    "texte": "Choisissez votre date, votre service et le nombre de couverts — la demande part en une minute.",
+    "email_reception": "reservation@votre-restaurant-a-renseigner.fr"
+  },
+  "infos": {
+    "adresse_ligne_1": "Adresse à renseigner",
+    "adresse_ligne_2": "21000 Dijon, France",
+    "telephone": "Téléphone à renseigner",
+    "email": "Email à renseigner",
+    "horaires": [
+      {
+        "jours": "Mardi — Samedi",
+        "horaire": "Horaires à renseigner"
+      },
+      {
+        "jours": "Dimanche",
+        "horaire": "Horaires à renseigner"
+      },
+      {
+        "jours": "Lundi",
+        "horaire": "Horaires à renseigner"
+      }
+    ]
+  }
+}
