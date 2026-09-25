@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Espace client — aperçu de démonstration</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<!--
+  CE FICHIER EST GÉNÉRÉ — ne le modifiez pas à la main.
+  Source : admin/config.yml   Générateur : tools/build-admin-demo.py
+  Relancez `python3 tools/build-admin-demo.py` après toute modification
+  de la configuration.
+
+  Ceci est une DÉMONSTRATION de l'espace client, utilisable sans rien
+  installer. L'espace réel est Decap CMS (admin/index.html) : mêmes champs,
+  mêmes libellés, mais il écrit dans GitHub après authentification.
+  Ici, rien n'est envoyé nulle part.
+-->
+<style>
+  :root {
+    --bg: #f6f2ec;
+    --panel: #ffffff;
+    --line: #d8d0c3;
+    --ink: #15191b;
+    --ink-soft: #56514a;
+    --accent: #8a5526;
+    --accent-soft: #f2e7d8;
+    --warn-bg: #fdf6e3;
+    --warn-line: #e6d3a3;
+    --warn-ink: #6b5310;
+    --radius: 10px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15191b; --panel: #1e2427; --line: #333b3f;
+      --ink: #f6f2ec; --ink-soft: #a29c92; --accent: #d9a86f;
+      --accent-soft: #2b2419; --warn-bg: #2a2418; --warn-line: #4b402a;
+      --warn-ink: #e3cf9c;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex; flex-direction: column;
+  }
+
+  /* ---------- Barre supérieure ---------- */
+  .topbar {
+    flex: none; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    padding: 12px 18px; background: var(--panel);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar__title { font-weight: 600; font-size: 0.98rem; margin-right: auto; }
+  .topbar__title small { display: block; font-weight: 400; color: var(--ink-soft); font-size: 0.78rem; }
+  .badge {
+    background: var(--warn-bg); color: var(--warn-ink);
+    border: 1px solid var(--warn-line); border-radius: 999px;
+    padding: 3px 11px; font-size: 0.74rem; font-weight: 600;
+    letter-spacing: 0.03em; text-transform: uppercase;
+  }
+  button {
+    font: inherit; cursor: pointer; border-radius: 8px;
+    border: 1px solid var(--line); background: var(--panel); color: var(--ink);
+    padding: 8px 14px;
+  }
+  button:hover { border-color: var(--accent); }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) button.primary { color: #1c1b19; }
+  }
+  button.tiny { padding: 3px 9px; font-size: 0.8rem; }
+
+  /* ---------- Avertissement ---------- */
+  .notice {
+    flex: none; padding: 10px 18px; font-size: 0.86rem;
+    background: var(--warn-bg); color: var(--warn-ink);
+    border-bottom: 1px solid var(--warn-line);
+  }
+  .notice a { color: inherit; }
+
+  /* ---------- Colonnes ---------- */
+  .layout { flex: 1 1 auto; display: grid; grid-template-columns: minmax(380px, 46%) 1fr; min-height: 0; }
+  .pane { min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .pane--form { padding: 20px 18px 80px; }
+  .pane--preview { border-left: 1px solid var(--line); background: #15191b; position: relative; }
+  .pane--preview iframe { width: 100%; height: 100%; border: 0; display: block; }
+  /* En bas : le haut de l'aperçu est occupé par l'en-tête du site. */
+  .preview-tag {
+    position: absolute; bottom: 12px; left: 12px; z-index: 2;
+    background: rgba(0,0,0,0.72); color: #fff; border-radius: 999px;
+    padding: 4px 12px; font-size: 0.74rem; letter-spacing: 0.04em;
+    text-transform: uppercase; pointer-events: none;
+  }
+
+  .tabs { display: none; flex: none; border-bottom: 1px solid var(--line); background: var(--panel); }
+  .tabs button {
+    flex: 1; border: 0; border-radius: 0; border-bottom: 2px solid transparent;
+    padding: 12px; background: none; color: var(--ink-soft);
+  }
+  .tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); font-weight: 600; }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    .tabs { display: flex; }
+    .pane--preview { border-left: 0; }
+    body[data-tab="form"] .pane--preview { display: none; }
+    body[data-tab="preview"] .pane--form { display: none; }
+  }
+
+  /* ---------- Champs ---------- */
+  .intro { color: var(--ink-soft); font-size: 0.9rem; margin: 0 0 20px; }
+  fieldset {
+    border: 1px solid var(--line); border-radius: var(--radius);
+    margin: 0 0 16px; padding: 0; background: var(--panel);
+  }
+  legend { display: none; }
+  .group__head {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    padding: 13px 15px; background: none; border: 0; border-radius: var(--radius);
+    text-align: left; font-weight: 600; font-size: 0.95rem; color: var(--ink);
+  }
+  .group__head:hover { border-color: transparent; background: var(--accent-soft); }
+  .group__chevron { color: var(--ink-soft); transition: transform 0.15s; flex: none; }
+  .group[data-open="true"] .group__chevron { transform: rotate(90deg); }
+  .group__count { margin-left: auto; color: var(--ink-soft); font-weight: 400; font-size: 0.82rem; }
+  .group__body { padding: 4px 15px 16px; border-top: 1px solid var(--line); }
+  .group[data-open="false"] .group__body { display: none; }
+
+  .field { margin: 0 0 15px; }
+  .field > label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; }
+  .field .req { color: var(--accent); }
+  .hint { font-size: 0.8rem; color: var(--ink-soft); margin: 5px 0 0; }
+  input[type="text"], input[type="number"], textarea, select {
+    width: 100%; font: inherit; color: var(--ink); background: var(--bg);
+    border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px;
+  }
+  input:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: var(--accent); }
+  textarea { resize: vertical; min-height: 74px; }
+
+  .image-field { display: flex; gap: 10px; align-items: flex-start; }
+  .image-field input { flex: 1; }
+  .thumb {
+    flex: none; width: 58px; height: 58px; border-radius: 8px;
+    border: 1px solid var(--line); object-fit: cover; background: var(--bg);
+  }
+
+  .item {
+    border: 1px solid var(--line); border-radius: var(--radius);
+    margin: 0 0 10px; background: var(--bg);
+  }
+  .item__head {
+    display: flex; align-items: center; gap: 6px; padding: 8px 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .item__summary {
+    flex: 1; min-width: 0; font-size: 0.86rem; font-weight: 600;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .item__body { padding: 13px 12px 2px; }
+  .list-actions { display: flex; gap: 8px; align-items: center; margin-top: 4px; }
+  .empty { color: var(--ink-soft); font-size: 0.86rem; font-style: italic; margin: 0 0 10px; }
+
+  .status { font-size: 0.85rem; color: var(--accent); min-height: 1.2em; }
+  dialog { border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); color: var(--ink); max-width: min(760px, 92vw); padding: 0; }
+  dialog::backdrop { background: rgba(0,0,0,0.55); }
+  dialog .dlg-head { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+  dialog .dlg-head strong { margin-right: auto; }
+  dialog pre { margin: 0; padding: 16px; max-height: 60vh; overflow: auto; font-size: 0.8rem; line-height: 1.5; }
+</style>
+</head>
+<body data-tab="form">
+
+<div class="topbar">
+  <div class="topbar__title">
+    Espace client
+    <small id="collectionLabel"></small>
+  </div>
+  <span class="badge">Démonstration</span>
+  <button type="button" id="btnPublish" class="primary">Enregistrer</button>
+  <button type="button" id="btnJson">Voir le fichier</button>
+  <button type="button" id="btnDownload">Télécharger</button>
+  <button type="button" id="btnReset">Réinitialiser</button>
+</div>
+
+<p class="notice">
+  Aperçu de l'espace client, utilisable sans rien installer : <strong>rien n'est
+  envoyé ni enregistré</strong>, les modifications restent dans cet onglet.
+  L'espace réel est <a href="index.html">Decap CMS</a> — mêmes champs, mêmes
+  libellés — et publie sur le site après connexion. Voir <code>ADMIN.md</code>.
+  <span class="status" id="status"></span>
+</p>
+
+<div class="tabs" role="tablist">
+  <button type="button" role="tab" id="tabForm" aria-selected="true">Contenu</button>
+  <button type="button" role="tab" id="tabPreview" aria-selected="false">Aperçu du site</button>
+</div>
+
+<div class="layout">
+  <div class="pane pane--form">
+    <p class="intro" id="collectionDescription"></p>
+    <form id="cmsForm" autocomplete="off"></form>
+  </div>
+  <div class="pane pane--preview">
+    <span class="preview-tag">Aperçu</span>
+    <iframe id="preview" title="Aperçu du site" src="../index.html"></iframe>
+  </div>
+</div>
+
+<dialog id="jsonDialog">
+  <div class="dlg-head">
+    <strong>content/site.json</strong>
+    <span style="color:var(--ink-soft);font-size:0.82rem;">C'est ce fichier que l'espace réel enregistre dans GitHub.</span>
+    <button type="button" id="btnCloseJson">Fermer</button>
+  </div>
+  <pre id="jsonOutput"></pre>
+</dialog>
+
+<script>
+(function () {
+  "use strict";
+
+  var SCHEMA = {"label": "Page d'accueil", "description": "Tout ce qui s'affiche sur le site. Laissez un champ vide pour garder le texte déjà en place ; videz une liste entière (réalisations, avis, essences) pour masquer la section correspondante.", "fields": [{"name": "marque", "label": "Nom et signature", "widget": "object", "fields": [{"name": "nom", "label": "Nom de l'entreprise", "widget": "string"}, {"name": "baseline", "label": "Signature", "widget": "string", "hint": "Quelques mots sous le nom, par exemple : Menuisier ébéniste."}]}, {"name": "hero", "label": "Bandeau d'accueil", "widget": "object", "fields": [{"name": "surtitre", "label": "Petite mention au-dessus du titre", "widget": "string"}, {"name": "titre_1", "label": "Titre — première ligne", "widget": "string", "hint": "S'affiche en blanc, en gras."}, {"name": "titre_2", "label": "Titre — seconde ligne", "widget": "string", "hint": "S'affiche en couleur bois, plus fin."}, {"name": "texte", "label": "Texte d'introduction", "widget": "text"}]}, {"name": "cartouche", "label": "Encadré technique (coin de l'accueil)", "widget": "object", "hint": "Quatre lignes courtes. N'y mettez que des informations exactes.", "collapsed": true, "fields": [{"name": "atelier", "label": "Atelier (ville)", "widget": "string"}, {"name": "depuis", "label": "Depuis (année)", "widget": "string"}, {"name": "rayon", "label": "Rayon d'intervention", "widget": "string"}, {"name": "devis", "label": "Devis", "widget": "string"}]}, {"name": "images", "label": "Photos principales", "widget": "object", "hint": "Formats conseillés : paysage et 2000 px de large pour l'accueil. N'utilisez que des photos dont vous détenez les droits.", "collapsed": true, "fields": [{"name": "hero_fond", "label": "Accueil — arrière-plan", "widget": "image", "required": false}, {"name": "hero_avant", "label": "Accueil — calque de premier plan", "widget": "image", "hint": "Détail (copeaux, établi). Se superpose discrètement au fond.", "required": false}, {"name": "atelier", "label": "L'atelier", "widget": "image", "required": false}]}, {"name": "savoir_faire", "label": "Savoir-faire", "widget": "object", "fields": [{"name": "titre", "label": "Titre de la section", "widget": "string"}, {"name": "texte", "label": "Texte sous le titre", "widget": "text", "required": false}, {"name": "metiers", "label": "Prestations", "widget": "list", "hint": "La numérotation (01, 02...) est automatique. Videz la liste pour masquer la section.", "label_singular": "Prestation", "summary": "{{fields.titre}}", "fields": [{"name": "titre", "label": "Intitulé", "widget": "string"}, {"name": "texte", "label": "Description", "widget": "text", "required": false}]}]}, {"name": "realisations", "label": "Réalisations", "widget": "object", "fields": [{"name": "titre", "label": "Titre de la section", "widget": "string"}, {"name": "texte", "label": "Texte sous le titre", "widget": "text", "required": false}, {"name": "ouvrages", "label": "Chantiers", "widget": "list", "hint": "La première réalisation de la liste s'affiche en grand. Ne montrez que des chantiers que vous avez réellement faits.", "label_singular": "Réalisation", "summary": "{{fields.titre}} — {{fields.meta}}", "fields": [{"name": "titre", "label": "Titre", "widget": "string"}, {"name": "meta", "label": "Sous-titre", "widget": "string", "hint": "Par exemple : Chêne massif · Intérieur", "required": false}, {"name": "categorie", "label": "Catégorie", "widget": "select", "hint": "Sert aux boutons de filtre. Un filtre sans réalisation disparaît tout seul.", "options": [{"label": "Intérieur", "value": "interieur"}, {"label": "Extérieur", "value": "exterieur"}, {"label": "Sols", "value": "sol"}, {"label": "Professionnels", "value": "pro"}]}, {"name": "image", "label": "Photo", "widget": "image"}, {"name": "alt", "label": "Description pour les lecteurs d'écran", "widget": "string", "hint": "Ce que montre la photo, en quelques mots. Sert aux personnes malvoyantes et au référencement.", "required": false}]}, {"name": "mention", "label": "Mention sous la galerie", "widget": "text", "hint": "Videz ce champ pour faire disparaître la mention du site.", "required": false}]}, {"name": "viseur", "label": "Essences et visualiseur 3D", "widget": "object", "collapsed": true, "fields": [{"name": "titre", "label": "Titre de la section", "widget": "string"}, {"name": "texte", "label": "Texte sous le titre", "widget": "text", "required": false}, {"name": "essences", "label": "Essences proposées", "widget": "list", "hint": "L'image sert de texture au meuble en 3D : prenez l'échantillon bien à plat, bien éclairé, fil à l'horizontale.", "label_singular": "Essence", "summary": "{{fields.nom}}", "fields": [{"name": "nom", "label": "Nom", "widget": "string"}, {"name": "couleur", "label": "Couleur de la pastille", "widget": "string", "hint": "Code couleur, par exemple #b98a52.", "required": false}, {"name": "texture", "label": "Échantillon (image)", "widget": "image"}, {"name": "durete", "label": "Dureté", "widget": "string", "required": false}, {"name": "usage", "label": "Usage", "widget": "string", "required": false}, {"name": "teinte", "label": "Teinte", "widget": "string", "required": false}]}, {"name": "mention", "label": "Mention sous le visualiseur", "widget": "text", "required": false}]}, {"name": "atelier", "label": "L'atelier", "widget": "object", "collapsed": true, "fields": [{"name": "titre", "label": "Titre", "widget": "string"}, {"name": "paragraphe_1", "label": "Premier paragraphe", "widget": "text"}, {"name": "paragraphe_2", "label": "Second paragraphe", "widget": "text"}]}, {"name": "processus", "label": "Déroulé d'un projet", "widget": "object", "collapsed": true, "fields": [{"name": "titre", "label": "Titre de la section", "widget": "string"}, {"name": "etapes", "label": "Étapes", "widget": "list", "hint": "La numérotation est automatique.", "label_singular": "Étape", "summary": "{{fields.titre}}", "fields": [{"name": "titre", "label": "Intitulé", "widget": "string"}, {"name": "texte", "label": "Description", "widget": "text", "required": false}]}]}, {"name": "devis", "label": "Demande de devis", "widget": "object", "fields": [{"name": "titre", "label": "Titre de la section", "widget": "string"}, {"name": "texte", "label": "Texte sous le titre", "widget": "text", "required": false}, {"name": "email_reception", "label": "Email qui reçoit les demandes", "widget": "string", "hint": "C'est l'adresse vers laquelle part chaque demande de devis."}, {"name": "aparte_titre", "label": "Titre de l'encadré de droite", "widget": "string"}, {"name": "garanties", "label": "Engagements", "widget": "list", "hint": "N'annoncez que ce que vous tenez réellement : un délai affiché vous engage.", "label_singular": "Engagement", "summary": "{{fields.titre}}", "fields": [{"name": "titre", "label": "Intitulé", "widget": "string"}, {"name": "texte", "label": "Précision", "widget": "text", "required": false}]}]}, {"name": "avis_titre", "label": "Titre de la section Avis", "widget": "string"}, {"name": "avis", "label": "Avis clients", "widget": "list", "hint": "N'ajoutez que des avis réellement reçus, en citant leur source (Google Avis, Houzz, courrier client). Publier un avis inventé est une pratique commerciale trompeuse, sanctionnée par le code de la consommation. Videz la liste pour masquer complètement la section.", "label_singular": "Avis", "summary": "{{fields.auteur}} — {{fields.texte}}", "collapsed": true, "fields": [{"name": "note", "label": "Note sur 5", "widget": "number", "required": false, "min": 1, "max": 5}, {"name": "texte", "label": "Texte de l'avis", "widget": "text"}, {"name": "auteur", "label": "Auteur", "widget": "string", "required": false}, {"name": "source", "label": "Source", "widget": "string", "required": false}]}, {"name": "avis_note", "label": "Mention sous les avis", "widget": "text", "hint": "Videz ce champ pour faire disparaître la mention du site.", "required": false}, {"name": "infos", "label": "Infos pratiques", "widget": "object", "fields": [{"name": "titre", "label": "Titre de la section", "widget": "string"}, {"name": "adresse_1", "label": "Adresse — ligne 1", "widget": "string"}, {"name": "adresse_2", "label": "Adresse — ligne 2", "widget": "string"}, {"name": "telephone", "label": "Téléphone", "widget": "string"}, {"name": "email", "label": "Email", "widget": "string"}, {"name": "horaires", "label": "Horaires", "widget": "list", "label_singular": "Ligne d'horaires", "summary": "{{fields.jours}} — {{fields.horaire}}", "fields": [{"name": "jours", "label": "Jours", "widget": "string"}, {"name": "horaire", "label": "Horaires", "widget": "string"}]}, {"name": "zones", "label": "Zone d'intervention", "widget": "list", "hint": "Une commune par ligne. N'annoncez que les secteurs où vous vous déplacez vraiment.", "label_singular": "Commune", "scalaire": {"name": "commune", "label": "Commune", "widget": "string"}}]}, {"name": "pied", "label": "Pied de page", "widget": "object", "collapsed": true, "fields": [{"name": "texte", "label": "Texte de présentation", "widget": "text"}, {"name": "reseaux", "label": "Réseaux sociaux", "widget": "list", "label_singular": "Réseau", "summary": "{{fields.nom}}", "fields": [{"name": "nom", "label": "Nom affiché", "widget": "string"}, {"name": "url", "label": "Adresse du profil", "widget": "string", "required": false}]}]}]};
+  var IMAGES = ["assets/images/atelier.svg", "assets/images/detail.svg", "assets/images/essence-chataignier.svg", "assets/images/essence-chene.svg", "assets/images/essence-frene.svg", "assets/images/essence-noyer.svg", "assets/images/hero-avant.svg", "assets/images/hero-fond.svg", "assets/images/real-agencement.svg", "assets/images/real-bibliotheque.svg", "assets/images/real-cuisine.svg", "assets/images/real-dressing.svg", "assets/images/real-escalier.svg", "assets/images/real-parquet.svg", "assets/images/real-porte.svg", "assets/images/real-terrasse.svg"];
+  var SOURCE = "../content/site.json";
+  var STORE = "webly:preview";
+
+  var original = null;   // contenu livré, pour « Réinitialiser »
+  var state = null;      // contenu en cours d'édition
+  var openGroups = {};   // groupes dépliés, par chemin
+
+  var form = document.getElementById("cmsForm");
+  var status = document.getElementById("status");
+  var frame = document.getElementById("preview");
+
+  function clone(value) { return JSON.parse(JSON.stringify(value)); }
+
+  function say(message) {
+    status.textContent = message;
+    window.clearTimeout(say.timer);
+    say.timer = window.setTimeout(function () { status.textContent = ""; }, 4000);
+  }
+
+  /* ---------- Valeurs par défaut pour un nouvel élément de liste ---------- */
+  function blank(field) {
+    if (field.widget === "object") return blankFrom(field.fields);
+    if (field.widget === "list") return [];
+    if (field.widget === "number") return 0;
+    return "";
+  }
+
+  // Une liste peut contenir des objets (field.fields) ou de simples
+  // chaînes (field.scalaire) — les deux existent dans config.yml.
+  function estListeSimple(field) {
+    return field.widget === "list" && !field.fields && !!field.scalaire;
+  }
+  function blankFrom(fields) {
+    var out = {};
+    fields.forEach(function (f) { out[f.name] = blank(f); });
+    return out;
+  }
+
+  /* ---------- Résumé d'un élément de liste ---------- */
+  function summarize(field, item, index) {
+    var pattern = field.summary;
+    if (!pattern) {
+      var first = field.fields[0];
+      return String(item[first.name] || "") || ("Élément " + (index + 1));
+    }
+    var text = pattern.replace(/\{\{fields\.([a-z_]+)\}\}/gi, function (_, key) {
+      return item[key] === undefined || item[key] === null ? "" : String(item[key]);
+    }).replace(/\s*—\s*$/, "").trim();
+    return text || ("Élément " + (index + 1));
+  }
+
+  /* ---------- Construction des champs ---------- */
+
+  function labelFor(field) {
+    var label = document.createElement("label");
+    label.textContent = field.label || field.name;
+    if (field.required !== false && field.widget !== "list" && field.widget !== "object") {
+      var star = document.createElement("span");
+      star.className = "req";
+      star.textContent = " *";
+      label.appendChild(star);
+    }
+    return label;
+  }
+
+  function hintFor(field) {
+    if (!field.hint) return null;
+    var p = document.createElement("p");
+    p.className = "hint";
+    p.textContent = field.hint;
+    return p;
+  }
+
+  function buildScalar(field, holder, path) {
+    var wrap = document.createElement("div");
+    wrap.className = "field";
+
+    var id = "f_" + path.replace(/[^a-z0-9]/gi, "_");
+    var label = labelFor(field);
+    label.setAttribute("for", id);
+    wrap.appendChild(label);
+
+    var input;
+    if (field.widget === "text") {
+      input = document.createElement("textarea");
+      input.rows = 3;
+    } else if (field.widget === "select" && field.options) {
+      input = document.createElement("select");
+      field.options.forEach(function (o) {
+        var opt = document.createElement("option");
+        opt.value = (o && o.value !== undefined) ? o.value : o;
+        opt.textContent = (o && o.label !== undefined) ? o.label : String(o);
+        input.appendChild(opt);
+      });
+    } else {
+      input = document.createElement("input");
+      input.type = field.widget === "number" ? "number" : "text";
+      if (field.min !== undefined) input.min = field.min;
+      if (field.max !== undefined) input.max = field.max;
+    }
+    input.id = id;
+    input.value = holder[field.name] === undefined || holder[field.name] === null
+      ? "" : String(holder[field.name]);
+
+    input.addEventListener("input", function () {
+      holder[field.name] = field.widget === "number"
+        ? (input.value === "" ? "" : Number(input.value))
+        : input.value;
+      refreshSummary(input);
+    });
+
+    if (field.widget === "image") {
+      var row = document.createElement("div");
+      row.className = "image-field";
+      input.setAttribute("list", "webly-images");
+      var thumb = document.createElement("img");
+      thumb.className = "thumb";
+      thumb.alt = "";
+      thumb.src = input.value ? "../" + input.value : "";
+      input.addEventListener("input", function () {
+        thumb.src = input.value ? "../" + input.value : "";
+      });
+      row.appendChild(input);
+      row.appendChild(thumb);
+      wrap.appendChild(row);
+    } else {
+      wrap.appendChild(input);
+    }
+
+    var hint = hintFor(field);
+    if (hint) wrap.appendChild(hint);
+    return wrap;
+  }
+
+  function refreshSummary(node) {
+    var item = node.closest(".item");
+    if (!item) return;
+    var render = item.__summary;
+    if (render) item.querySelector(".item__summary").textContent = render();
+  }
+
+  function buildList(field, holder, path) {
+    var group = document.createElement("fieldset");
+    group.className = "group";
+    var isOpen = openGroups[path] !== undefined ? openGroups[path] : (field.collapsed !== true);
+    group.setAttribute("data-open", isOpen ? "true" : "false");
+
+    var head = document.createElement("button");
+    head.type = "button";
+    head.className = "group__head";
+    head.innerHTML = '<span class="group__chevron" aria-hidden="true">›</span>';
+    head.appendChild(document.createTextNode(field.label || field.name));
+    var count = document.createElement("span");
+    count.className = "group__count";
+    head.appendChild(count);
+    head.addEventListener("click", function () {
+      var next = group.getAttribute("data-open") !== "true";
+      group.setAttribute("data-open", next ? "true" : "false");
+      openGroups[path] = next;
+    });
+    group.appendChild(head);
+
+    var body = document.createElement("div");
+    body.className = "group__body";
+    group.appendChild(body);
+
+    var items = holder[field.name];
+    if (!Array.isArray(items)) { items = []; holder[field.name] = items; }
+    count.textContent = items.length + (items.length > 1 ? " éléments" : " élément");
+
+    var hint = hintFor(field);
+    if (hint) { hint.style.marginBottom = "12px"; body.appendChild(hint); }
+
+    if (!items.length) {
+      var empty = document.createElement("p");
+      empty.className = "empty";
+      empty.textContent = "Liste vide — la section correspondante est masquée sur le site.";
+      body.appendChild(empty);
+    }
+
+    if (estListeSimple(field)) {
+      items.forEach(function (_, index) {
+        var ligne = document.createElement("div");
+        ligne.className = "item__head";
+        ligne.style.border = "0";
+
+        var input = document.createElement("input");
+        input.type = "text";
+        input.value = items[index] == null ? "" : String(items[index]);
+        input.addEventListener("input", function () { items[index] = input.value; });
+        ligne.appendChild(input);
+
+        var retirer = document.createElement("button");
+        retirer.type = "button"; retirer.className = "tiny";
+        retirer.textContent = "Supprimer";
+        retirer.setAttribute("aria-label", "Supprimer cette ligne");
+        retirer.addEventListener("click", function () { items.splice(index, 1); render(); });
+        ligne.appendChild(retirer);
+
+        body.appendChild(ligne);
+      });
+
+      var ajouter = document.createElement("button");
+      ajouter.type = "button";
+      ajouter.textContent = "Ajouter " + (field.label_singular ? field.label_singular.toLowerCase() : "une ligne");
+      ajouter.addEventListener("click", function () { items.push(""); openGroups[path] = true; render(); });
+      var barre = document.createElement("div");
+      barre.className = "list-actions";
+      barre.appendChild(ajouter);
+      body.appendChild(barre);
+      return group;
+    }
+
+    items.forEach(function (item, index) {
+      var card = document.createElement("div");
+      card.className = "item";
+
+      var cardHead = document.createElement("div");
+      cardHead.className = "item__head";
+
+      var summary = document.createElement("span");
+      summary.className = "item__summary";
+      card.__summary = function () { return summarize(field, item, index); };
+      summary.textContent = card.__summary();
+      cardHead.appendChild(summary);
+
+      [["↑", -1, "Monter"], ["↓", 1, "Descendre"]].forEach(function (spec) {
+        var btn = document.createElement("button");
+        btn.type = "button"; btn.className = "tiny";
+        btn.textContent = spec[0]; btn.title = spec[2];
+        btn.setAttribute("aria-label", spec[2] + " : " + summary.textContent);
+        btn.disabled = (spec[1] === -1 && index === 0) || (spec[1] === 1 && index === items.length - 1);
+        btn.addEventListener("click", function () {
+          var target = index + spec[1];
+          items.splice(target, 0, items.splice(index, 1)[0]);
+          render();
+        });
+        cardHead.appendChild(btn);
+      });
+
+      var remove = document.createElement("button");
+      remove.type = "button"; remove.className = "tiny";
+      remove.textContent = "Supprimer";
+      remove.setAttribute("aria-label", "Supprimer : " + summary.textContent);
+      remove.addEventListener("click", function () {
+        items.splice(index, 1);
+        render();
+      });
+      cardHead.appendChild(remove);
+      card.appendChild(cardHead);
+
+      var cardBody = document.createElement("div");
+      cardBody.className = "item__body";
+      field.fields.forEach(function (sub) {
+        cardBody.appendChild(build(sub, item, path + "." + index + "." + sub.name));
+      });
+      card.appendChild(cardBody);
+      body.appendChild(card);
+    });
+
+    var actions = document.createElement("div");
+    actions.className = "list-actions";
+    var add = document.createElement("button");
+    add.type = "button";
+    add.textContent = "Ajouter " + (field.label_singular ? field.label_singular.toLowerCase() : "un élément");
+    add.addEventListener("click", function () {
+      items.push(blankFrom(field.fields));
+      openGroups[path] = true;
+      render();
+    });
+    actions.appendChild(add);
+    body.appendChild(actions);
+
+    return group;
+  }
+
+  function buildObject(field, holder, path) {
+    var group = document.createElement("fieldset");
+    group.className = "group";
+    var isOpen = openGroups[path] !== undefined ? openGroups[path] : (field.collapsed !== true);
+    group.setAttribute("data-open", isOpen ? "true" : "false");
+
+    var head = document.createElement("button");
+    head.type = "button";
+    head.className = "group__head";
+    head.innerHTML = '<span class="group__chevron" aria-hidden="true">›</span>';
+    head.appendChild(document.createTextNode(field.label || field.name));
+    head.addEventListener("click", function () {
+      var next = group.getAttribute("data-open") !== "true";
+      group.setAttribute("data-open", next ? "true" : "false");
+      openGroups[path] = next;
+    });
+    group.appendChild(head);
+
+    var body = document.createElement("div");
+    body.className = "group__body";
+    var value = holder[field.name];
+    if (!value || typeof value !== "object") { value = {}; holder[field.name] = value; }
+
+    var hint = hintFor(field);
+    if (hint) { hint.style.marginBottom = "12px"; body.appendChild(hint); }
+
+    field.fields.forEach(function (sub) {
+      body.appendChild(build(sub, value, path + "." + sub.name));
+    });
+    group.appendChild(body);
+    return group;
+  }
+
+  function build(field, holder, path) {
+    if (field.widget === "object") return buildObject(field, holder, path);
+    if (field.widget === "list") return buildList(field, holder, path);
+    return buildScalar(field, holder, path);
+  }
+
+  function render() {
+    form.textContent = "";
+    SCHEMA.fields.forEach(function (field) {
+      form.appendChild(build(field, state, field.name));
+    });
+
+    var list = document.getElementById("webly-images");
+    if (!list) {
+      list = document.createElement("datalist");
+      list.id = "webly-images";
+      IMAGES.forEach(function (src) {
+        var option = document.createElement("option");
+        option.value = src;
+        list.appendChild(option);
+      });
+      document.body.appendChild(list);
+    }
+  }
+
+  /* ---------- Aperçu ---------- */
+  function publish() {
+    try {
+      window.sessionStorage.setItem(STORE, JSON.stringify(state));
+    } catch (error) {
+      say("Stockage indisponible — aperçu impossible dans ce mode de navigation.");
+      return;
+    }
+    frame.contentWindow.location.reload();
+    say("Aperçu mis à jour. Dans l'espace réel, cette action publierait sur le site.");
+  }
+
+  /* ---------- Démarrage ---------- */
+  document.getElementById("collectionLabel").textContent = SCHEMA.label;
+  document.getElementById("collectionDescription").textContent = SCHEMA.description;
+
+  document.getElementById("btnPublish").addEventListener("click", publish);
+  document.getElementById("btnReset").addEventListener("click", function () {
+    state = clone(original);
+    openGroups = {};
+    render();
+    try { window.sessionStorage.removeItem(STORE); } catch (error) { /* sans effet */ }
+    frame.contentWindow.location.reload();
+    say("Contenu d'origine rétabli.");
+  });
+
+  var dialog = document.getElementById("jsonDialog");
+  document.getElementById("btnJson").addEventListener("click", function () {
+    document.getElementById("jsonOutput").textContent = JSON.stringify(state, null, 2);
+    if (dialog.showModal) dialog.showModal(); else dialog.setAttribute("open", "");
+  });
+  document.getElementById("btnCloseJson").addEventListener("click", function () {
+    if (dialog.close) dialog.close(); else dialog.removeAttribute("open");
+  });
+
+  document.getElementById("btnDownload").addEventListener("click", function () {
+    var blob = new Blob([JSON.stringify(state, null, 2) + "\n"], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement("a");
+    link.href = url;
+    link.download = "site.json";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    say("Fichier téléchargé.");
+  });
+
+  document.getElementById("tabForm").addEventListener("click", function () {
+    document.body.setAttribute("data-tab", "form");
+    this.setAttribute("aria-selected", "true");
+    document.getElementById("tabPreview").setAttribute("aria-selected", "false");
+  });
+  document.getElementById("tabPreview").addEventListener("click", function () {
+    document.body.setAttribute("data-tab", "preview");
+    this.setAttribute("aria-selected", "true");
+    document.getElementById("tabForm").setAttribute("aria-selected", "false");
+  });
+
+  // L'aperçu repart toujours du contenu publié.
+  try { window.sessionStorage.removeItem(STORE); } catch (error) { /* sans effet */ }
+
+  fetch(SOURCE, { cache: "no-cache" })
+    .then(function (response) {
+      if (!response.ok) throw new Error("HTTP " + response.status);
+      return response.json();
+    })
+    .then(function (data) {
+      original = clone(data);
+      state = clone(data);
+      render();
+    })
+    .catch(function (error) {
+      form.innerHTML = '<p class="empty">Impossible de lire content/site.json. ' +
+        'Cette page doit être ouverte via un serveur web, pas par un double-clic ' +
+        'sur le fichier.</p>';
+      console.warn("[Webly] démo admin :", error);
+    });
+})();
+</script>
+</body>
+</html>

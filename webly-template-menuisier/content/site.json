@@ -1,0 +1,264 @@
+{
+  "marque": {
+    "nom": "Atelier Bois & Trait",
+    "baseline": "Menuisier ébéniste"
+  },
+  "hero": {
+    "surtitre": "Menuiserie sur mesure",
+    "titre_1": "Le bois prend",
+    "titre_2": "la forme de votre lieu.",
+    "texte": "Escaliers, bibliothèques, cuisines, dressings, parquets. Chaque ouvrage est étudié pour son emplacement, fabriqué à l'atelier, posé par ceux qui l'ont fabriqué."
+  },
+  "cartouche": {
+    "atelier": "À renseigner",
+    "depuis": "À renseigner",
+    "rayon": "À renseigner",
+    "devis": "Gratuit"
+  },
+  "images": {
+    "hero_fond": "assets/images/hero-fond.svg",
+    "hero_avant": "assets/images/hero-avant.svg",
+    "atelier": "assets/images/atelier.svg"
+  },
+  "savoir_faire": {
+    "titre": "Ce que l'atelier fabrique",
+    "texte": "Du meuble unique au chantier complet. Si l'ouvrage est en bois et qu'il doit entrer au millimètre, c'est notre métier.",
+    "metiers": [
+      {
+        "titre": "Escaliers",
+        "texte": "Droit, quart tournant, hélicoïdal. Limon apparent ou crémaillère, garde-corps assorti."
+      },
+      {
+        "titre": "Bibliothèques & rangements",
+        "texte": "Du sol au plafond, autour d'une porte, sous un rampant. Là où le meuble du commerce ne passe pas."
+      },
+      {
+        "titre": "Cuisines & plans de travail",
+        "texte": "Façades, caissons et plans en bois massif, ajustés à la pièce et à vos gestes."
+      },
+      {
+        "titre": "Dressings & placards",
+        "texte": "Aménagement intérieur complet, portes coulissantes ou battantes, finitions au choix."
+      },
+      {
+        "titre": "Parquets",
+        "texte": "Pose, ponçage, rénovation. Point de Hongrie, bâtons rompus, lames larges."
+      },
+      {
+        "titre": "Menuiseries extérieures",
+        "texte": "Portes, fenêtres, volets, terrasses et bardages. Essences choisies pour durer dehors."
+      }
+    ]
+  },
+  "realisations": {
+    "titre": "Des ouvrages, pas des catalogues",
+    "texte": "Chaque projet part d'une contrainte : un mur qui n'est pas d'aplomb, une hauteur sous plafond ingrate, un budget. Voilà ce que ça donne.",
+    "ouvrages": [
+      {
+        "titre": "Escalier quart tournant",
+        "meta": "Chêne massif · Intérieur",
+        "categorie": "interieur",
+        "image": "assets/images/real-escalier.svg",
+        "alt": "Escalier en bois sur mesure"
+      },
+      {
+        "titre": "Bibliothèque pleine hauteur",
+        "meta": "Noyer · Intérieur",
+        "categorie": "interieur",
+        "image": "assets/images/real-bibliotheque.svg",
+        "alt": "Bibliothèque sur mesure du sol au plafond"
+      },
+      {
+        "titre": "Cuisine et plan de travail",
+        "meta": "Chêne huilé · Intérieur",
+        "categorie": "interieur",
+        "image": "assets/images/real-cuisine.svg",
+        "alt": "Cuisine et plan de travail en bois massif"
+      },
+      {
+        "titre": "Dressing à lattes",
+        "meta": "Frêne · Intérieur",
+        "categorie": "interieur",
+        "image": "assets/images/real-dressing.svg",
+        "alt": "Dressing avec façades à lattes"
+      },
+      {
+        "titre": "Porte d'entrée",
+        "meta": "Châtaignier · Extérieur",
+        "categorie": "exterieur",
+        "image": "assets/images/real-porte.svg",
+        "alt": "Porte d'entrée en bois"
+      },
+      {
+        "titre": "Parquet point de Hongrie",
+        "meta": "Chêne · Sols",
+        "categorie": "sol",
+        "image": "assets/images/real-parquet.svg",
+        "alt": "Parquet point de Hongrie"
+      },
+      {
+        "titre": "Terrasse et bardage",
+        "meta": "Châtaignier · Extérieur",
+        "categorie": "exterieur",
+        "image": "assets/images/real-terrasse.svg",
+        "alt": "Terrasse et bardage bois"
+      },
+      {
+        "titre": "Agencement de commerce",
+        "meta": "Noyer · Professionnels",
+        "categorie": "pro",
+        "image": "assets/images/real-agencement.svg",
+        "alt": "Agencement de commerce"
+      }
+    ],
+    "mention": "Visuels d'exemple générés pour la démonstration. À remplacer par les photographies réelles des chantiers — ce sont elles qui vendent le travail."
+  },
+  "viseur": {
+    "titre": "Voyez la matière avant de choisir",
+    "texte": "Le même meuble change complètement selon l'essence. Faites-le tourner, changez de bois, comparez. C'est plus parlant qu'un nuancier.",
+    "essences": [
+      {
+        "nom": "Chêne",
+        "couleur": "#b98a52",
+        "texture": "assets/images/essence-chene.svg",
+        "durete": "Dur",
+        "usage": "Intérieur et extérieur",
+        "teinte": "Miel, se patine"
+      },
+      {
+        "nom": "Noyer",
+        "couleur": "#6d4a32",
+        "texture": "assets/images/essence-noyer.svg",
+        "durete": "Mi-dur",
+        "usage": "Intérieur, ébénisterie",
+        "teinte": "Brun profond, veiné"
+      },
+      {
+        "nom": "Frêne",
+        "couleur": "#cbb08a",
+        "texture": "assets/images/essence-frene.svg",
+        "durete": "Dur, souple",
+        "usage": "Intérieur, cintrage",
+        "teinte": "Clair, fil marqué"
+      },
+      {
+        "nom": "Châtaignier",
+        "couleur": "#a97c4e",
+        "texture": "assets/images/essence-chataignier.svg",
+        "durete": "Mi-dur",
+        "usage": "Extérieur sans traitement",
+        "teinte": "Blond roux"
+      }
+    ],
+    "mention": "Rendu indicatif. Les échantillons livrés sont des textures générées : remplacez-les par des photographies de vos propres bois pour un rendu fidèle."
+  },
+  "atelier": {
+    "titre": "On fabrique ici, pas ailleurs",
+    "paragraphe_1": "Tout sort de l'atelier : le débit, l'assemblage, le ponçage, la finition. Rien n'est sous-traité, rien n'arrive en kit. C'est ce qui permet de rattraper un mur de travers le jour de la pose.",
+    "paragraphe_2": "Les bois viennent de scieries identifiées, en majorité françaises. Les chutes servent aux petits ouvrages, le reste part au chauffage : un atelier de menuiserie ne jette presque rien."
+  },
+  "processus": {
+    "titre": "Comment ça se passe",
+    "etapes": [
+      {
+        "titre": "Visite et relevé",
+        "texte": "On vient mesurer sur place. Les plans d'un logement mentent souvent ; le mètre, non."
+      },
+      {
+        "titre": "Étude et devis",
+        "texte": "Plans cotés, choix des essences et des finitions, devis détaillé poste par poste."
+      },
+      {
+        "titre": "Fabrication",
+        "texte": "Débit, assemblage et finition à l'atelier. Vous pouvez passer voir l'ouvrage en cours."
+      },
+      {
+        "titre": "Pose",
+        "texte": "Livraison et pose par l'atelier, ajustements compris. Chantier laissé propre."
+      }
+    ]
+  },
+  "devis": {
+    "titre": "Décrivez votre projet",
+    "texte": "Quatre questions, deux minutes. Votre messagerie s'ouvrira avec la demande déjà rédigée — il ne restera qu'à l'envoyer.",
+    "email_reception": "contact@votre-menuiserie-a-renseigner.fr",
+    "aparte_titre": "Ce qui vous attend",
+    "garanties": [
+      {
+        "titre": "Réponse sous 48 h ouvrées.",
+        "texte": "Un premier retour, même pour dire que le projet ne rentre pas dans nos cordes."
+      },
+      {
+        "titre": "Visite et relevé gratuits.",
+        "texte": "Aucun devis sérieux ne se fait sans être venu mesurer."
+      },
+      {
+        "titre": "Devis détaillé.",
+        "texte": "Poste par poste, matériaux et main-d'œuvre séparés."
+      },
+      {
+        "titre": "Aucun engagement.",
+        "texte": "Le devis est gratuit et ne vous lie à rien."
+      }
+    ]
+  },
+  "avis_titre": "Ce qu'en disent les clients",
+  "avis": [
+    {
+      "note": 5,
+      "texte": "Avis client à intégrer",
+      "auteur": "Prénom N.",
+      "source": "source à préciser"
+    },
+    {
+      "note": 5,
+      "texte": "Avis client à intégrer",
+      "auteur": "Prénom N.",
+      "source": "source à préciser"
+    },
+    {
+      "note": 5,
+      "texte": "Avis client à intégrer",
+      "auteur": "Prénom N.",
+      "source": "source à préciser"
+    }
+  ],
+  "avis_note": "Emplacements réservés aux avis réellement reçus — à connecter à Google Avis ou Houzz. Aucun avis n'est inventé ici.",
+  "infos": {
+    "titre": "Nous joindre",
+    "adresse_1": "Adresse à renseigner",
+    "adresse_2": "Code postal et ville à renseigner",
+    "telephone": "Téléphone à renseigner",
+    "email": "Email à renseigner",
+    "horaires": [
+      {
+        "jours": "Lundi — Vendredi",
+        "horaire": "Horaires à renseigner"
+      },
+      {
+        "jours": "Samedi",
+        "horaire": "Sur rendez-vous"
+      },
+      {
+        "jours": "Dimanche",
+        "horaire": "Fermé"
+      }
+    ],
+    "zones": [
+      "Communes à renseigner"
+    ]
+  },
+  "pied": {
+    "texte": "Menuiserie et agencement sur mesure. Étude, fabrication en atelier et pose par la même équipe.",
+    "reseaux": [
+      {
+        "nom": "Instagram (lien à renseigner)",
+        "url": ""
+      },
+      {
+        "nom": "Houzz (lien à renseigner)",
+        "url": ""
+      }
+    ]
+  }
+}

@@ -1,0 +1,714 @@
+/* =========================================================================
+   ATELIER BOIS & TRAIT — template menuisier
+   Direction artistique : « le plan et le bois ».
+   La matière est chaude, les annotations sont techniques. Le site alterne
+   entre les deux registres — bois plein cadre, puis trait de plan.
+   Aucune dépendance, aucune police externe.
+   ========================================================================= */
+
+:root {
+  /* ---- Matière ---- */
+  --papier: #f6f2ec;
+  --papier-2: #ede7dd;
+  --papier-3: #e2d9cb;
+  --encre: #15191b;
+  --encre-2: #1e2427;
+  --encre-3: #2b3337;
+
+  /* ---- Bois ---- */
+  --bois: #b9793f;
+  --bois-clair: #d9a86f;
+  --bois-texte: #8a5526;      /* variante lisible sur papier (AA vérifié) */
+  --bois-sur-encre: #d9a86f;  /* variante lisible sur encre */
+
+  /* ---- Trait de plan ---- */
+  --plan: #2f5d7c;
+  --plan-texte: #24506e;
+  --plan-sur-encre: #7fb3d1;
+
+  /* ---- Texte ---- */
+  --texte: var(--encre);
+  --texte-doux: #56514a;
+  --texte-sur-encre: #e8e3da;
+  --texte-doux-sur-encre: #a29c92;
+
+  --ligne: #d8d0c3;
+  --ligne-encre: #333b3f;
+
+  /* ---- Typographie ---- */
+  --font-display: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-texte: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* ---- Rythme ---- */
+  --gouttiere: 24px;
+  --largeur: 1180px;
+  --largeur-large: 1440px;
+  --rayon: 4px;               /* presque droit : c'est de la menuiserie */
+
+  --transition: 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/* Masque les sections que le CMS ne remplit pas (voir assets/js/content.js).
+   Prioritaire sur les règles de mise en page qui imposent un display. */
+[hidden] { display: none !important; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--papier);
+  color: var(--texte);
+  font-family: var(--font-texte);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img, svg, canvas { max-width: 100%; display: block; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.028em;
+  line-height: 1.08;
+  margin: 0 0 0.5em;
+  text-wrap: balance;
+}
+h1 { font-size: clamp(2.6rem, 7vw, 5.6rem); }
+h2 { font-size: clamp(1.9rem, 4.2vw, 3.1rem); }
+h3 { font-size: clamp(1.15rem, 2vw, 1.4rem); letter-spacing: -0.018em; }
+p { margin: 0 0 1.1em; }
+a { color: inherit; }
+
+::selection { background: var(--bois); color: #fff; }
+
+.skip-link {
+  position: absolute; left: -9999px; top: 0; z-index: 999;
+  background: var(--encre); color: var(--papier);
+  padding: 14px 22px; font-family: var(--font-mono); font-size: 0.85rem;
+}
+.skip-link:focus { left: 0; }
+
+:focus-visible { outline: 2px solid var(--plan); outline-offset: 3px; }
+
+/* =========================================================================
+   MISE EN PAGE
+   ========================================================================= */
+
+.wrap { width: 100%; max-width: var(--largeur); margin: 0 auto; padding: 0 var(--gouttiere); }
+.wrap-large { width: 100%; max-width: var(--largeur-large); margin: 0 auto; padding: 0 var(--gouttiere); }
+
+.section { padding: clamp(72px, 11vh, 132px) 0; position: relative; }
+.section--encre { background: var(--encre); color: var(--texte-sur-encre); }
+.section--encre h1, .section--encre h2, .section--encre h3 { color: var(--papier); }
+.section--encre p { color: var(--texte-doux-sur-encre); }
+.section--papier2 { background: var(--papier-2); }
+
+/* Annotation technique — la signature typographique du template. */
+.annot {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-family: var(--font-mono);
+  font-size: 0.73rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--plan-texte);
+  margin: 0 0 18px;
+}
+.annot::before {
+  content: ""; width: 26px; height: 1px; background: currentColor; flex: none;
+}
+.section--encre .annot { color: var(--plan-sur-encre); }
+
+.tete { max-width: 660px; margin-bottom: clamp(38px, 6vw, 62px); }
+.tete--centre { margin-left: auto; margin-right: auto; text-align: center; }
+.tete--centre .annot { justify-content: center; }
+.tete p { color: var(--texte-doux); font-size: 1.06rem; }
+.section--encre .tete p { color: var(--texte-doux-sur-encre); }
+
+/* Grille de plan, en fond des sections sombres. */
+.grille-plan {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.32;
+  background-image:
+    linear-gradient(to right, rgba(127, 179, 209, 0.10) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(127, 179, 209, 0.10) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 78%);
+}
+
+/* =========================================================================
+   BOUTONS
+   ========================================================================= */
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  font-family: var(--font-mono); font-size: 0.78rem;
+  letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500;
+  padding: 15px 28px; border-radius: var(--rayon);
+  border: 1px solid var(--encre); background: transparent; color: var(--encre);
+  text-decoration: none; cursor: pointer;
+  transition: background var(--transition), color var(--transition), border-color var(--transition), transform 0.2s;
+}
+.btn:hover { background: var(--encre); color: var(--papier); }
+.btn:active { transform: translateY(1px); }
+
+.btn--plein { background: var(--bois); border-color: var(--bois); color: var(--encre); }
+.btn--plein:hover { background: var(--encre); border-color: var(--encre); color: var(--papier); }
+
+.btn--clair { border-color: rgba(246, 242, 236, 0.5); color: var(--papier); }
+.btn--clair:hover { background: var(--papier); border-color: var(--papier); color: var(--encre); }
+
+.btn--sm { padding: 11px 19px; font-size: 0.72rem; }
+
+/* =========================================================================
+   EN-TÊTE
+   ========================================================================= */
+
+.entete {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 90;
+  transition: background var(--transition), border-color var(--transition), padding var(--transition);
+  border-bottom: 1px solid transparent;
+}
+.entete .nav { display: flex; align-items: center; gap: 28px; padding-block: 22px; }
+.entete.est-pose {
+  background: rgba(246, 242, 236, 0.93);
+  backdrop-filter: blur(14px) saturate(1.2);
+  border-bottom-color: var(--ligne);
+}
+.entete.est-pose .nav { padding-block: 14px; }
+
+.marque { display: flex; flex-direction: column; text-decoration: none; margin-right: auto; }
+.marque__nom {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: 1.12rem; letter-spacing: -0.02em; line-height: 1.1;
+}
+.marque__sous {
+  font-family: var(--font-mono); font-size: 0.64rem;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--texte-doux);
+}
+
+.nav-liens { display: flex; gap: 30px; list-style: none; margin: 0; padding: 0; }
+.nav-liens a {
+  font-family: var(--font-mono); font-size: 0.75rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  text-decoration: none; color: var(--texte-doux);
+  position: relative; padding-block: 4px;
+  transition: color var(--transition);
+}
+.nav-liens a::after {
+  content: ""; position: absolute; left: 0; bottom: 0; height: 1px; width: 0;
+  background: var(--bois); transition: width var(--transition);
+}
+.nav-liens a:hover { color: var(--encre); }
+.nav-liens a:hover::after { width: 100%; }
+
+.nav-actions { display: flex; align-items: center; gap: 12px; }
+
+.burger {
+  display: none; width: 44px; height: 44px; padding: 0;
+  background: none; border: 1px solid var(--ligne); border-radius: var(--rayon);
+  cursor: pointer; position: relative;
+}
+.burger span {
+  display: block; width: 18px; height: 1.5px; background: var(--encre);
+  margin: 4px auto; transition: transform var(--transition), opacity var(--transition);
+}
+
+.menu-mobile {
+  display: none;
+  position: fixed; inset: 0; z-index: 95;
+  background: var(--encre); color: var(--papier);
+  padding: 92px 28px 40px;
+  flex-direction: column;
+  transform: translateY(-100%); transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.menu-mobile.est-ouvert { transform: translateY(0); }
+.menu-mobile ul { list-style: none; margin: 0 0 32px; padding: 0; }
+.menu-mobile ul a {
+  display: block; padding: 15px 0;
+  font-family: var(--font-display); font-weight: 800; font-size: 1.75rem;
+  letter-spacing: -0.02em; text-decoration: none; color: var(--papier);
+  border-bottom: 1px solid var(--ligne-encre);
+}
+.menu-mobile__fermer {
+  position: absolute; top: 24px; right: 24px;
+  background: none; border: 1px solid var(--ligne-encre); border-radius: var(--rayon);
+  color: var(--papier); font-family: var(--font-mono); font-size: 0.72rem;
+  letter-spacing: 0.12em; text-transform: uppercase; padding: 11px 16px; cursor: pointer;
+}
+
+/* =========================================================================
+   HERO — profondeur par couches parallaxes
+   ========================================================================= */
+
+.hero {
+  position: relative; min-height: 100svh;
+  display: flex; align-items: center;
+  padding: 140px 0 90px;
+  overflow: hidden;
+  background: var(--encre);
+  color: var(--papier);
+}
+.hero__couches { position: absolute; inset: 0; }
+.hero__couche { position: absolute; inset: -6%; will-change: transform; }
+.hero__couche img { width: 100%; height: 100%; object-fit: cover; }
+.hero__couche--fond { z-index: 1; }
+.hero__couche--avant { z-index: 3; }
+.hero__voile {
+  position: absolute; inset: 0; z-index: 2;
+  background:
+    linear-gradient(105deg, rgba(21, 25, 27, 0.94) 0%, rgba(21, 25, 27, 0.72) 42%, rgba(21, 25, 27, 0.34) 100%);
+}
+.hero__contenu { position: relative; z-index: 5; width: 100%; }
+
+.hero h1 { color: var(--papier); margin-bottom: 26px; }
+.hero h1 .fin { font-weight: 300; color: var(--bois-sur-encre); display: block; }
+.hero__texte {
+  max-width: 470px; color: rgba(232, 227, 218, 0.82); font-size: 1.08rem; margin-bottom: 34px;
+}
+.hero__actions { display: flex; flex-wrap: wrap; gap: 14px; }
+
+/* Cartouche de plan : la « fiche technique » du hero. */
+.cartouche {
+  position: absolute; right: var(--gouttiere); bottom: 40px; z-index: 5;
+  border: 1px solid rgba(127, 179, 209, 0.32);
+  background: rgba(21, 25, 27, 0.58);
+  backdrop-filter: blur(6px);
+  padding: 16px 20px; border-radius: var(--rayon);
+  font-family: var(--font-mono); font-size: 0.7rem; line-height: 1.9;
+  color: var(--plan-sur-encre); letter-spacing: 0.06em;
+  max-width: 240px;
+}
+.cartouche dl { display: grid; grid-template-columns: auto 1fr; gap: 2px 14px; margin: 0; }
+.cartouche dt { color: rgba(127, 179, 209, 0.62); }
+.cartouche dd { margin: 0; color: var(--papier); text-align: right; }
+
+.hero__filer {
+  position: absolute; left: var(--gouttiere); bottom: 34px; z-index: 5;
+  font-family: var(--font-mono); font-size: 0.66rem;
+  letter-spacing: 0.2em; text-transform: uppercase; color: rgba(232, 227, 218, 0.5);
+  display: flex; align-items: center; gap: 12px;
+}
+.hero__filer i {
+  display: block; width: 1px; height: 34px; background: currentColor;
+  transform-origin: top; animation: filer 2.4s ease-in-out infinite;
+}
+@keyframes filer {
+  0%, 100% { transform: scaleY(0.25); opacity: 0.35; }
+  50%      { transform: scaleY(1); opacity: 1; }
+}
+
+/* =========================================================================
+   SAVOIR-FAIRE — cartes en relief 3D
+   ========================================================================= */
+
+.metiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+
+.metier {
+  position: relative; padding: 30px 26px 26px;
+  background: var(--papier);
+  border: 1px solid var(--ligne);
+  border-radius: var(--rayon);
+  transform-style: preserve-3d;
+  transition: transform 0.25s ease-out, box-shadow var(--transition), border-color var(--transition);
+  will-change: transform;
+}
+.metier:hover {
+  border-color: var(--bois);
+  box-shadow: 0 24px 48px -22px rgba(21, 25, 27, 0.35);
+}
+.metier__num {
+  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em;
+  color: var(--bois-texte); display: block; margin-bottom: 16px;
+}
+.metier h3 { margin-bottom: 10px; }
+.metier p { color: var(--texte-doux); font-size: 0.95rem; margin: 0; }
+.metier__profondeur { transform: translateZ(28px); }
+
+/* =========================================================================
+   RÉALISATIONS
+   ========================================================================= */
+
+.filtres { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 30px; }
+.filtre {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 9px 17px; border-radius: 999px;
+  border: 1px solid var(--ligne); background: transparent; color: var(--texte-doux);
+  cursor: pointer; transition: all var(--transition);
+}
+.filtre:hover { border-color: var(--encre); color: var(--encre); }
+.filtre[aria-pressed="true"] { background: var(--encre); border-color: var(--encre); color: var(--papier); }
+
+.galerie { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+
+.oeuvre {
+  position: relative; border: 0; padding: 0; margin: 0;
+  background: var(--papier-3); border-radius: var(--rayon);
+  overflow: hidden; cursor: zoom-in; text-align: left;
+  aspect-ratio: 4 / 5;
+  transition: opacity 0.4s, transform 0.4s;
+}
+.oeuvre--grande { grid-row: span 2; aspect-ratio: 4 / 10.25; }
+.oeuvre img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1); }
+.oeuvre:hover img { transform: scale(1.06); }
+.oeuvre__voile {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(21, 25, 27, 0.9) 0%, rgba(21, 25, 27, 0.15) 45%, transparent 70%);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 20px; gap: 3px;
+}
+.oeuvre__titre { font-family: var(--font-display); font-weight: 700; color: #fff; font-size: 1.02rem; }
+.oeuvre__meta { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.72); }
+.oeuvre.est-masquee { display: none; }
+
+/* =========================================================================
+   VISUALISEUR 3D
+   ========================================================================= */
+
+.viseur { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; align-items: center; }
+
+.viseur__scene {
+  position: relative; aspect-ratio: 1 / 1;
+  border: 1px solid var(--ligne-encre); border-radius: var(--rayon);
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 42%, rgba(185, 121, 63, 0.14), transparent 70%),
+    var(--encre-2);
+  overflow: hidden; touch-action: none; cursor: grab;
+}
+.viseur__scene:active { cursor: grabbing; }
+.viseur__scene canvas { width: 100%; height: 100%; display: block; }
+
+.viseur__aide {
+  position: absolute; left: 14px; bottom: 12px;
+  font-family: var(--font-mono); font-size: 0.66rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(232, 227, 218, 0.45); pointer-events: none;
+  transition: opacity var(--transition);
+}
+.viseur__scene.est-manipulee .viseur__aide { opacity: 0; }
+
+/* Repli sans WebGL : un volume en CSS 3D, qui tourne quand même. */
+.viseur__repli {
+  position: absolute; inset: 0; display: none;
+  place-items: center; perspective: 900px;
+}
+.viseur__scene.sans-webgl .viseur__repli { display: grid; }
+.cube {
+  position: relative; width: 150px; height: 150px;
+  transform-style: preserve-3d; animation: tourne 18s linear infinite;
+}
+.cube > div {
+  position: absolute; inset: 0;
+  border: 1px solid rgba(217, 168, 111, 0.45);
+  background: linear-gradient(140deg, rgba(185, 121, 63, 0.46), rgba(138, 85, 38, 0.24));
+}
+.cube .f1 { transform: translateZ(75px); }
+.cube .f2 { transform: rotateY(180deg) translateZ(75px); }
+.cube .f3 { transform: rotateY(90deg)  translateZ(75px); }
+.cube .f4 { transform: rotateY(-90deg) translateZ(75px); }
+.cube .f5 { transform: rotateX(90deg)  translateZ(75px); }
+.cube .f6 { transform: rotateX(-90deg) translateZ(75px); }
+@keyframes tourne {
+  from { transform: rotateX(-18deg) rotateY(0deg); }
+  to   { transform: rotateX(-18deg) rotateY(360deg); }
+}
+
+.essences { display: flex; flex-wrap: wrap; gap: 10px; margin: 26px 0 8px; }
+.essence {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 15px 9px 9px; border-radius: 999px;
+  border: 1px solid var(--ligne-encre); background: transparent;
+  color: var(--texte-doux-sur-encre); cursor: pointer;
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em;
+  transition: all var(--transition);
+}
+.essence__pastille { width: 22px; height: 22px; border-radius: 50%; flex: none; border: 1px solid rgba(255,255,255,0.18); }
+.essence:hover { border-color: var(--bois-sur-encre); color: var(--papier); }
+.essence[aria-pressed="true"] { border-color: var(--bois-sur-encre); background: rgba(217, 168, 111, 0.12); color: var(--papier); }
+
+.viseur__fiche {
+  margin-top: 22px; border-top: 1px solid var(--ligne-encre); padding-top: 18px;
+  font-family: var(--font-mono); font-size: 0.74rem; line-height: 2;
+  color: var(--texte-doux-sur-encre);
+}
+.viseur__fiche dl { display: grid; grid-template-columns: 130px 1fr; gap: 0 16px; margin: 0; }
+.viseur__fiche dt { color: rgba(162, 156, 146, 0.75); }
+.viseur__fiche dd { margin: 0; color: var(--papier); }
+
+/* =========================================================================
+   PROCESSUS
+   ========================================================================= */
+
+.etapes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; }
+.etape { padding: 0 22px 0 0; position: relative; }
+.etape::before {
+  content: ""; position: absolute; left: 0; top: 13px; right: 22px;
+  height: 1px; background: var(--ligne);
+}
+.etape::after {
+  content: ""; position: absolute; left: 0; top: 8px;
+  width: 11px; height: 11px; border-radius: 50%;
+  background: var(--papier); border: 1px solid var(--bois);
+}
+.etape.est-vue::after { background: var(--bois); }
+.etape__num {
+  display: block; margin: 38px 0 12px;
+  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em; color: var(--bois-texte);
+}
+.etape h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.etape p { color: var(--texte-doux); font-size: 0.93rem; margin: 0; }
+
+/* =========================================================================
+   DEVIS — formulaire par étapes
+   ========================================================================= */
+
+.devis { display: grid; grid-template-columns: 1fr 1.25fr; gap: 54px; align-items: start; }
+
+.devis__jauge { display: flex; gap: 6px; margin-bottom: 28px; }
+.devis__jauge span {
+  flex: 1; height: 2px; background: var(--ligne-encre); border-radius: 2px;
+  transition: background var(--transition);
+}
+.devis__jauge span.est-faite { background: var(--bois-sur-encre); }
+
+.volet { display: none; }
+.volet.est-active { display: block; animation: entre 0.45s cubic-bezier(0.22, 0.61, 0.36, 1); }
+@keyframes entre { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+.volet__titre {
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--plan-sur-encre); margin-bottom: 20px;
+  display: block;
+}
+
+.choix { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.choix label {
+  display: block; padding: 15px 17px; cursor: pointer;
+  border: 1px solid var(--ligne-encre); border-radius: var(--rayon);
+  transition: all var(--transition);
+  font-size: 0.95rem;
+}
+.choix label:hover { border-color: var(--bois-sur-encre); }
+.choix input { position: absolute; opacity: 0; pointer-events: none; }
+.choix input:checked + label,
+.choix label:has(input:checked) {
+  border-color: var(--bois-sur-encre); background: rgba(217, 168, 111, 0.1);
+}
+.choix input:focus-visible + label { outline: 2px solid var(--plan-sur-encre); outline-offset: 2px; }
+.choix__note {
+  display: block; font-family: var(--font-mono); font-size: 0.68rem;
+  letter-spacing: 0.06em; color: var(--texte-doux-sur-encre); margin-top: 3px;
+}
+
+.champ { margin-bottom: 17px; }
+.champ label {
+  display: block; margin-bottom: 6px;
+  font-family: var(--font-mono); font-size: 0.7rem;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--texte-doux-sur-encre);
+}
+.champ .obl { color: var(--bois-sur-encre); }
+.champ input, .champ select, .champ textarea {
+  width: 100%; font: inherit; font-size: 0.97rem;
+  padding: 13px 15px; border-radius: var(--rayon);
+  background: var(--encre-3); border: 1px solid var(--ligne-encre); color: var(--papier);
+  transition: border-color var(--transition);
+}
+.champ textarea { resize: vertical; min-height: 92px; }
+.champ input:focus, .champ select:focus, .champ textarea:focus { border-color: var(--bois-sur-encre); }
+.champ input::placeholder, .champ textarea::placeholder { color: #a29c92; }
+.champ__erreur {
+  margin: 6px 0 0; min-height: 1.1em;
+  font-family: var(--font-mono); font-size: 0.7rem; color: #f0a07a;
+}
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.devis__pied { display: flex; align-items: center; gap: 12px; margin-top: 26px; flex-wrap: wrap; }
+.devis__etat { font-family: var(--font-mono); font-size: 0.74rem; flex-basis: 100%; min-height: 1.2em; }
+.devis__etat.est-ok { color: var(--bois-sur-encre); }
+.devis__etat.est-ko { color: #f0a07a; }
+.devis__note { font-family: var(--font-mono); font-size: 0.68rem; color: var(--texte-doux-sur-encre); flex-basis: 100%; margin: 0; }
+
+.devis__aparte { border-left: 1px solid var(--ligne-encre); padding-left: 26px; }
+.devis__aparte h3 { color: var(--papier); }
+.devis__aparte ul { list-style: none; margin: 22px 0 0; padding: 0; }
+.devis__aparte li {
+  padding: 13px 0; border-bottom: 1px solid var(--ligne-encre);
+  font-size: 0.95rem; color: var(--texte-doux-sur-encre);
+  display: flex; gap: 13px;
+}
+.devis__aparte li strong { color: var(--papier); font-weight: 600; }
+.devis__aparte li span:first-child { color: var(--bois-sur-encre); font-family: var(--font-mono); font-size: 0.72rem; padding-top: 3px; }
+
+/* =========================================================================
+   AVIS / INFOS / PIED
+   ========================================================================= */
+
+.avis-grille { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.avis-carte {
+  padding: 28px 26px; background: var(--papier); border: 1px solid var(--ligne);
+  border-radius: var(--rayon);
+}
+.avis-carte__etoiles { color: var(--bois-texte); letter-spacing: 3px; margin-bottom: 12px; }
+.avis-carte__texte { font-size: 1rem; margin-bottom: 14px; }
+.avis-carte__nom { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; color: var(--texte-doux); margin: 0; }
+.note-honnete {
+  margin-top: 26px; font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--texte-doux); line-height: 1.8;
+}
+.section--encre .note-honnete { color: var(--texte-doux-sur-encre); }
+
+.infos-grille { display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px; }
+.bloc-info__label {
+  display: block; margin-bottom: 11px;
+  font-family: var(--font-mono); font-size: 0.7rem;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--bois-texte);
+}
+.bloc-info p { margin: 0; line-height: 1.9; }
+.horaires { width: 100%; border-collapse: collapse; font-size: 0.94rem; }
+.horaires td { padding: 4px 0; color: var(--texte-doux); }
+.horaires td:first-child { color: var(--texte); padding-right: 18px; }
+
+.zone-liste { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.zone-liste span {
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em;
+  padding: 7px 14px; border: 1px solid var(--ligne); border-radius: 999px; color: var(--texte-doux);
+}
+
+.pied { background: var(--encre); color: var(--texte-doux-sur-encre); padding: 76px 0 32px; }
+.pied__marque {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(2.4rem, 9vw, 6.5rem); letter-spacing: -0.04em;
+  color: rgba(246, 242, 236, 0.09); line-height: 1; margin-bottom: 44px;
+}
+.pied__cols { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 34px; margin-bottom: 44px; }
+.pied h4 {
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--papier); margin-bottom: 14px;
+}
+.pied ul { list-style: none; margin: 0; padding: 0; }
+.pied li { margin-bottom: 8px; }
+.pied a { color: var(--texte-doux-sur-encre); text-decoration: none; transition: color var(--transition); }
+.pied a:hover { color: var(--bois-sur-encre); }
+.pied__bas {
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px;
+  padding-top: 26px; border-top: 1px solid var(--ligne-encre);
+  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em;
+}
+.pied__legal { display: flex; gap: 22px; }
+
+/* =========================================================================
+   VISIONNEUSE (lightbox)
+   ========================================================================= */
+
+.visionneuse {
+  position: fixed; inset: 0; z-index: 120;
+  background: rgba(12, 15, 16, 0.96);
+  display: none; place-items: center; padding: 70px 20px;
+}
+.visionneuse.est-ouverte { display: grid; }
+.visionneuse figure { margin: 0; max-width: 940px; width: 100%; }
+.visionneuse img { width: 100%; height: auto; max-height: 74vh; object-fit: contain; border-radius: var(--rayon); }
+.visionneuse figcaption {
+  margin-top: 16px; text-align: center;
+  font-family: var(--font-mono); font-size: 0.74rem;
+  letter-spacing: 0.1em; color: rgba(232, 227, 218, 0.72);
+}
+.visionneuse__fermer, .visionneuse__nav {
+  position: absolute; background: none; cursor: pointer;
+  border: 1px solid rgba(232, 227, 218, 0.28); border-radius: var(--rayon);
+  color: var(--papier); font-family: var(--font-mono); font-size: 0.74rem;
+  letter-spacing: 0.1em; text-transform: uppercase; padding: 11px 16px;
+  transition: border-color var(--transition), background var(--transition);
+}
+.visionneuse__fermer:hover, .visionneuse__nav:hover { background: rgba(232, 227, 218, 0.12); border-color: var(--papier); }
+.visionneuse__fermer { top: 20px; right: 20px; }
+.visionneuse__nav--prec { left: 20px; top: 50%; transform: translateY(-50%); }
+.visionneuse__nav--suiv { right: 20px; top: 50%; transform: translateY(-50%); }
+
+/* =========================================================================
+   APPARITIONS AU DÉFILEMENT
+   ========================================================================= */
+
+.apparait { opacity: 0; transform: translateY(26px); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1); }
+.apparait.est-visible { opacity: 1; transform: none; }
+.d1 { transition-delay: 0.1s; }
+.d2 { transition-delay: 0.2s; }
+.d3 { transition-delay: 0.3s; }
+
+/* =========================================================================
+   APPEL FLOTTANT MOBILE
+   ========================================================================= */
+
+.appel-mobile {
+  position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 80;
+  display: none; gap: 10px;
+  transform: translateY(150%); transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.appel-mobile .btn { flex: 1; box-shadow: 0 12px 30px -10px rgba(21, 25, 27, 0.55); }
+body.est-descendu .appel-mobile { transform: translateY(0); }
+
+/* =========================================================================
+   RESPONSIVE
+   ========================================================================= */
+
+@media (max-width: 1080px) {
+  .viseur { grid-template-columns: 1fr; gap: 34px; }
+  .devis { grid-template-columns: 1fr; gap: 38px; }
+  .devis__aparte { border-left: 0; border-top: 1px solid var(--ligne-encre); padding: 26px 0 0; }
+  .etapes { grid-template-columns: repeat(2, 1fr); row-gap: 34px; }
+}
+
+@media (max-width: 860px) {
+  .metiers, .galerie, .avis-grille, .infos-grille { grid-template-columns: repeat(2, 1fr); }
+  .oeuvre--grande { grid-row: span 1; aspect-ratio: 4 / 5; }
+  .pied__cols { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 720px) {
+  :root { --gouttiere: 18px; }
+  body { font-size: 16px; }
+
+  .nav-liens { display: none; }
+  .burger { display: block; }
+  .nav-actions .btn { display: none; }
+  .menu-mobile { display: flex; }
+
+  .hero { min-height: 92svh; padding: 118px 0 120px; }
+  .hero__texte { max-width: none; }
+  .cartouche { display: none; }
+  .hero__filer { display: none; }
+
+  .metiers, .galerie, .avis-grille, .infos-grille, .etapes, .choix, .duo {
+    grid-template-columns: 1fr;
+  }
+  .etape { padding: 0 0 4px; }
+  .etape::before { display: none; }
+  .etape::after { top: 42px; }
+  .etape__num { margin-top: 22px; padding-left: 24px; }
+  .etape h3, .etape p { padding-left: 24px; }
+
+  .pied__cols { grid-template-columns: 1fr; }
+  .pied__bas { flex-direction: column; }
+
+  .appel-mobile { display: flex; }
+  .visionneuse__nav { display: none; }
+}
+
+/* =========================================================================
+   MOUVEMENT RÉDUIT
+   ========================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .apparait { opacity: 1; transform: none; }
+  .hero__couche { transform: none !important; }
+  .metier { transform: none !important; }
+  .cube { animation: none; transform: rotateX(-18deg) rotateY(-32deg); }
+}

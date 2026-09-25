@@ -1,0 +1,304 @@
+# =============================================================================
+# Webly — Espace client (Decap CMS) — template menuisier
+# -----------------------------------------------------------------------------
+# Décrit les champs que le menuisier peut modifier lui-même depuis /admin/.
+# Chaque enregistrement écrit un commit dans content/site.json et le site se
+# redéploie tout seul.
+#
+# À ADAPTER POUR CHAQUE CLIENT (3 lignes) :
+#   1. backend.repo     -> le dépôt GitHub du client
+#   2. backend.branch   -> la branche publiée par GitHub Pages
+#   3. backend.base_url -> l'URL du service d'authentification (voir ADMIN.md)
+# =============================================================================
+
+backend:
+  name: github
+  repo: thibaultlbrt21-glitch/Template-sites-internets
+  branch: main
+
+  # Décommentez et remplacez par l'URL de votre service OAuth
+  # (Netlify, Cloudflare Worker, Vercel...). Sans cette ligne, la connexion
+  # GitHub ne peut pas aboutir. Voir ADMIN.md.
+  # base_url: https://votre-service-oauth.exemple.fr
+
+  commit_messages:
+    update: "Site : mise à jour de {{collection}} depuis l'espace client"
+    uploadMedia: "Site : ajout de l'image {{path}}"
+    deleteMedia: "Site : suppression de l'image {{path}}"
+
+# Permet d'essayer l'interface en local avec `npx decap-server`.
+local_backend: true
+
+# Chemins relatifs à la RACINE du dépôt.
+media_folder: "webly-template-menuisier/assets/images"
+# Chemin écrit dans le JSON, relatif à la page d'accueil du site.
+public_folder: "assets/images"
+
+locale: fr
+
+editor:
+  preview: false
+
+collections:
+  - name: "contenu"
+    label: "Contenu du site"
+    editor:
+      preview: false
+    files:
+      - name: "accueil"
+        label: "Page d'accueil"
+        file: "webly-template-menuisier/content/site.json"
+        description: >-
+          Tout ce qui s'affiche sur le site. Laissez un champ vide pour garder
+          le texte déjà en place ; videz une liste entière (réalisations, avis,
+          essences) pour masquer la section correspondante.
+        fields:
+
+          - label: "Nom et signature"
+            name: "marque"
+            widget: "object"
+            fields:
+              - { label: "Nom de l'entreprise", name: "nom", widget: "string" }
+              - label: "Signature"
+                name: "baseline"
+                widget: "string"
+                hint: "Quelques mots sous le nom, par exemple : Menuisier ébéniste."
+
+          - label: "Bandeau d'accueil"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "Petite mention au-dessus du titre", name: "surtitre", widget: "string" }
+              - label: "Titre — première ligne"
+                name: "titre_1"
+                widget: "string"
+                hint: "S'affiche en blanc, en gras."
+              - label: "Titre — seconde ligne"
+                name: "titre_2"
+                widget: "string"
+                hint: "S'affiche en couleur bois, plus fin."
+              - { label: "Texte d'introduction", name: "texte", widget: "text" }
+
+          - label: "Encadré technique (coin de l'accueil)"
+            name: "cartouche"
+            widget: "object"
+            collapsed: true
+            hint: "Quatre lignes courtes. N'y mettez que des informations exactes."
+            fields:
+              - { label: "Atelier (ville)", name: "atelier", widget: "string" }
+              - { label: "Depuis (année)", name: "depuis", widget: "string" }
+              - { label: "Rayon d'intervention", name: "rayon", widget: "string" }
+              - { label: "Devis", name: "devis", widget: "string" }
+
+          - label: "Photos principales"
+            name: "images"
+            widget: "object"
+            collapsed: true
+            hint: >-
+              Formats conseillés : paysage et 2000 px de large pour l'accueil.
+              N'utilisez que des photos dont vous détenez les droits.
+            fields:
+              - { label: "Accueil — arrière-plan", name: "hero_fond", widget: "image", required: false }
+              - label: "Accueil — calque de premier plan"
+                name: "hero_avant"
+                widget: "image"
+                required: false
+                hint: "Détail (copeaux, établi). Se superpose discrètement au fond."
+              - { label: "L'atelier", name: "atelier", widget: "image", required: false }
+
+          - label: "Savoir-faire"
+            name: "savoir_faire"
+            widget: "object"
+            fields:
+              - { label: "Titre de la section", name: "titre", widget: "string" }
+              - { label: "Texte sous le titre", name: "texte", widget: "text", required: false }
+              - label: "Prestations"
+                name: "metiers"
+                widget: "list"
+                label_singular: "Prestation"
+                summary: "{{fields.titre}}"
+                hint: "La numérotation (01, 02...) est automatique. Videz la liste pour masquer la section."
+                fields:
+                  - { label: "Intitulé", name: "titre", widget: "string" }
+                  - { label: "Description", name: "texte", widget: "text", required: false }
+
+          - label: "Réalisations"
+            name: "realisations"
+            widget: "object"
+            fields:
+              - { label: "Titre de la section", name: "titre", widget: "string" }
+              - { label: "Texte sous le titre", name: "texte", widget: "text", required: false }
+              - label: "Chantiers"
+                name: "ouvrages"
+                widget: "list"
+                label_singular: "Réalisation"
+                summary: "{{fields.titre}} — {{fields.meta}}"
+                hint: >-
+                  La première réalisation de la liste s'affiche en grand.
+                  Ne montrez que des chantiers que vous avez réellement faits.
+                fields:
+                  - { label: "Titre", name: "titre", widget: "string" }
+                  - label: "Sous-titre"
+                    name: "meta"
+                    widget: "string"
+                    required: false
+                    hint: "Par exemple : Chêne massif · Intérieur"
+                  - label: "Catégorie"
+                    name: "categorie"
+                    widget: "select"
+                    options:
+                      - { label: "Intérieur", value: "interieur" }
+                      - { label: "Extérieur", value: "exterieur" }
+                      - { label: "Sols", value: "sol" }
+                      - { label: "Professionnels", value: "pro" }
+                    hint: "Sert aux boutons de filtre. Un filtre sans réalisation disparaît tout seul."
+                  - { label: "Photo", name: "image", widget: "image" }
+                  - label: "Description pour les lecteurs d'écran"
+                    name: "alt"
+                    widget: "string"
+                    required: false
+                    hint: "Ce que montre la photo, en quelques mots. Sert aux personnes malvoyantes et au référencement."
+              - label: "Mention sous la galerie"
+                name: "mention"
+                widget: "text"
+                required: false
+                hint: "Videz ce champ pour faire disparaître la mention du site."
+
+          - label: "Essences et visualiseur 3D"
+            name: "viseur"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Titre de la section", name: "titre", widget: "string" }
+              - { label: "Texte sous le titre", name: "texte", widget: "text", required: false }
+              - label: "Essences proposées"
+                name: "essences"
+                widget: "list"
+                label_singular: "Essence"
+                summary: "{{fields.nom}}"
+                hint: >-
+                  L'image sert de texture au meuble en 3D : prenez l'échantillon
+                  bien à plat, bien éclairé, fil à l'horizontale.
+                fields:
+                  - { label: "Nom", name: "nom", widget: "string" }
+                  - label: "Couleur de la pastille"
+                    name: "couleur"
+                    widget: "string"
+                    required: false
+                    hint: "Code couleur, par exemple #b98a52."
+                  - { label: "Échantillon (image)", name: "texture", widget: "image" }
+                  - { label: "Dureté", name: "durete", widget: "string", required: false }
+                  - { label: "Usage", name: "usage", widget: "string", required: false }
+                  - { label: "Teinte", name: "teinte", widget: "string", required: false }
+              - { label: "Mention sous le visualiseur", name: "mention", widget: "text", required: false }
+
+          - label: "L'atelier"
+            name: "atelier"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Titre", name: "titre", widget: "string" }
+              - { label: "Premier paragraphe", name: "paragraphe_1", widget: "text" }
+              - { label: "Second paragraphe", name: "paragraphe_2", widget: "text" }
+
+          - label: "Déroulé d'un projet"
+            name: "processus"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Titre de la section", name: "titre", widget: "string" }
+              - label: "Étapes"
+                name: "etapes"
+                widget: "list"
+                label_singular: "Étape"
+                summary: "{{fields.titre}}"
+                hint: "La numérotation est automatique."
+                fields:
+                  - { label: "Intitulé", name: "titre", widget: "string" }
+                  - { label: "Description", name: "texte", widget: "text", required: false }
+
+          - label: "Demande de devis"
+            name: "devis"
+            widget: "object"
+            fields:
+              - { label: "Titre de la section", name: "titre", widget: "string" }
+              - { label: "Texte sous le titre", name: "texte", widget: "text", required: false }
+              - label: "Email qui reçoit les demandes"
+                name: "email_reception"
+                widget: "string"
+                pattern: ['^[^@\s]+@[^@\s]+\.[^@\s]+$', "Saisissez une adresse email valide."]
+                hint: "C'est l'adresse vers laquelle part chaque demande de devis."
+              - { label: "Titre de l'encadré de droite", name: "aparte_titre", widget: "string" }
+              - label: "Engagements"
+                name: "garanties"
+                widget: "list"
+                label_singular: "Engagement"
+                summary: "{{fields.titre}}"
+                hint: "N'annoncez que ce que vous tenez réellement : un délai affiché vous engage."
+                fields:
+                  - { label: "Intitulé", name: "titre", widget: "string" }
+                  - { label: "Précision", name: "texte", widget: "text", required: false }
+
+          - { label: "Titre de la section Avis", name: "avis_titre", widget: "string" }
+
+          - label: "Avis clients"
+            name: "avis"
+            widget: "list"
+            label_singular: "Avis"
+            collapsed: true
+            summary: "{{fields.auteur}} — {{fields.texte}}"
+            hint: >-
+              N'ajoutez que des avis réellement reçus, en citant leur source
+              (Google Avis, Houzz, courrier client). Publier un avis inventé est
+              une pratique commerciale trompeuse, sanctionnée par le code de la
+              consommation. Videz la liste pour masquer complètement la section.
+            fields:
+              - { label: "Note sur 5", name: "note", widget: "number", value_type: "int", min: 1, max: 5, required: false }
+              - { label: "Texte de l'avis", name: "texte", widget: "text" }
+              - { label: "Auteur", name: "auteur", widget: "string", required: false }
+              - { label: "Source", name: "source", widget: "string", required: false }
+
+          - label: "Mention sous les avis"
+            name: "avis_note"
+            widget: "text"
+            required: false
+            hint: "Videz ce champ pour faire disparaître la mention du site."
+
+          - label: "Infos pratiques"
+            name: "infos"
+            widget: "object"
+            fields:
+              - { label: "Titre de la section", name: "titre", widget: "string" }
+              - { label: "Adresse — ligne 1", name: "adresse_1", widget: "string" }
+              - { label: "Adresse — ligne 2", name: "adresse_2", widget: "string" }
+              - { label: "Téléphone", name: "telephone", widget: "string" }
+              - { label: "Email", name: "email", widget: "string" }
+              - label: "Horaires"
+                name: "horaires"
+                widget: "list"
+                label_singular: "Ligne d'horaires"
+                summary: "{{fields.jours}} — {{fields.horaire}}"
+                fields:
+                  - { label: "Jours", name: "jours", widget: "string" }
+                  - { label: "Horaires", name: "horaire", widget: "string" }
+              - label: "Zone d'intervention"
+                name: "zones"
+                widget: "list"
+                label_singular: "Commune"
+                field: { label: "Commune", name: "commune", widget: "string" }
+                hint: "Une commune par ligne. N'annoncez que les secteurs où vous vous déplacez vraiment."
+
+          - label: "Pied de page"
+            name: "pied"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Texte de présentation", name: "texte", widget: "text" }
+              - label: "Réseaux sociaux"
+                name: "reseaux"
+                widget: "list"
+                label_singular: "Réseau"
+                summary: "{{fields.nom}}"
+                fields:
+                  - { label: "Nom affiché", name: "nom", widget: "string" }
+                  - { label: "Adresse du profil", name: "url", widget: "string", required: false }
