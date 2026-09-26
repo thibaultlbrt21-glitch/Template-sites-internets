@@ -1,7 +1,7 @@
 # Espace client — guide d'activation
 
 Ce template embarque un **espace d'administration** : le menuisier se connecte
-sur `votre-site.fr/admin/`, modifie ses réalisations, ses essences, ses
+sur `votre-site.fr/admin/`, modifie ses chantiers, ses matériaux, ses
 horaires et ses coordonnées — et le site se met à jour tout seul, sans passer
 par vous.
 
@@ -145,14 +145,16 @@ Tout est en français, avec une aide sous chaque champ.
 - **Nom et signature** de l'entreprise
 - **Bandeau d'accueil** : titre en deux lignes, texte, encadré technique
 - **Photos principales** : accueil (fond et premier plan), atelier
-- **Savoir-faire** : ajouter, supprimer, réordonner les prestations —
-  la numérotation se refait toute seule
-- **Réalisations** : titre, sous-titre, catégorie, photo, texte alternatif.
-  La première de la liste s'affiche en grand ; un filtre qui n'a plus aucune
-  réalisation disparaît tout seul
-- **Essences** : nom, couleur, **échantillon qui sert de texture au meuble
-  en 3D**, dureté, usage, teinte
-- **L'atelier** et le **déroulé d'un projet**
+- **Prestations** : ajouter, supprimer, réordonner — la numérotation se refait
+  toute seule
+- **Chantiers** : titre, sous-titre, catégorie, photo, texte alternatif.
+  Le premier de la liste s'affiche en grand ; un filtre qui n'a plus aucun
+  chantier disparaît tout seul
+- **Matériaux** : nom, couleur, **texture appliquée à la fenêtre en 3D**,
+  entretien, isolation, durée de vie, budget
+- **Aides à la rénovation** : dispositifs, conditions, et la **qualification
+  RGE** de l'entreprise
+- **L'entreprise** et le **déroulé d'un chantier**
 - **Devis** : titre, texte, engagements, **email qui reçoit les demandes**
 - **Avis clients** : note, texte, auteur, source
 - **Infos pratiques** : adresse, téléphone, email, horaires, zone
@@ -162,7 +164,7 @@ Tout est en français, avec une aide sous chaque champ.
 
 C'est volontaire. Si le menuisier supprime tous les avis, la section disparaît
 entièrement — plutôt que d'afficher des emplacements vides à ses propres
-clients. Même chose pour les réalisations, les essences et le savoir-faire :
+clients. Même chose pour les chantiers, les matériaux et les prestations :
 la section et son lien de menu disparaissent ensemble, et le contenu d'exemple
 est **retiré du code source**, pas seulement masqué.
 
@@ -177,9 +179,19 @@ code de la consommation). Ce template n'en contient aucun : les cartes livrées
 portent le texte « Avis client à intégrer », précisément pour qu'on ne puisse
 pas les confondre avec de vrais témoignages.
 
-**Les réalisations.** Ne montrer que des chantiers réellement exécutés.
-Reprendre les photos d'un confrère est une contrefaçon — et une publicité
-trompeuse si elles sont présentées comme siennes.
+**Les chantiers.** Ne montrer que des ouvrages réellement exécutés. Reprendre
+les photos d'un confrère est une contrefaçon — et une publicité trompeuse si
+elles sont présentées comme siennes. Pensez aussi à demander l'accord du client
+avant de publier l'intérieur de chez lui.
+
+**Les aides.** Le site affiche les conditions, jamais les montants : barèmes et
+plafonds changent chaque année et dépendent des revenus du foyer. Annoncer une
+somme qu'on ne maîtrise pas, c'est une pratique commerciale trompeuse. Le site
+renvoie vers France Rénov', qui fait autorité.
+
+**La qualification RGE.** Le champ doit recevoir l'organisme, le numéro et la
+date de validité. Afficher une qualification non détenue est un faux — et prive
+le client de toutes les aides, ce qu'il découvrira au pire moment.
 
 **Les engagements.** « Réponse sous 48 h », « devis gratuit », un rayon
 d'intervention : tout ce qui est affiché engage l'entreprise. Ne laissez pas un

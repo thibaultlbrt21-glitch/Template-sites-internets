@@ -5,9 +5,14 @@
    bibliothèque 3D pèse 600 ko et tombe avec son hébergeur ; ce fichier fait
    quelques kilo-octets et ne dépend de rien.
 
-   Ce qu'il fait : un meuble (caisson + étagères + pieds) construit par le
-   code, texturé avec l'échantillon de bois choisi, éclairé en Blinn-Phong,
-   que le visiteur fait tourner au doigt ou à la souris.
+   Ce qu'il fait : une fenêtre à deux vantaux — dormant, ouvrants, vitrages,
+   petit bois, poignée — construite par le code, habillée du matériau choisi
+   (bois, PVC, aluminium), éclairée en Blinn-Phong. Un vantail est
+   entrebâillé : c'est ce qui la fait lire comme une fenêtre au premier coup
+   d'œil. Le visiteur la fait tourner au doigt, à la souris ou au clavier.
+
+   Le vitrage est rendu en second, en transparence, sans écriture de
+   profondeur : sans cela il masquerait les montants situés derrière lui.
 
    Si WebGL manque, si la carte graphique refuse, ou si le visiteur demande
    moins d'animations : on n'insiste pas, le repli CSS prend la main.
@@ -138,26 +143,96 @@ window.WEBLY_VISEUR = (function () {
     };
   }
 
-  // Un meuble-bibliothèque : deux montants, un fond, trois tablettes,
-  // un socle. Les proportions sont celles d'un meuble réel.
-  function meuble() {
-    var H = 2.0, L = 1.5, P = 0.42, e = 0.07;
-    var pieces = [
-      pave(-L/2 + e/2, 0, 0, e, H, P, 1.1),          // montant gauche
-      pave( L/2 - e/2, 0, 0, e, H, P, 1.1),          // montant droit
-      pave(0, 0, -P/2 + e/3, L - e*2, H, e/1.5, 1),  // fond
-      pave(0, -H/2 + e/2, 0, L, e, P, 1),            // socle
-      pave(0,  H/2 - e/2, 0, L, e, P, 1)             // dessus
-    ];
-    [-0.42, 0.02, 0.46].forEach(function (y) {        // tablettes
-      pieces.push(pave(0, y * H / 2 * 1.02, 0, L - e * 2, e * 0.8, P - e / 2, 1));
-    });
-    [-1, 1].forEach(function (s) {                    // pieds
-      [-1, 1].forEach(function (t) {
-        pieces.push(pave(s * (L / 2 - 0.12), -H / 2 - 0.07, t * (P / 2 - 0.1), 0.06, 0.14, 0.06, 1));
-      });
-    });
-    return assemble(pieces);
+  // Une fenêtre à deux vantaux, aux proportions d'une menuiserie réelle
+  // (1,20 m x 1,40 m environ, ramenés à l'échelle de la scène).
+  // Le vantail droit est entrebâillé d'une quinzaine de degrés.
+  function fenetre() {
+    var L = 1.30, H = 1.62;       // hors-tout du dormant
+    var d = 0.085;                // largeur du dormant
+    var e = 0.075;                // épaisseur
+    var o = 0.062;                // largeur des montants d'ouvrant
+
+    var cadre = [];
+
+    // --- Dormant : quatre traverses ---
+    cadre.push(pave(0,  H/2 - d/2, 0, L, d, e, 1.4));          // haut
+    cadre.push(pave(0, -H/2 + d/2, 0, L, d, e * 1.15, 1.4));   // bas (appui plus épais)
+    cadre.push(pave(-L/2 + d/2, 0, 0, d, H - d*2, e, 1.4));    // gauche
+    cadre.push(pave( L/2 - d/2, 0, 0, d, H - d*2, e, 1.4));    // droite
+
+    // --- Un vantail : cadre + petit bois. Renvoie aussi son vitrage. ---
+    var lv = (L - d * 2) / 2;      // largeur d'un vantail
+    var hv = H - d * 2;            // hauteur d'un vantail
+
+    function vantail(pieces, verres, cx, cz, poignee) {
+      pieces.push(pave(cx, hv/2 - o/2, cz, lv, o, e * 0.8, 1.6));
+      pieces.push(pave(cx, -hv/2 + o/2, cz, lv, o, e * 0.8, 1.6));
+      pieces.push(pave(cx - lv/2 + o/2, 0, cz, o, hv - o*2, e * 0.8, 1.6));
+      pieces.push(pave(cx + lv/2 - o/2, 0, cz, o, hv - o*2, e * 0.8, 1.6));
+
+      // Une seule traverse horizontale, aux deux tiers de la hauteur :
+      // c'est le dessin d'une menuiserie contemporaine. Deux meneaux
+      // verticaux donnaient un effet de barreaudage.
+      var yTraverse = hv * 0.16;
+      var hTraverse = o * 0.48;
+      pieces.push(pave(cx, yTraverse, cz, lv - o * 2, hTraverse, e * 0.55, 1.6));
+
+      if (poignee) {
+        pieces.push(pave(cx + lv/2 - o*1.4, -0.04, cz + e * 0.55, o * 0.5, o * 0.5, e * 0.45, 1));
+        pieces.push(pave(cx + lv/2 - o*1.4, -0.16, cz + e * 0.8, o * 0.34, 0.22, o * 0.34, 1));
+      }
+
+      // Deux vitrages par vantail, calés entre les montants et la traverse.
+      // On part des cotes réelles du vantail plutôt que de fractions
+      // approchées : sinon le verre déborde du cadre.
+      var hautTraverse = yTraverse + hTraverse / 2;   // bord haut de la traverse
+      var basTraverse  = yTraverse - hTraverse / 2;
+      var hautVantail  = hv / 2 - o;                  // bord bas du montant haut
+      var basVantail   = -hv / 2 + o;
+
+      var hHaut = hautVantail - hautTraverse;
+      var hBas  = basTraverse - basVantail;
+      var largeurVitre = lv - o * 2.2;                // légèrement en retrait
+
+      verres.push(pave(cx, hautTraverse + hHaut / 2, cz, largeurVitre, hHaut, e * 0.16, 1));
+      verres.push(pave(cx, basVantail + hBas / 2, cz, largeurVitre, hBas, e * 0.16, 1));
+    }
+
+    // L'ouverture du dormant va de -lv à +lv : un vantail de chaque côté.
+    var verres = [];
+    vantail(cadre, verres, -lv / 2, 0, false);   // vantail gauche, fermé
+
+    // Le vantail droit est entrebâillé. On l'assemble à part, centré à sa
+    // place fermée, puis on fait pivoter ses sommets autour du gond droit.
+    var battant = [], verreBattant = [];
+    vantail(battant, verreBattant, lv / 2, 0, true);
+
+    var gond = lv;                 // le gond est au bord droit de l'ouverture
+    var angle = 0.52;              // ~30 degrés : lisible d'emblée
+
+    // Rotation autour de l'axe vertical passant par x = gond.
+    function pivote(p) {
+      var c = Math.cos(angle), s2 = Math.sin(angle);
+      for (var i = 0; i < p.positions.length; i += 3) {
+        var x = p.positions[i] - gond;           // repère du gond
+        var z = p.positions[i + 2];
+        p.positions[i]     = (x * c + z * s2) + gond;
+        p.positions[i + 2] = (-x * s2 + z * c);
+
+        var nx = p.normales[i], nz = p.normales[i + 2];
+        p.normales[i]     = nx * c + nz * s2;    // les normales tournent aussi,
+        p.normales[i + 2] = -nx * s2 + nz * c;   // mais ne se translatent pas
+      }
+      return p;
+    }
+
+    battant.forEach(pivote);
+    verreBattant.forEach(pivote);
+
+    return {
+      opaque: assemble(cadre.concat(battant)),
+      verre: assemble(verres.concat(verreBattant))
+    };
   }
 
   /* ---------------------------------------------------------------------
@@ -188,6 +263,7 @@ window.WEBLY_VISEUR = (function () {
     "precision mediump float;",
     "uniform sampler2D uTexture;",
     "uniform vec3 uOeil;",
+    "uniform float uVerre;",
     "varying vec3 vNorm, vPos;",
     "varying vec2 vUv;",
     "void main() {",
@@ -213,6 +289,18 @@ window.WEBLY_VISEUR = (function () {
     "  vec3 couleur = ambiant + cle + remplissage + vec3(spec);",
     "  couleur = couleur / (couleur + vec3(1.35));",         // compression douce
     "  couleur = pow(couleur, vec3(1.0 / 2.2));",            // correction gamma
+    "  if (uVerre > 0.5) {",
+    // Vitrage : teinte froide, reflet fort et rasant (Fresnel), très
+    // transparent de face. C'est le reflet qui fait lire le verre.
+    "    float fresnel = pow(1.0 - abs(dot(N, V)), 3.0);",
+    "    vec3 ciel = vec3(0.62, 0.72, 0.80);",
+    "    vec3 teinte = vec3(0.30, 0.42, 0.44);",
+    "    float miroir = pow(max(dot(N, H), 0.0), 90.0);",
+    "    vec3 vitre = mix(teinte, ciel, fresnel) + vec3(miroir * 0.85);",
+    "    vitre = pow(vitre / (vitre + vec3(1.1)), vec3(1.0 / 2.2));",
+    "    gl_FragColor = vec4(vitre, 0.22 + fresnel * 0.55);",
+    "    return;",
+    "  }",
     "  gl_FragColor = vec4(couleur, 1.0);",
     "}"
   ].join("\n");
@@ -265,23 +353,51 @@ window.WEBLY_VISEUR = (function () {
     }
     gl.useProgram(programme);
 
-    var geo = meuble();
+    var geo = fenetre();
 
-    function tampon(donnees, nom, taille) {
-      var b = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, b);
-      gl.bufferData(gl.ARRAY_BUFFER, donnees, gl.STATIC_DRAW);
-      var loc = gl.getAttribLocation(programme, nom);
-      gl.enableVertexAttribArray(loc);
-      gl.vertexAttribPointer(loc, taille, gl.FLOAT, false, 0, 0);
+    var attr = {
+      pos: gl.getAttribLocation(programme, "aPos"),
+      norm: gl.getAttribLocation(programme, "aNorm"),
+      uv: gl.getAttribLocation(programme, "aUv")
+    };
+
+    // Un groupe = un jeu de tampons prêt à dessiner. La menuiserie et son
+    // vitrage en forment deux, parce qu'ils ne se dessinent pas pareil.
+    function groupe(donnees) {
+      function tampon(tableau) {
+        var b = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, b);
+        gl.bufferData(gl.ARRAY_BUFFER, tableau, gl.STATIC_DRAW);
+        return b;
+      }
+      var indices = gl.createBuffer();
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indices);
+      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, donnees.indices, gl.STATIC_DRAW);
+      return {
+        pos: tampon(donnees.positions),
+        norm: tampon(donnees.normales),
+        uv: tampon(donnees.uvs),
+        indices: indices,
+        nombre: donnees.indices.length
+      };
     }
-    tampon(geo.positions, "aPos", 3);
-    tampon(geo.normales, "aNorm", 3);
-    tampon(geo.uvs, "aUv", 2);
 
-    var tamponIndices = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, tamponIndices);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, geo.indices, gl.STATIC_DRAW);
+    function lie(g) {
+      gl.bindBuffer(gl.ARRAY_BUFFER, g.pos);
+      gl.vertexAttribPointer(attr.pos, 3, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(gl.ARRAY_BUFFER, g.norm);
+      gl.vertexAttribPointer(attr.norm, 3, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(gl.ARRAY_BUFFER, g.uv);
+      gl.vertexAttribPointer(attr.uv, 2, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, g.indices);
+    }
+
+    gl.enableVertexAttribArray(attr.pos);
+    gl.enableVertexAttribArray(attr.norm);
+    gl.enableVertexAttribArray(attr.uv);
+
+    var menuiserie = groupe(geo.opaque);
+    var vitrage = groupe(geo.verre);
 
     var u = {
       proj: gl.getUniformLocation(programme, "uProj"),
@@ -289,7 +405,8 @@ window.WEBLY_VISEUR = (function () {
       modele: gl.getUniformLocation(programme, "uModele"),
       norm: gl.getUniformLocation(programme, "uNorm"),
       oeil: gl.getUniformLocation(programme, "uOeil"),
-      texture: gl.getUniformLocation(programme, "uTexture")
+      texture: gl.getUniformLocation(programme, "uTexture"),
+      verre: gl.getUniformLocation(programme, "uVerre")
     };
 
     // Texture : un pixel de bois en attendant que l'échantillon arrive,
@@ -319,7 +436,7 @@ window.WEBLY_VISEUR = (function () {
         scene.setAttribute("data-texture", "chargee");
       };
       img.onerror = function () {
-        console.warn("[Webly 3D] échantillon introuvable :", src);
+        console.warn("[Webly 3D] texture de matériau introuvable :", src);
       };
       img.src = src;
     }
@@ -328,7 +445,7 @@ window.WEBLY_VISEUR = (function () {
     gl.clearColor(0.118, 0.141, 0.153, 1);
 
     /* ---- Manipulation ---- */
-    var angleY = -0.62, angleX = -0.16;
+    var angleY = -0.55, angleX = -0.10;
     var vitesse = reduit ? 0 : 0.0035;
     var manipule = false, dernierX = 0, dernierY = 0, elan = 0;
 
@@ -386,8 +503,8 @@ window.WEBLY_VISEUR = (function () {
       gl.viewport(0, 0, w, h);
     }
 
-    var vue = translation(0, 0, -4.6);
-    var oeil = new Float32Array([0, 0, 4.6]);
+    var vue = translation(0, 0, -4.1);
+    var oeil = new Float32Array([0, 0, 4.1]);
     var enMarche = true;
     var visible = true;
 
@@ -415,7 +532,23 @@ window.WEBLY_VISEUR = (function () {
       gl.uniform3fv(u.oeil, oeil);
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, texture);
-      gl.drawElements(gl.TRIANGLES, geo.indices.length, gl.UNSIGNED_SHORT, 0);
+
+      // 1. La menuiserie, opaque.
+      gl.disable(gl.BLEND);
+      gl.depthMask(true);
+      gl.uniform1f(u.verre, 0);
+      lie(menuiserie);
+      gl.drawElements(gl.TRIANGLES, menuiserie.nombre, gl.UNSIGNED_SHORT, 0);
+
+      // 2. Le vitrage, en transparence. Sans depthMask(false) il masquerait
+      // les montants situés derrière lui.
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      gl.depthMask(false);
+      gl.uniform1f(u.verre, 1);
+      lie(vitrage);
+      gl.drawElements(gl.TRIANGLES, vitrage.nombre, gl.UNSIGNED_SHORT, 0);
+      gl.depthMask(true);
     }
 
     // Hors écran, on ne calcule rien : inutile de chauffer le téléphone
@@ -439,7 +572,7 @@ window.WEBLY_VISEUR = (function () {
     dessine();
 
     return {
-      changeEssence: chargeTexture,
+      changeTexture: chargeTexture,
       arrete: function () { enMarche = false; }
     };
   }

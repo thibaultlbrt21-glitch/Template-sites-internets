@@ -241,28 +241,29 @@
     viseur = window.WEBLY_VISEUR.demarre({ scene: scene });
   }
 
-  var boutonsEssence = Array.prototype.slice.call(document.querySelectorAll(".essence"));
-  function appliqueEssence(bouton) {
-    boutonsEssence.forEach(function (b) { b.setAttribute("aria-pressed", String(b === bouton)); });
-    if (viseur) viseur.changeEssence(bouton.getAttribute("data-texture"));
+  var boutonsMatiere = Array.prototype.slice.call(document.querySelectorAll(".matiere"));
+  function appliqueMatiere(bouton) {
+    boutonsMatiere.forEach(function (b) { b.setAttribute("aria-pressed", String(b === bouton)); });
+    if (viseur) viseur.changeTexture(bouton.getAttribute("data-texture"));
     var champs = {
       ficheNom: bouton.textContent.trim(),
-      ficheDurete: bouton.getAttribute("data-durete"),
-      ficheUsage: bouton.getAttribute("data-usage"),
-      ficheTeinte: bouton.getAttribute("data-teinte")
+      ficheEntretien: bouton.getAttribute("data-entretien"),
+      ficheIsolation: bouton.getAttribute("data-isolation"),
+      ficheDuree: bouton.getAttribute("data-duree"),
+      ficheBudget: bouton.getAttribute("data-budget")
     };
     Object.keys(champs).forEach(function (id) {
       var el = document.getElementById(id);
       if (el && champs[id]) el.textContent = champs[id];
     });
   }
-  boutonsEssence.forEach(function (b) {
-    b.addEventListener("click", function () { appliqueEssence(b); });
+  boutonsMatiere.forEach(function (b) {
+    b.addEventListener("click", function () { appliqueMatiere(b); });
   });
-  if (boutonsEssence.length) {
-    var actif = boutonsEssence.filter(function (b) { return b.getAttribute("aria-pressed") === "true"; })[0]
-      || boutonsEssence[0];
-    appliqueEssence(actif);
+  if (boutonsMatiere.length) {
+    var actif = boutonsMatiere.filter(function (b) { return b.getAttribute("aria-pressed") === "true"; })[0]
+      || boutonsMatiere[0];
+    appliqueMatiere(actif);
   }
 
   /* =========================================================
@@ -367,11 +368,12 @@
       var corps = [
         "Nouvelle demande de devis depuis le site :",
         "",
-        "— L'OUVRAGE —",
+        "— LE CHANTIER —",
         "Type : " + ouvrage,
-        valeur("surface") ? "Dimensions : " + valeur("surface") : null,
-        valeur("piece") ? "Pièce : " + valeur("piece") : null,
-        "Essence souhaitée : " + valeur("essence"),
+        valeur("quantite") ? "Quantité ou surface : " + valeur("quantite") : null,
+        "Matériau souhaité : " + valeur("materiau"),
+        "Type de pose : " + valeur("typePose"),
+        "Âge du logement : " + valeur("anciennete"),
         valeur("details") ? "Description : " + valeur("details") : null,
         "",
         "— BUDGET ET DÉLAI —",

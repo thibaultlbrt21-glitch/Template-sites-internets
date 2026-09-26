@@ -1,5 +1,5 @@
 # =============================================================================
-# Webly — Espace client (Decap CMS) — template menuisier
+# Webly — Espace client (Decap CMS) — menuiserie du bâtiment
 # -----------------------------------------------------------------------------
 # Décrit les champs que le menuisier peut modifier lui-même depuis /admin/.
 # Chaque enregistrement écrit un commit dans content/site.json et le site se
@@ -50,8 +50,8 @@ collections:
         file: "webly-template-menuisier/content/site.json"
         description: >-
           Tout ce qui s'affiche sur le site. Laissez un champ vide pour garder
-          le texte déjà en place ; videz une liste entière (réalisations, avis,
-          essences) pour masquer la section correspondante.
+          le texte déjà en place ; videz une liste entière (chantiers, avis,
+          matériaux) pour masquer la section correspondante.
         fields:
 
           - label: "Nom et signature"
@@ -62,21 +62,15 @@ collections:
               - label: "Signature"
                 name: "baseline"
                 widget: "string"
-                hint: "Quelques mots sous le nom, par exemple : Menuisier ébéniste."
+                hint: "Quelques mots sous le nom, par exemple : Menuiserie du bâtiment."
 
           - label: "Bandeau d'accueil"
             name: "hero"
             widget: "object"
             fields:
               - { label: "Petite mention au-dessus du titre", name: "surtitre", widget: "string" }
-              - label: "Titre — première ligne"
-                name: "titre_1"
-                widget: "string"
-                hint: "S'affiche en blanc, en gras."
-              - label: "Titre — seconde ligne"
-                name: "titre_2"
-                widget: "string"
-                hint: "S'affiche en couleur bois, plus fin."
+              - { label: "Titre — première ligne", name: "titre_1", widget: "string", hint: "S'affiche en blanc, en gras." }
+              - { label: "Titre — seconde ligne", name: "titre_2", widget: "string", hint: "S'affiche en couleur bois, plus fin." }
               - { label: "Texte d'introduction", name: "texte", widget: "text" }
 
           - label: "Encadré technique (coin de l'accueil)"
@@ -85,9 +79,12 @@ collections:
             collapsed: true
             hint: "Quatre lignes courtes. N'y mettez que des informations exactes."
             fields:
-              - { label: "Atelier (ville)", name: "atelier", widget: "string" }
+              - { label: "Secteur d'intervention", name: "secteur", widget: "string" }
               - { label: "Depuis (année)", name: "depuis", widget: "string" }
-              - { label: "Rayon d'intervention", name: "rayon", widget: "string" }
+              - label: "Qualification"
+                name: "qualification"
+                widget: "string"
+                hint: "RGE, Qualibat... N'affichez que des certifications réellement détenues et en cours de validité."
               - { label: "Devis", name: "devis", widget: "string" }
 
           - label: "Photos principales"
@@ -96,104 +93,128 @@ collections:
             collapsed: true
             hint: >-
               Formats conseillés : paysage et 2000 px de large pour l'accueil.
-              N'utilisez que des photos dont vous détenez les droits.
+              N'utilisez que des photos de vos propres chantiers.
             fields:
               - { label: "Accueil — arrière-plan", name: "hero_fond", widget: "image", required: false }
               - label: "Accueil — calque de premier plan"
                 name: "hero_avant"
                 widget: "image"
                 required: false
-                hint: "Détail (copeaux, établi). Se superpose discrètement au fond."
-              - { label: "L'atelier", name: "atelier", widget: "image", required: false }
+                hint: "Détail de chantier. Se superpose discrètement au fond."
+              - { label: "L'entreprise / l'équipe", name: "entreprise", widget: "image", required: false }
 
-          - label: "Savoir-faire"
-            name: "savoir_faire"
+          - label: "Prestations"
+            name: "prestations"
             widget: "object"
             fields:
               - { label: "Titre de la section", name: "titre", widget: "string" }
               - { label: "Texte sous le titre", name: "texte", widget: "text", required: false }
-              - label: "Prestations"
-                name: "metiers"
+              - label: "Ce que vous posez"
+                name: "liste"
                 widget: "list"
                 label_singular: "Prestation"
                 summary: "{{fields.titre}}"
-                hint: "La numérotation (01, 02...) est automatique. Videz la liste pour masquer la section."
+                hint: >-
+                  La numérotation (01, 02...) est automatique. N'annoncez que les
+                  prestations que vous réalisez vraiment : un client qui appelle pour
+                  autre chose vous fait perdre du temps à tous les deux.
                 fields:
                   - { label: "Intitulé", name: "titre", widget: "string" }
                   - { label: "Description", name: "texte", widget: "text", required: false }
 
-          - label: "Réalisations"
-            name: "realisations"
+          - label: "Chantiers"
+            name: "chantiers"
             widget: "object"
             fields:
               - { label: "Titre de la section", name: "titre", widget: "string" }
               - { label: "Texte sous le titre", name: "texte", widget: "text", required: false }
-              - label: "Chantiers"
+              - label: "Réalisations"
                 name: "ouvrages"
                 widget: "list"
-                label_singular: "Réalisation"
+                label_singular: "Chantier"
                 summary: "{{fields.titre}} — {{fields.meta}}"
                 hint: >-
-                  La première réalisation de la liste s'affiche en grand.
-                  Ne montrez que des chantiers que vous avez réellement faits.
+                  Le premier chantier de la liste s'affiche en grand. Ne montrez que
+                  des chantiers que vous avez réellement réalisés — et privilégiez les
+                  avant/après, c'est ce qui convainc en rénovation.
                 fields:
                   - { label: "Titre", name: "titre", widget: "string" }
                   - label: "Sous-titre"
                     name: "meta"
                     widget: "string"
                     required: false
-                    hint: "Par exemple : Chêne massif · Intérieur"
+                    hint: "Par exemple : Rénovation · Dépose totale"
                   - label: "Catégorie"
                     name: "categorie"
                     widget: "select"
                     options:
+                      - { label: "Fenêtres & fermetures", value: "fermetures" }
+                      - { label: "Portes", value: "portes" }
                       - { label: "Intérieur", value: "interieur" }
                       - { label: "Extérieur", value: "exterieur" }
-                      - { label: "Sols", value: "sol" }
-                      - { label: "Professionnels", value: "pro" }
-                    hint: "Sert aux boutons de filtre. Un filtre sans réalisation disparaît tout seul."
+                    hint: "Sert aux boutons de filtre. Un filtre sans chantier disparaît tout seul."
                   - { label: "Photo", name: "image", widget: "image" }
                   - label: "Description pour les lecteurs d'écran"
                     name: "alt"
                     widget: "string"
                     required: false
                     hint: "Ce que montre la photo, en quelques mots. Sert aux personnes malvoyantes et au référencement."
-              - label: "Mention sous la galerie"
-                name: "mention"
-                widget: "text"
-                required: false
-                hint: "Videz ce champ pour faire disparaître la mention du site."
+              - { label: "Mention sous la galerie", name: "mention", widget: "text", required: false }
 
-          - label: "Essences et visualiseur 3D"
-            name: "viseur"
+          - label: "Matériaux et visualiseur 3D"
+            name: "materiaux"
             widget: "object"
             collapsed: true
             fields:
               - { label: "Titre de la section", name: "titre", widget: "string" }
               - { label: "Texte sous le titre", name: "texte", widget: "text", required: false }
-              - label: "Essences proposées"
-                name: "essences"
+              - label: "Matériaux proposés"
+                name: "liste"
                 widget: "list"
-                label_singular: "Essence"
+                label_singular: "Matériau"
                 summary: "{{fields.nom}}"
                 hint: >-
-                  L'image sert de texture au meuble en 3D : prenez l'échantillon
-                  bien à plat, bien éclairé, fil à l'horizontale.
+                  L'image sert de texture à la fenêtre en 3D : photographiez un profilé
+                  bien à plat, bien éclairé, sans reflet.
                 fields:
                   - { label: "Nom", name: "nom", widget: "string" }
-                  - label: "Couleur de la pastille"
-                    name: "couleur"
-                    widget: "string"
-                    required: false
-                    hint: "Code couleur, par exemple #b98a52."
-                  - { label: "Échantillon (image)", name: "texture", widget: "image" }
-                  - { label: "Dureté", name: "durete", widget: "string", required: false }
-                  - { label: "Usage", name: "usage", widget: "string", required: false }
-                  - { label: "Teinte", name: "teinte", widget: "string", required: false }
+                  - { label: "Couleur de la pastille", name: "couleur", widget: "string", required: false, hint: "Code couleur, par exemple #70757a." }
+                  - { label: "Texture (image)", name: "texture", widget: "image" }
+                  - { label: "Entretien", name: "entretien", widget: "string", required: false }
+                  - { label: "Isolation", name: "isolation", widget: "string", required: false }
+                  - { label: "Durée de vie", name: "duree", widget: "string", required: false }
+                  - { label: "Budget", name: "budget", widget: "string", required: false }
               - { label: "Mention sous le visualiseur", name: "mention", widget: "text", required: false }
 
-          - label: "L'atelier"
-            name: "atelier"
+          - label: "Aides à la rénovation"
+            name: "aides"
+            widget: "object"
+            fields:
+              - { label: "Titre de la section", name: "titre", widget: "string" }
+              - { label: "Texte sous le titre", name: "texte", widget: "text", required: false }
+              - label: "Dispositifs"
+                name: "dispositifs"
+                widget: "list"
+                label_singular: "Dispositif"
+                summary: "{{fields.sigle}} — {{fields.titre}}"
+                hint: >-
+                  N'annoncez jamais de montant chiffré : plafonds et barèmes changent
+                  chaque année, et une promesse non tenue est une pratique commerciale
+                  trompeuse. Décrivez les conditions, renvoyez vers France Rénov'.
+                fields:
+                  - { label: "Sigle ou nom court", name: "sigle", widget: "string" }
+                  - { label: "Intitulé", name: "titre", widget: "string" }
+                  - { label: "Conditions", name: "texte", widget: "text", required: false }
+              - label: "Votre qualification RGE"
+                name: "qualification"
+                widget: "text"
+                hint: >-
+                  Organisme, numéro et date de validité. Afficher une qualification que
+                  l'on ne détient pas est un faux, et prive le client de ses aides.
+              - { label: "Mention sous la section", name: "mention", widget: "text", required: false }
+
+          - label: "L'entreprise"
+            name: "entreprise"
             widget: "object"
             collapsed: true
             fields:
@@ -201,7 +222,7 @@ collections:
               - { label: "Premier paragraphe", name: "paragraphe_1", widget: "text" }
               - { label: "Second paragraphe", name: "paragraphe_2", widget: "text" }
 
-          - label: "Déroulé d'un projet"
+          - label: "Déroulé d'un chantier"
             name: "processus"
             widget: "object"
             collapsed: true
@@ -248,10 +269,10 @@ collections:
             collapsed: true
             summary: "{{fields.auteur}} — {{fields.texte}}"
             hint: >-
-              N'ajoutez que des avis réellement reçus, en citant leur source
-              (Google Avis, Houzz, courrier client). Publier un avis inventé est
-              une pratique commerciale trompeuse, sanctionnée par le code de la
-              consommation. Videz la liste pour masquer complètement la section.
+              N'ajoutez que des avis réellement reçus, en citant leur source (Google
+              Avis, Houzz, courrier client). Publier un avis inventé est une pratique
+              commerciale trompeuse, sanctionnée par le code de la consommation. Videz
+              la liste pour masquer complètement la section.
             fields:
               - { label: "Note sur 5", name: "note", widget: "number", value_type: "int", min: 1, max: 5, required: false }
               - { label: "Texte de l'avis", name: "texte", widget: "text" }

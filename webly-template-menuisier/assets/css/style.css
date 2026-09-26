@@ -103,6 +103,9 @@ a { color: inherit; }
 .wrap-large { width: 100%; max-width: var(--largeur-large); margin: 0 auto; padding: 0 var(--gouttiere); }
 
 .section { padding: clamp(72px, 11vh, 132px) 0; position: relative; }
+/* L'en-tête est fixe : sans cette marge, un lien d'ancre amènerait le titre
+   de section juste dessous, à moitié caché. */
+.section[id], .hero[id] { scroll-margin-top: 84px; }
 .section--encre { background: var(--encre); color: var(--texte-sur-encre); }
 .section--encre h1, .section--encre h2, .section--encre h3 { color: var(--papier); }
 .section--encre p { color: var(--texte-doux-sur-encre); }
@@ -304,6 +307,9 @@ a { color: inherit; }
    ========================================================================= */
 
 .metiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+/* Les dispositifs d'aide sont quatre : sur trois colonnes, le dernier
+   resterait seul sur sa ligne. */
+.metiers--quatre { grid-template-columns: repeat(4, 1fr); }
 
 .metier {
   position: relative; padding: 30px 26px 26px;
@@ -415,8 +421,8 @@ a { color: inherit; }
   to   { transform: rotateX(-18deg) rotateY(360deg); }
 }
 
-.essences { display: flex; flex-wrap: wrap; gap: 10px; margin: 26px 0 8px; }
-.essence {
+.matieres { display: flex; flex-wrap: wrap; gap: 10px; margin: 26px 0 8px; }
+.matiere {
   display: flex; align-items: center; gap: 10px;
   padding: 9px 15px 9px 9px; border-radius: 999px;
   border: 1px solid var(--ligne-encre); background: transparent;
@@ -424,9 +430,9 @@ a { color: inherit; }
   font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em;
   transition: all var(--transition);
 }
-.essence__pastille { width: 22px; height: 22px; border-radius: 50%; flex: none; border: 1px solid rgba(255,255,255,0.18); }
-.essence:hover { border-color: var(--bois-sur-encre); color: var(--papier); }
-.essence[aria-pressed="true"] { border-color: var(--bois-sur-encre); background: rgba(217, 168, 111, 0.12); color: var(--papier); }
+.matiere__pastille { width: 22px; height: 22px; border-radius: 50%; flex: none; border: 1px solid rgba(255,255,255,0.18); }
+.matiere:hover { border-color: var(--bois-sur-encre); color: var(--papier); }
+.matiere[aria-pressed="true"] { border-color: var(--bois-sur-encre); background: rgba(217, 168, 111, 0.12); color: var(--papier); }
 
 .viseur__fiche {
   margin-top: 22px; border-top: 1px solid var(--ligne-encre); padding-top: 18px;
@@ -661,7 +667,7 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
 }
 
 @media (max-width: 860px) {
-  .metiers, .galerie, .avis-grille, .infos-grille { grid-template-columns: repeat(2, 1fr); }
+  .metiers, .metiers--quatre, .galerie, .avis-grille, .infos-grille { grid-template-columns: repeat(2, 1fr); }
   .oeuvre--grande { grid-row: span 1; aspect-ratio: 4 / 5; }
   .pied__cols { grid-template-columns: 1fr 1fr; }
 }
@@ -680,7 +686,7 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
   .cartouche { display: none; }
   .hero__filer { display: none; }
 
-  .metiers, .galerie, .avis-grille, .infos-grille, .etapes, .choix, .duo {
+  .metiers, .metiers--quatre, .galerie, .avis-grille, .infos-grille, .etapes, .choix, .duo {
     grid-template-columns: 1fr;
   }
   .etape { padding: 0 0 4px; }

@@ -13,7 +13,7 @@
      data-cms="chemin.vers.la.valeur"   -> remplace le texte de l'élément
      data-cms-optional                  -> ...et le masque si le champ est vide
      data-cms-image="chemin.vers.image" -> remplace le src de l'image
-     data-cms-list="savoir_faire.metiers" -> conteneur reconstruit par un rendu dédié
+     data-cms-list="prestations.liste"   -> conteneur reconstruit par un rendu dédié
 
    Prévisualisation : si sessionStorage contient "webly:preview", son contenu
    est utilisé à la place du fichier. Voir admin/demo.html.
@@ -96,10 +96,10 @@
 
   /* ---------- Rendus dédiés ---------- */
 
-  function rendMetiers(liste) {
-    var cible = conteneur("savoir_faire.metiers");
+  function rendPrestations(liste) {
+    var cible = conteneur("prestations.liste");
     if (!cible) return;
-    if (!Array.isArray(liste) || !liste.length) { videEtMasque(cible, document.getElementById("savoir-faire")); return; }
+    if (!Array.isArray(liste) || !liste.length) { videEtMasque(cible, document.getElementById("prestations")); return; }
 
     cible.textContent = "";
     liste.forEach(function (m, i) {
@@ -114,10 +114,10 @@
     });
   }
 
-  function rendOuvrages(liste) {
-    var cible = conteneur("realisations.ouvrages");
+  function rendChantiers(liste) {
+    var cible = conteneur("chantiers.ouvrages");
     if (!cible) return;
-    if (!Array.isArray(liste) || !liste.length) { videEtMasque(cible, document.getElementById("realisations")); return; }
+    if (!Array.isArray(liste) || !liste.length) { videEtMasque(cible, document.getElementById("chantiers")); return; }
 
     cible.textContent = "";
     var categories = {};
@@ -150,26 +150,47 @@
     });
   }
 
-  function rendEssences(liste) {
-    var cible = conteneur("viseur.essences");
+  function rendMatieres(liste) {
+    var cible = conteneur("materiaux.liste");
     if (!cible) return;
-    if (!Array.isArray(liste) || !liste.length) { videEtMasque(cible, document.getElementById("essences")); return; }
+    if (!Array.isArray(liste) || !liste.length) { videEtMasque(cible, document.getElementById("materiaux")); return; }
 
     cible.textContent = "";
     liste.forEach(function (e, i) {
-      var bouton = el("button", "essence");
+      var bouton = el("button", "matiere");
       bouton.type = "button";
       bouton.setAttribute("aria-pressed", String(i === 0));
       bouton.setAttribute("data-texture", e.texture || "");
-      bouton.setAttribute("data-durete", e.durete || "");
-      bouton.setAttribute("data-usage", e.usage || "");
-      bouton.setAttribute("data-teinte", e.teinte || "");
+      bouton.setAttribute("data-entretien", e.entretien || "");
+      bouton.setAttribute("data-isolation", e.isolation || "");
+      bouton.setAttribute("data-duree", e.duree || "");
+      bouton.setAttribute("data-budget", e.budget || "");
 
-      var pastille = el("span", "essence__pastille");
+      var pastille = el("span", "matiere__pastille");
       pastille.style.background = e.couleur || "#b9793f";
       bouton.appendChild(pastille);
       bouton.appendChild(document.createTextNode(e.nom || ""));
       cible.appendChild(bouton);
+    });
+  }
+
+  // Les dispositifs d'aide ont la même forme que les prestations, mais leur
+  // « numéro » est un nom court (MaPrimeRénov', CEE...) et non un rang.
+  function rendDispositifs(liste) {
+    var cible = conteneur("aides.dispositifs");
+    if (!cible) return;
+    if (!Array.isArray(liste) || !liste.length) { videEtMasque(cible, document.getElementById("aides")); return; }
+
+    cible.textContent = "";
+    liste.forEach(function (d) {
+      var carte = el("article", "metier");
+      carte.setAttribute("data-tilt", "");
+      var fond = el("div", "metier__profondeur");
+      fond.appendChild(el("span", "metier__num", d.sigle || ""));
+      fond.appendChild(el("h3", null, d.titre || ""));
+      if (rempli(d.texte)) fond.appendChild(el("p", null, d.texte));
+      carte.appendChild(fond);
+      cible.appendChild(carte);
     });
   }
 
@@ -271,9 +292,10 @@
     window.WEBLY_CONTENT = data;
     hydrateTextes(data);
     hydrateImages(data);
-    rendMetiers(get(data, "savoir_faire.metiers"));
-    rendOuvrages(get(data, "realisations.ouvrages"));
-    rendEssences(get(data, "viseur.essences"));
+    rendPrestations(get(data, "prestations.liste"));
+    rendChantiers(get(data, "chantiers.ouvrages"));
+    rendMatieres(get(data, "materiaux.liste"));
+    rendDispositifs(get(data, "aides.dispositifs"));
     rendEtapes(get(data, "processus.etapes"));
     rendGaranties(get(data, "devis.garanties"));
     rendAvis(data.avis);

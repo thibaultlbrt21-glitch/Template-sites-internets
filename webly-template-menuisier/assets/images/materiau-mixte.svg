@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-label="Mixte bois-aluminium">
+<defs>
+  <filter id="v" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.004 0.62" numOctaves="4" seed="47" result="f"/>
+    <feColorMatrix in="f" type="matrix" result="fg" values="0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0.9 0 0 0 0"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.02 0.01" numOctaves="3" seed="87" result="o"/>
+    <feDisplacementMap in="fg" in2="o" scale="26" xChannelSelector="R" yChannelSelector="G" result="fd"/>
+    <feComposite in="fd" in2="SourceGraphic" operator="in"/>
+  </filter>
+  <filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="47"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope="0.12"/></feComponentTransfer></filter>
+  <linearGradient id="fond" x1="0" y1="0" x2="0.35" y2="1">
+    <stop offset="0%" stop-color="#c2a179"/><stop offset="52%" stop-color="#9c7a52"/><stop offset="100%" stop-color="#63482a"/>
+  </linearGradient>
+</defs>
+<rect width="600" height="600" fill="url(#fond)"/>
+<rect width="600" height="600" fill="#63482a" opacity="0.55" filter="url(#v)"/>
+<rect width="600" height="600" filter="url(#g)" opacity="0.5"/>
+</svg>

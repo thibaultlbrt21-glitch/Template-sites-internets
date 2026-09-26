@@ -1,200 +1,240 @@
 {
   "marque": {
     "nom": "Atelier Bois & Trait",
-    "baseline": "Menuisier ébéniste"
+    "baseline": "Menuiserie du bâtiment"
   },
   "hero": {
-    "surtitre": "Menuiserie sur mesure",
-    "titre_1": "Le bois prend",
-    "titre_2": "la forme de votre lieu.",
-    "texte": "Escaliers, bibliothèques, cuisines, dressings, parquets. Chaque ouvrage est étudié pour son emplacement, fabriqué à l'atelier, posé par ceux qui l'ont fabriqué."
+    "surtitre": "Menuiserie du bâtiment",
+    "titre_1": "Fenêtres, portes, escaliers.",
+    "titre_2": "Posés au millimètre.",
+    "texte": "Dépose de l'ancien, pose du neuf, étanchéité et finitions. On repart quand la fenêtre ferme d'un doigt et que le chantier est propre."
   },
   "cartouche": {
-    "atelier": "À renseigner",
+    "secteur": "À renseigner",
     "depuis": "À renseigner",
-    "rayon": "À renseigner",
+    "qualification": "À renseigner",
     "devis": "Gratuit"
   },
   "images": {
     "hero_fond": "assets/images/hero-fond.svg",
     "hero_avant": "assets/images/hero-avant.svg",
-    "atelier": "assets/images/atelier.svg"
+    "entreprise": "assets/images/atelier.svg"
   },
-  "savoir_faire": {
-    "titre": "Ce que l'atelier fabrique",
-    "texte": "Du meuble unique au chantier complet. Si l'ouvrage est en bois et qu'il doit entrer au millimètre, c'est notre métier.",
-    "metiers": [
+  "prestations": {
+    "titre": "Ce que l'entreprise pose",
+    "texte": "Rénovation comme neuf, maison individuelle comme copropriété. Tout ce qui ferme, s'ouvre, monte ou se marche.",
+    "liste": [
+      {
+        "titre": "Fenêtres & portes-fenêtres",
+        "texte": "PVC, aluminium, bois ou mixte. Remplacement en rénovation sur dormant existant, ou dépose totale."
+      },
+      {
+        "titre": "Portes d'entrée",
+        "texte": "Isolantes, à serrure multipoints, avec ou sans vitrage. Réglage et étanchéité compris."
+      },
+      {
+        "titre": "Volets & stores",
+        "texte": "Volets roulants, battants, brise-soleil orientables. Motorisation et commande à distance."
+      },
       {
         "titre": "Escaliers",
-        "texte": "Droit, quart tournant, hélicoïdal. Limon apparent ou crémaillère, garde-corps assorti."
+        "texte": "Droit, quart tournant, hélicoïdal. Limon, crémaillère, garde-corps et main courante."
       },
       {
-        "titre": "Bibliothèques & rangements",
-        "texte": "Du sol au plafond, autour d'une porte, sous un rampant. Là où le meuble du commerce ne passe pas."
+        "titre": "Portes intérieures & huisseries",
+        "texte": "Portes battantes, coulissantes, à galandage. Pose de bâtis et reprise des finitions."
       },
       {
-        "titre": "Cuisines & plans de travail",
-        "texte": "Façades, caissons et plans en bois massif, ajustés à la pièce et à vos gestes."
+        "titre": "Parquets & sols",
+        "texte": "Massif, contrecollé, stratifié. Pose collée ou flottante, ponçage et rénovation."
       },
       {
-        "titre": "Dressings & placards",
-        "texte": "Aménagement intérieur complet, portes coulissantes ou battantes, finitions au choix."
+        "titre": "Terrasses, pergolas, bardages",
+        "texte": "Bois ou composite, sur plots ou lambourdes. Garde-corps et habillages de façade."
       },
       {
-        "titre": "Parquets",
-        "texte": "Pose, ponçage, rénovation. Point de Hongrie, bâtons rompus, lames larges."
-      },
-      {
-        "titre": "Menuiseries extérieures",
-        "texte": "Portes, fenêtres, volets, terrasses et bardages. Essences choisies pour durer dehors."
+        "titre": "Portes de garage & portails",
+        "texte": "Sectionnelle, enroulable, battante. Motorisation, télécommande et mise en sécurité."
       }
     ]
   },
-  "realisations": {
-    "titre": "Des ouvrages, pas des catalogues",
-    "texte": "Chaque projet part d'une contrainte : un mur qui n'est pas d'aplomb, une hauteur sous plafond ingrate, un budget. Voilà ce que ça donne.",
+  "chantiers": {
+    "titre": "Du relevé à la dernière vis",
+    "texte": "En rénovation, rien n'est d'équerre : un tableau de fenêtre a rarement deux côtés identiques. C'est là que le métier se joue.",
     "ouvrages": [
       {
+        "titre": "Fenêtres bois-aluminium",
+        "meta": "Rénovation · Dépose totale",
+        "categorie": "fermetures",
+        "image": "assets/images/real-fenetres.svg",
+        "alt": "Fenêtres bois-aluminium posées en rénovation"
+      },
+      {
+        "titre": "Porte d'entrée isolante",
+        "meta": "Aluminium · Serrure multipoints",
+        "categorie": "portes",
+        "image": "assets/images/real-porte.svg",
+        "alt": "Porte d'entrée isolante"
+      },
+      {
+        "titre": "Volets roulants motorisés",
+        "meta": "Rénovation · Commande radio",
+        "categorie": "fermetures",
+        "image": "assets/images/real-volets.svg",
+        "alt": "Volets roulants motorisés"
+      },
+      {
         "titre": "Escalier quart tournant",
-        "meta": "Chêne massif · Intérieur",
+        "meta": "Chêne · Garde-corps assorti",
         "categorie": "interieur",
         "image": "assets/images/real-escalier.svg",
-        "alt": "Escalier en bois sur mesure"
+        "alt": "Escalier quart tournant"
       },
       {
-        "titre": "Bibliothèque pleine hauteur",
-        "meta": "Noyer · Intérieur",
-        "categorie": "interieur",
-        "image": "assets/images/real-bibliotheque.svg",
-        "alt": "Bibliothèque sur mesure du sol au plafond"
-      },
-      {
-        "titre": "Cuisine et plan de travail",
-        "meta": "Chêne huilé · Intérieur",
-        "categorie": "interieur",
-        "image": "assets/images/real-cuisine.svg",
-        "alt": "Cuisine et plan de travail en bois massif"
-      },
-      {
-        "titre": "Dressing à lattes",
-        "meta": "Frêne · Intérieur",
-        "categorie": "interieur",
-        "image": "assets/images/real-dressing.svg",
-        "alt": "Dressing avec façades à lattes"
-      },
-      {
-        "titre": "Porte d'entrée",
-        "meta": "Châtaignier · Extérieur",
-        "categorie": "exterieur",
-        "image": "assets/images/real-porte.svg",
-        "alt": "Porte d'entrée en bois"
+        "titre": "Portes intérieures",
+        "meta": "Bâtis et finitions · 6 ouvertures",
+        "categorie": "portes",
+        "image": "assets/images/real-portes-interieures.svg",
+        "alt": "Portes intérieures et huisseries"
       },
       {
         "titre": "Parquet point de Hongrie",
-        "meta": "Chêne · Sols",
-        "categorie": "sol",
+        "meta": "Chêne · Pose collée",
+        "categorie": "interieur",
         "image": "assets/images/real-parquet.svg",
         "alt": "Parquet point de Hongrie"
       },
       {
         "titre": "Terrasse et bardage",
-        "meta": "Châtaignier · Extérieur",
+        "meta": "Sur plots · Garde-corps",
         "categorie": "exterieur",
         "image": "assets/images/real-terrasse.svg",
         "alt": "Terrasse et bardage bois"
       },
       {
-        "titre": "Agencement de commerce",
-        "meta": "Noyer · Professionnels",
-        "categorie": "pro",
-        "image": "assets/images/real-agencement.svg",
-        "alt": "Agencement de commerce"
+        "titre": "Porte de garage sectionnelle",
+        "meta": "Motorisée · Portillon intégré",
+        "categorie": "exterieur",
+        "image": "assets/images/real-garage.svg",
+        "alt": "Porte de garage sectionnelle"
       }
     ],
-    "mention": "Visuels d'exemple générés pour la démonstration. À remplacer par les photographies réelles des chantiers — ce sont elles qui vendent le travail."
+    "mention": "Visuels d'exemple générés pour la démonstration. À remplacer par les photographies réelles des chantiers — avant/après si possible, c'est ce qui convainc le mieux en rénovation."
   },
-  "viseur": {
-    "titre": "Voyez la matière avant de choisir",
-    "texte": "Le même meuble change complètement selon l'essence. Faites-le tourner, changez de bois, comparez. C'est plus parlant qu'un nuancier.",
-    "essences": [
+  "materiaux": {
+    "titre": "Comparez avant de choisir",
+    "texte": "PVC, aluminium, bois, mixte : le choix se joue sur l'entretien, la finesse des profilés et le budget. Faites tourner la fenêtre, changez de matériau.",
+    "liste": [
       {
-        "nom": "Chêne",
-        "couleur": "#b98a52",
-        "texture": "assets/images/essence-chene.svg",
-        "durete": "Dur",
-        "usage": "Intérieur et extérieur",
-        "teinte": "Miel, se patine"
+        "nom": "PVC",
+        "couleur": "#eceae4",
+        "texture": "assets/images/materiau-pvc.svg",
+        "entretien": "Aucun, un coup d'éponge",
+        "isolation": "Très bonne",
+        "duree": "30 à 40 ans",
+        "budget": "Le plus accessible"
       },
       {
-        "nom": "Noyer",
-        "couleur": "#6d4a32",
-        "texture": "assets/images/essence-noyer.svg",
-        "durete": "Mi-dur",
-        "usage": "Intérieur, ébénisterie",
-        "teinte": "Brun profond, veiné"
+        "nom": "Aluminium",
+        "couleur": "#70757a",
+        "texture": "assets/images/materiau-alu.svg",
+        "entretien": "Aucun",
+        "isolation": "Bonne avec rupture de pont thermique",
+        "duree": "40 ans et plus",
+        "budget": "Intermédiaire à élevé"
       },
       {
-        "nom": "Frêne",
-        "couleur": "#cbb08a",
-        "texture": "assets/images/essence-frene.svg",
-        "durete": "Dur, souple",
-        "usage": "Intérieur, cintrage",
-        "teinte": "Clair, fil marqué"
+        "nom": "Bois",
+        "couleur": "#b1834c",
+        "texture": "assets/images/materiau-bois.svg",
+        "entretien": "Lasure tous les 5 à 10 ans",
+        "isolation": "Excellente",
+        "duree": "50 ans si entretenu",
+        "budget": "Intermédiaire"
       },
       {
-        "nom": "Châtaignier",
-        "couleur": "#a97c4e",
-        "texture": "assets/images/essence-chataignier.svg",
-        "durete": "Mi-dur",
-        "usage": "Extérieur sans traitement",
-        "teinte": "Blond roux"
+        "nom": "Mixte bois-alu",
+        "couleur": "#9c7a52",
+        "texture": "assets/images/materiau-mixte.svg",
+        "entretien": "Aucun côté extérieur",
+        "isolation": "Excellente",
+        "duree": "50 ans et plus",
+        "budget": "Le plus élevé"
       }
     ],
-    "mention": "Rendu indicatif. Les échantillons livrés sont des textures générées : remplacez-les par des photographies de vos propres bois pour un rendu fidèle."
+    "mention": "Ordres de grandeur indicatifs, à confirmer selon la gamme posée et l'exposition. Le mixte bois-alu a l'aluminium dehors et le bois dedans : aucun entretien côté rue, chaleur du bois côté pièce."
   },
-  "atelier": {
-    "titre": "On fabrique ici, pas ailleurs",
-    "paragraphe_1": "Tout sort de l'atelier : le débit, l'assemblage, le ponçage, la finition. Rien n'est sous-traité, rien n'arrive en kit. C'est ce qui permet de rattraper un mur de travers le jour de la pose.",
-    "paragraphe_2": "Les bois viennent de scieries identifiées, en majorité françaises. Les chutes servent aux petits ouvrages, le reste part au chauffage : un atelier de menuiserie ne jette presque rien."
+  "aides": {
+    "titre": "Le remplacement de menuiseries est aidé",
+    "texte": "Remplacer du simple vitrage ouvre droit à plusieurs dispositifs, cumulables entre eux. Tous exigent une pose par une entreprise qualifiée RGE.",
+    "dispositifs": [
+      {
+        "sigle": "MaPrimeRénov'",
+        "titre": "Prime de l'État",
+        "texte": "Logement de plus de 15 ans, résidence principale, remplacement de simple vitrage. Montant selon les revenus du foyer."
+      },
+      {
+        "sigle": "CEE",
+        "titre": "Prime énergie",
+        "texte": "Versée par les fournisseurs d'énergie, cumulable avec MaPrimeRénov'. À demander avant la signature du devis."
+      },
+      {
+        "sigle": "TVA 5,5 %",
+        "titre": "Taux réduit",
+        "texte": "Au lieu de 10 % ou 20 %. Logement achevé depuis plus de 2 ans, matériel et pose facturés par l'entreprise."
+      },
+      {
+        "sigle": "Éco-PTZ",
+        "titre": "Prêt à taux zéro",
+        "texte": "Pour financer le reste à charge sans intérêts. Cumulable avec les aides précédentes."
+      }
+    ],
+    "qualification": "Certification RGE à renseigner (organisme, numéro, date de validité). Sans cette qualification, aucune des aides ci-dessus n'est versée — c'est la première chose à vérifier chez n'importe quel artisan.",
+    "mention": "Montants, plafonds et conditions évoluent chaque année et dépendent de votre situation. Nous ne promettons aucun montant par avance : nous vous orientons vers France Rénov', le service public gratuit (france-renov.gouv.fr, 0 808 800 700), et nous fournissons les pièces nécessaires au dossier."
+  },
+  "entreprise": {
+    "titre": "Les mêmes du devis à la pose",
+    "paragraphe_1": "Celui qui prend les cotes est celui qui pose. Pas de sous-traitance en cascade, pas d'équipe qui découvre le chantier le matin même : c'est ce qui évite les mauvaises surprises au moment du montage.",
+    "paragraphe_2": "Dépose de l'ancien, évacuation en déchèterie, calfeutrement, réglage des ouvrants et nettoyage. Un chantier de fenêtres se juge autant à la propreté des finitions qu'à la marque du profilé."
   },
   "processus": {
     "titre": "Comment ça se passe",
     "etapes": [
       {
-        "titre": "Visite et relevé",
-        "texte": "On vient mesurer sur place. Les plans d'un logement mentent souvent ; le mètre, non."
+        "titre": "Visite et métré",
+        "texte": "Relevé de chaque ouverture, une par une. En rénovation, aucune n'a les mêmes cotes que sa voisine."
       },
       {
-        "titre": "Étude et devis",
-        "texte": "Plans cotés, choix des essences et des finitions, devis détaillé poste par poste."
+        "titre": "Devis et aides",
+        "texte": "Chiffrage détaillé, fiches techniques jointes, et les pièces nécessaires à vos demandes d'aides."
       },
       {
-        "titre": "Fabrication",
-        "texte": "Débit, assemblage et finition à l'atelier. Vous pouvez passer voir l'ouvrage en cours."
+        "titre": "Commande et fabrication",
+        "texte": "Menuiseries fabriquées à vos cotes. Délai annoncé au devis, confirmé à la commande."
       },
       {
-        "titre": "Pose",
-        "texte": "Livraison et pose par l'atelier, ajustements compris. Chantier laissé propre."
+        "titre": "Dépose et pose",
+        "texte": "Ancien évacué, neuf posé, étanchéité, réglages et finitions. Chantier laissé propre."
       }
     ]
   },
   "devis": {
-    "titre": "Décrivez votre projet",
+    "titre": "Décrivez votre chantier",
     "texte": "Quatre questions, deux minutes. Votre messagerie s'ouvrira avec la demande déjà rédigée — il ne restera qu'à l'envoyer.",
     "email_reception": "contact@votre-menuiserie-a-renseigner.fr",
     "aparte_titre": "Ce qui vous attend",
     "garanties": [
       {
         "titre": "Réponse sous 48 h ouvrées.",
-        "texte": "Un premier retour, même pour dire que le projet ne rentre pas dans nos cordes."
+        "texte": "Un premier retour, même pour dire que le chantier ne rentre pas dans nos cordes."
       },
       {
-        "titre": "Visite et relevé gratuits.",
-        "texte": "Aucun devis sérieux ne se fait sans être venu mesurer."
+        "titre": "Visite et métré gratuits.",
+        "texte": "Aucun devis sérieux ne se fait sans être venu mesurer chaque ouverture."
       },
       {
         "titre": "Devis détaillé.",
-        "texte": "Poste par poste, matériaux et main-d'œuvre séparés."
+        "texte": "Fourniture, dépose, pose et finitions séparées, fiches techniques jointes."
       },
       {
         "titre": "Aucun engagement.",
@@ -249,7 +289,7 @@
     ]
   },
   "pied": {
-    "texte": "Menuiserie et agencement sur mesure. Étude, fabrication en atelier et pose par la même équipe.",
+    "texte": "Menuiserie du bâtiment : fenêtres, portes, volets, escaliers, parquets et terrasses. Métré, dépose, pose et finitions.",
     "reseaux": [
       {
         "nom": "Instagram (lien à renseigner)",
