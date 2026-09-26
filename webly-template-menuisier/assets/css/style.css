@@ -317,9 +317,25 @@ a { color: inherit; }
   display: block;
   position: absolute; inset: 0; z-index: 8;
   pointer-events: none;
-  opacity: clamp(0, calc((0.95 - var(--intro, 0)) * 10), 1);
+  opacity: clamp(0, calc((0.92 - var(--intro, 0)) * 8.33), 1);
 }
 .intro canvas { width: 100%; height: 100%; display: block; }
+/* Intro photo : on attend la photo, puis elle apparaît en fondu. Un voile
+   en haut garde l'en-tête lisible sur un mur clair. */
+.intro[data-photo] { background: #14100d; }
+.intro[data-photo] canvas { opacity: 0; transition: opacity 0.6s ease; }
+.intro[data-photo][data-texture="chargee"] canvas { opacity: 1; }
+.intro[data-photo]::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 150px; z-index: 1;
+  background: linear-gradient(rgba(14, 11, 9, 0.62), rgba(14, 11, 9, 0));
+}
+.intro[data-photo] .intro__invite {
+  left: 50%; right: auto; transform: translateX(-50%);
+  padding: 8px 14px; border-radius: 999px; white-space: nowrap;
+  color: rgba(246, 242, 236, 0.9);
+  background: rgba(20, 16, 12, 0.5);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
 .intro__invite {
   position: absolute; left: 0; right: 0; bottom: 34px; margin: 0;
   text-align: center;
@@ -334,8 +350,8 @@ a { color: inherit; }
    travers la vitre, le dehors doit paraître lumineux. */
 .hero--intro .hero__contenu,
 .hero--intro .cartouche {
-  opacity: clamp(0, calc((var(--intro, 0) - 0.88) * 8.4), 1);
-  transform: translateY(calc((1 - clamp(0, calc((var(--intro, 0) - 0.88) * 8.4), 1)) * 24px));
+  opacity: clamp(0, calc((var(--intro, 0) - 0.86) * 7.2), 1);
+  transform: translateY(calc((1 - clamp(0, calc((var(--intro, 0) - 0.86) * 7.2), 1)) * 24px));
 }
 .hero--intro .hero__voile { opacity: clamp(0, calc((var(--intro, 0) - 0.7) * 3.4), 1); }
 .hero--intro .hero__filer { display: none; }

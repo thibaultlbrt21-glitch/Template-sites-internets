@@ -26,37 +26,60 @@ Aucun fichier partagé entre les cinq projets : chacun est autonome.
 
 ## L'intro : entrer dans le site par la fenêtre
 
-Le visiteur arrive dans une **chambre claire**, face à une fenêtre PVC
-blanche oscillo-battante deux vantaux, aux cotes d'un modèle du commerce
-(**105 × 108 cm**, vantail principal à droite, poignée centrale). La scène
-est **recréée** d'après l'ambiance d'une photo de référence — elle ne la
-reprend pas : mur beige, chevet en noyer, bouquet d'hortensias, livres et
-bougeoir, suspension à abat-jour blanc, lampe globe sur un tabouret, et un
-jardin derrière la vitre (haie, arbre, pelouse). Au défilement, et
-uniquement au défilement :
+Le visiteur arrive face à une **vraie photo** : une fenêtre bois deux
+vantaux à petits bois, dans une embrasure en pierre, un paysage derrière.
+Au défilement, et uniquement au défilement :
 
-1. la **poignée** se relève et le vantail principal **bascule en oscillo** ;
-2. il se referme, la poignée passe à l'horizontale ;
+1. la **poignée** se relève et le vantail principal (à droite) **bascule en
+   oscillo** — la caméra glisse de trois quarts pour qu'on le voie basculer ;
+2. il se referme, la poignée passe à l'horizontale, la caméra revient dans
+   l'axe ;
 3. il **s'ouvre à la française**, puis le semi-fixe s'ouvre à son tour ;
-4. la caméra, partie d'un trois-quarts en hauteur, se recentre et **passe
-   par l'ouverture** — le haut de page apparaît.
+4. la caméra **passe par l'ouverture**, vers le paysage — le haut de page
+   apparaît en fondu.
 
-L'éclairage imite une photo d'intérieur de jour : la fenêtre est la source
-principale (jour direct qui décroît avec la distance, ciel sur les chants
-des profilés), une lumière rebondie chaude éclaire le reste, plus sombre dans
-les coins et au pied des meubles ; la suspension pose un halo chaud sur le
-mur. Courbe filmique (ACES) pour des hautes lumières douces, jardin
-légèrement surexposé comme sur une vraie photo exposée pour la pièce.
+### Comment une photo peut s'ouvrir
 
-Détails de quincaillerie visibles : **têtières** métal sur les chants des
-vantaux, **compas d'oscillo** qui apparaît quand le vantail bascule,
-paumelles, arêtes des profilés arrondies.
+La photo est **reprojetée** sur un volume simple — mur, embrasure, appui,
+linteau, dormant, vantaux — depuis l'endroit exact d'où elle a été prise.
+Chaque surface reçoit les pixels de la photo qui la montrent. Tant que la
+caméra reste au point de prise de vue, l'écran montre la photo telle quelle ;
+quand elle se déplace un peu, l'embrasure et la fenêtre prennent du relief.
 
-Le jardin (`assets/images/jardin-ciel.svg`, `jardin-haie.svg`) est une
-illustration générée, en deux plans pour la parallaxe. En passant
-l'ouverture, on entre dans ce jardin, puis le haut de page du site apparaît
-en fondu. En portrait (téléphone), le cadrage s'élargit pour garder le chevet
-et son bouquet dans l'image.
+- Les **vantaux** sont découpés dans la photo : ce sont ses pixels qui
+  pivotent, avec leur épaisseur (chants en bois) ; leurs **vitrages** sont
+  rendus transparents.
+- Derrière, le **paysage** est reconstitué à partir de ce qu'on voit par les
+  vitres : petits bois et montants effacés, bords prolongés et floutés.
+- Le **levier de poignée** est détouré à part et tourne dans le plan du
+  vantail ; la platine reste en place.
+- Le plan de la fenêtre est **déduit de la photo** : ses bords haut et bas
+  convergent vers l'horizon, ce qui donne son inclinaison ; la largeur réelle
+  des vantaux donne l'échelle.
+
+Fichiers :
+
+| Fichier | Rôle |
+|---|---|
+| `tools/intro-photo-source.webp` | La photo d'origine : la source du script, la page ne la charge pas |
+| `assets/images/intro-fenetre.json` | Coordonnées relevées sur la photo : vantaux, dormant, embrasure, vitrages, poignée |
+| `tools/prepare-intro-photo.js` | Fabrique les trois images ci-dessous à partir de la photo et du JSON |
+| `assets/images/intro-fenetre.webp` | La photo, vitrages transparents, levier effacé |
+| `assets/images/intro-poignee.webp` | Le levier détouré |
+| `assets/images/intro-dehors.webp` | Le paysage reconstitué |
+
+**Droits** : la photo a été fournie comme libre de droits. **Notez le lien de
+la page d'origine** ici avant la mise en ligne — c'est la preuve de la
+licence : _lien à compléter_. Ce n'est pas une réalisation de l'entreprise :
+ne la présentez pas comme telle.
+
+**Changer de photo** : il faut une fenêtre vue de face, entière, fermée. On
+relève les coordonnées dans le JSON (en pixels, sur la photo), puis on
+relance `node tools/prepare-intro-photo.js` (Playwright et un serveur local,
+voir l'en-tête du script). Sans l'attribut `data-photo` sur `.intro` dans
+`index.html`, l'intro reprend la **chambre dessinée en 3D** (fenêtre PVC
+blanche 105 × 108 cm, chevet, hortensias, jardin illustré), toujours
+disponible dans `demarreIntro()`.
 
 Garde-fous :
 
@@ -71,8 +94,9 @@ Garde-fous :
   haut de page qui reçoit le focus fait passer l'intro — jamais de focus sur
   un élément invisible.
 
-La chorégraphie (seuils de défilement, angles) est décrite en tête de
-`demarreIntro()` dans `assets/js/viseur3d.js`.
+La chorégraphie (seuils de défilement, angles) est la même pour les deux
+intros : voir `demarreIntroPhoto()` et `demarreIntro()` dans
+`assets/js/viseur3d.js`.
 
 ## Le visualiseur 3D
 

@@ -38,9 +38,14 @@ place — jamais d'image cassée.
 | `materiau-bois.jpg` | Profilé bois lasuré | carré |
 | `materiau-mixte.jpg` | Profilé mixte bois-aluminium | carré |
 
-Les deux plans du jardin vu par la fenêtre de l'intro, `jardin-ciel.svg` et
-`jardin-haie.svg`, sont eux aussi générés. Ils restent en SVG : l'intro les
-redessine en texture 3D, un jardin photographié y paraîtrait plat.
+Exception : `intro-fenetre.webp`, `intro-poignee.webp` et `intro-dehors.webp`
+viennent d'une **photo** (fenêtre bois dans une embrasure en pierre), fournie
+comme libre de droits et retravaillée pour l'intro animée — voir « L'intro »
+dans le README principal, où noter le lien de la licence. C'est une photo
+d'ambiance, pas une réalisation de l'entreprise.
+
+Les deux plans du jardin de la chambre dessinée en 3D (l'autre intro,
+utilisée sans photo), `jardin-ciel.svg` et `jardin-haie.svg`, sont générés.
 
 Les quatre textures de matériaux servent aussi au **visualiseur 3D** :
 photographiez un morceau de profilé bien à plat, bien éclairé, sans reflet.

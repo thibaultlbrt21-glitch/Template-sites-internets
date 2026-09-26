@@ -47,6 +47,9 @@
   var introPossible = !!(hero && sceneIntro && !reduit &&
                          window.WEBLY_VISEUR && window.WEBLY_VISEUR.demarreIntro);
   if (introPossible) hero.classList.add("hero--intro");
+  // La chambre dessinée est claire : l'en-tête y passe en texte foncé. La
+  // photo a son propre voile en haut d'écran.
+  var introClaire = !!(sceneIntro && !sceneIntro.hasAttribute("data-photo"));
 
   function introActive() {
     return !!(hero && hero.classList.contains("hero--intro"));
@@ -72,19 +75,46 @@
   // page classique. (Sur une machine ordinaire, le démarrage prend ~50 ms.)
   var DEMARRAGE_MAX = 1000;
 
-  function demarreIntro() {
-    if (!introPossible) return;
-    var premiereMatiere = document.querySelector(".matiere");
+  function lanceIntro(fabrique) {
     var t0 = window.performance ? performance.now() : Date.now();
-    intro = window.WEBLY_VISEUR.demarreIntro({
-      zone: hero,
-      scene: sceneIntro,
-      texture: premiereMatiere ? premiereMatiere.getAttribute("data-texture") : null,
-      surProgression: function (p) { hero.style.setProperty("--intro", p.toFixed(3)); },
-      surPerte: renonceIntro
-    });
+    intro = fabrique();
     var duree = (window.performance ? performance.now() : Date.now()) - t0;
     if (!intro || duree > DEMARRAGE_MAX) renonceIntro();
+  }
+
+  function surProgressionIntro(p) { hero.style.setProperty("--intro", p.toFixed(3)); }
+
+  function demarreIntro() {
+    if (!introPossible) return;
+    var V = window.WEBLY_VISEUR;
+    // Avec une photo (data-photo) : ses vantaux s'ouvrent. Sans : la chambre
+    // dessinée en 3D.
+    var photo = sceneIntro.getAttribute("data-photo");
+    if (photo && V.demarreIntroPhoto && window.fetch) {
+      fetch(photo)
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+        .then(function (config) {
+          if (!introActive()) return;
+          lanceIntro(function () {
+            return V.demarreIntroPhoto({
+              zone: hero, scene: sceneIntro, config: config,
+              surProgression: surProgressionIntro, surPerte: renonceIntro
+            });
+          });
+        })
+        .catch(renonceIntro);
+      return;
+    }
+    var premiereMatiere = document.querySelector(".matiere");
+    lanceIntro(function () {
+      return V.demarreIntro({
+        zone: hero,
+        scene: sceneIntro,
+        texture: premiereMatiere ? premiereMatiere.getAttribute("data-texture") : null,
+        surProgression: surProgressionIntro,
+        surPerte: renonceIntro
+      });
+    });
   }
 
   // Le contenu du haut de page est invisible pendant l'intro : un visiteur
@@ -116,7 +146,7 @@
       entete.classList.toggle("est-pose", y > c + 40);
       // Pendant l'intro, l'en-tête flotte sur une chambre claire : texte
       // foncé, jusqu'à ce que le calque 3D commence à se retirer.
-      entete.classList.toggle("sur-clair", c > 0 && y < c * 0.86);
+      entete.classList.toggle("sur-clair", c > 0 && y < c * 0.86 && introClaire);
     }
     var hauteurHero = hero ? (c ? window.innerHeight : hero.offsetHeight) : window.innerHeight;
     document.body.classList.toggle("est-descendu", y > c + hauteurHero * 0.6);

@@ -1426,5 +1426,475 @@ window.WEBLY_VISEUR = (function () {
     };
   }
 
-  return { demarre: demarre, demarreIntro: demarreIntro };
+  /* ---------------------------------------------------------------------
+     Intro « photo » : une vraie photo de fenêtre, dont les vantaux
+     s'ouvrent.
+
+     Principe : la photo est « reprojetée » sur un volume simple — le mur,
+     l'embrasure, l'appui, le dormant, les deux vantaux — depuis l'endroit
+     exact d'où elle a été prise. Chaque surface reçoit donc les pixels de
+     la photo qui la montrent. Tant que la caméra reste au point de prise de
+     vue, l'écran montre la photo telle quelle ; quand elle se déplace un
+     peu, le mur, l'embrasure et la fenêtre prennent du relief. Les vantaux
+     emportent leurs pixels en pivotant, leurs vitrages sont transparents,
+     et derrière s'étend le paysage reconstitué (sans les petits bois). Le
+     levier de la poignée est une vignette à part, qui tourne dans le plan
+     du vantail.
+
+     Le plan de la fenêtre se déduit de la photo : ses bords verticaux
+     restent verticaux, ses bords haut et bas convergent vers l'horizon.
+     Leur hauteur à gauche et à droite donne l'inclinaison du plan, la
+     largeur réelle des vantaux donne l'échelle. Les coordonnées relevées
+     sont dans assets/images/intro-fenetre.json ;
+     tools/prepare-intro-photo.js prépare les images.
+     --------------------------------------------------------------------- */
+
+  var SOMMET_PHOTO = [
+    "attribute vec3 aPos;",
+    "attribute vec3 aNorm;",
+    "uniform mat4 uProj, uVue, uModele, uPhoto;",
+    "varying vec3 vProj;",
+    "varying vec3 vNorm;",
+    "void main() {",
+    // La photo se projette depuis la position de repos : un vantail qui
+    // pivote emporte ses pixels.
+    "  vec4 q = uPhoto * vec4(aPos, 1.0);",
+    "  vProj = vec3(q.xy, q.w);",
+    "  vNorm = mat3(uModele) * aNorm;",
+    "  gl_Position = uProj * uVue * uModele * vec4(aPos, 1.0);",
+    "}"
+  ].join("\n");
+
+  // uMode : 0 la photo (décor), 1 un vantail, 2 le dehors, 3 chant d'un
+  //         vantail (couleur unie éclairée), 4 le levier (vignette détourée).
+  // uCadre : passage des pixels de la photo aux coordonnées de la texture.
+  var FRAGMENT_PHOTO = [
+    // La projection travaille en pixels de photo : il faut la haute
+    // précision, présente partout sauf sur de très vieux mobiles.
+    "#ifdef GL_FRAGMENT_PRECISION_HIGH",
+    "precision highp float;",
+    "#else",
+    "precision mediump float;",
+    "#endif",
+    "uniform sampler2D uTexture;",
+    "uniform float uMode;",
+    "uniform float uOmbre;",
+    "uniform vec4 uCadre;",
+    "uniform vec3 uCouleur;",
+    "uniform vec3 uFond;",
+    "uniform vec3 uLumiere;",
+    "varying vec3 vProj;",
+    "varying vec3 vNorm;",
+    "void main() {",
+    "  vec2 uv = vProj.xy / vProj.z * uCadre.xy + uCadre.zw;",
+    "  if (uMode < 0.5) {",
+    // Au-delà du cadre de la photo (écran plus haut qu'elle), le bord se
+    // prolonge et s'éteint doucement dans la couleur du fond.
+    "    vec2 c = clamp(uv, 0.0, 1.0);",
+    "    vec3 t = texture2D(uTexture, c).rgb;",
+    "    float hors = length((uv - c) * vec2(1.78, 1.0));",
+    "    gl_FragColor = vec4(mix(t, uFond, smoothstep(0.0, 0.08, hors)), 1.0);",
+    "    return;",
+    "  }",
+    "  if (uMode < 1.5) {",
+    "    vec4 t = texture2D(uTexture, uv);",
+    "    if (t.a < 0.5) discard;",                        // le vitrage
+    "    gl_FragColor = vec4(t.rgb / t.a * uOmbre, 1.0);",
+    "    return;",
+    "  }",
+    "  if (uMode < 2.5) {",
+    "    gl_FragColor = vec4(texture2D(uTexture, uv).rgb, 1.0);",
+    "    return;",
+    "  }",
+    "  if (uMode < 3.5) {",
+    "    float d = max(dot(normalize(vNorm), uLumiere), 0.0);",
+    "    gl_FragColor = vec4(uCouleur * (0.68 + 0.32 * d), 1.0);",
+    "    return;",
+    "  }",
+    "  vec4 t = texture2D(uTexture, uv);",
+    "  if (t.a < 0.02) discard;",
+    "  gl_FragColor = vec4(t.rgb / t.a * uOmbre, t.a);",
+    "}"
+  ].join("\n");
+
+  // Rotation d'angle a autour d'un axe unitaire (formule de Rodrigues).
+  function rotationAxe(k, a) {
+    var c = Math.cos(a), s = Math.sin(a), u = 1 - c, m = identite();
+    var x = k[0], y = k[1], z = k[2];
+    m[0] = c + x * x * u;     m[4] = x * y * u - z * s; m[8] = x * z * u + y * s;
+    m[1] = y * x * u + z * s; m[5] = c + y * y * u;     m[9] = y * z * u - x * s;
+    m[2] = z * x * u - y * s; m[6] = z * y * u + x * s; m[10] = c + z * z * u;
+    return m;
+  }
+
+  function transpose(m) {
+    var o = new Float32Array(16);
+    for (var c = 0; c < 4; c++) for (var l = 0; l < 4; l++) o[c * 4 + l] = m[l * 4 + c];
+    return o;
+  }
+
+  function chargeImage(src, fait, rate) {
+    var img = new Image();
+    img.onload = function () { fait(img); };
+    img.onerror = rate;
+    img.src = src;
+  }
+
+  function demarreIntroPhoto(options) {
+    var zone = options.zone, scene = options.scene;
+    var canvas = scene && scene.querySelector("canvas");
+    if (!zone || !canvas || !options.config) return null;
+
+    var gl = null;
+    var reglages = { antialias: true, alpha: false };
+    try {
+      gl = canvas.getContext("webgl", reglages) || canvas.getContext("experimental-webgl", reglages);
+    } catch (e) { gl = null; }
+    if (!gl) return null;
+
+    var programme = gl.createProgram();
+    var vs = compile(gl, gl.VERTEX_SHADER, SOMMET_PHOTO);
+    var fs = compile(gl, gl.FRAGMENT_SHADER, FRAGMENT_PHOTO);
+    if (!vs || !fs) return null;
+    gl.attachShader(programme, vs);
+    gl.attachShader(programme, fs);
+    gl.linkProgram(programme);
+    if (!gl.getProgramParameter(programme, gl.LINK_STATUS)) return null;
+    gl.useProgram(programme);
+    var attr = { pos: gl.getAttribLocation(programme, "aPos"), norm: gl.getAttribLocation(programme, "aNorm") };
+    gl.enableVertexAttribArray(attr.pos);
+    gl.enableVertexAttribArray(attr.norm);
+    var u = {};
+    ["uProj", "uVue", "uModele", "uPhoto", "uTexture", "uMode", "uOmbre", "uCadre", "uCouleur", "uFond", "uLumiere"]
+      .forEach(function (nom) { u[nom] = gl.getUniformLocation(programme, nom); });
+    gl.uniform1i(u.uTexture, 0);
+    gl.enable(gl.DEPTH_TEST);
+
+    var enMarche = true, pret = false, demande = false, derniere = -1;
+    var C = options.config;
+    var fond = options.fond || [0.08, 0.065, 0.055];
+    gl.uniform3fv(u.uFond, fond);
+    gl.clearColor(fond[0], fond[1], fond[2], 1);
+
+    /* --- Le point de prise de vue et le plan de la fenêtre --- */
+    var Wp = C.taille[0], Hp = C.taille[1], f = C.focale, cx = C.centreX;
+    var V = C.vantaux;
+    function droite(p, q) {
+      var a = (q[1] - p[1]) / (q[0] - p[0]);
+      return function (x) { return p[1] + a * (x - p[0]); };
+    }
+    var haut = droite(V.haut[0], V.haut[1]), bas = droite(V.bas[0], V.bas[1]);
+    // L'horizon passe là où les bords haut et bas des vantaux se rejoignent.
+    var pa = (V.haut[1][1] - V.haut[0][1]) / (V.haut[1][0] - V.haut[0][0]);
+    var pb = (V.bas[1][1] - V.bas[0][1]) / (V.bas[1][0] - V.bas[0][0]);
+    var x0 = V.haut[0][0];
+    var cy = Math.abs(pa - pb) > 1e-6 ? haut(x0 + (bas(x0) - haut(x0)) / (pa - pb)) : Hp / 2;
+    var uL = V.gauche, uM = V.milieu, uR = V.droite;
+    var hL = bas(uL) - haut(uL), hR = bas(uR) - haut(uR);
+    var kx = (uR - cx) / f * hL / hR - (uL - cx) / f, kz = hL / hR - 1;
+    var dL = C.largeurVantaux / Math.sqrt(kx * kx + kz * kz), dR = dL * hL / hR;
+    var A = [(uL - cx) / f * dL, 0, -dL], B = [(uR - cx) / f * dR, 0, -dR];
+    var lt = Math.hypot(B[0] - A[0], B[2] - A[2]);
+    var t = [(B[0] - A[0]) / lt, 0, (B[2] - A[2]) / lt];     // le long de la fenêtre
+    var n = [-t[2], 0, t[0]];                                  // vers la pièce
+
+    // Point vu au pixel (x, y), sur le plan de la fenêtre décalé de « recul »
+    // vers la pièce (le mur : profondeurMur ; le dehors : négatif).
+    function surPlan(x, y, recul) {
+      var d = [(x - cx) / f, -(y - cy) / f, -1];
+      var o = [A[0] + n[0] * recul, 0, A[2] + n[2] * recul];
+      var s = (n[0] * o[0] + n[2] * o[2]) / (n[0] * d[0] + n[2] * d[2]);
+      return [d[0] * s, d[1] * s, d[2] * s];
+    }
+
+    // Projection de la photo : du monde vers (x·w, y·w, w), en pixels.
+    var mPhoto = new Float32Array(16);
+    mPhoto[0] = f; mPhoto[8] = -cx; mPhoto[5] = -f; mPhoto[9] = -cy; mPhoto[11] = -1;
+
+    /* --- Géométrie : des quadrilatères posés sur leurs plans --- */
+    function vide() { return { pos: [], norm: [] }; }
+    function quad(g, sommets) {
+      var a = sommets[0], b = sommets[1], d = sommets[3];
+      var e1 = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], e2 = [d[0] - a[0], d[1] - a[1], d[2] - a[2]];
+      var nx = e1[1] * e2[2] - e1[2] * e2[1], ny = e1[2] * e2[0] - e1[0] * e2[2], nz = e1[0] * e2[1] - e1[1] * e2[0];
+      var l = Math.hypot(nx, ny, nz) || 1;
+      [0, 1, 2, 0, 2, 3].forEach(function (k) {
+        var p = sommets[k];
+        g.pos.push(p[0], p[1], p[2]);
+        g.norm.push(nx / l, ny / l, nz / l);
+      });
+      return g;
+    }
+    // Quadrilatère de la photo (en pixels) reporté sur un plan.
+    function quadPlan(g, q, recul) {
+      return quad(g, q.map(function (p) { return surPlan(p[0], p[1], recul); }));
+    }
+    // Un cadre : l'extérieur moins l'intérieur, en quatre quadrilatères.
+    function cadre(g, ext, int, reculExt, reculInt) {
+      var E = ext.map(function (p) { return surPlan(p[0], p[1], reculExt); });
+      var I = int.map(function (p) { return surPlan(p[0], p[1], reculInt); });
+      quad(g, [E[0], E[1], I[1], I[0]]);
+      quad(g, [I[1], E[1], E[2], I[2]]);
+      quad(g, [I[3], I[2], E[2], E[3]]);
+      quad(g, [E[0], I[0], I[3], E[3]]);
+      return g;
+    }
+    function tampon(g) {
+      function b(donnees) {
+        var id = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, id);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(donnees), gl.STATIC_DRAW);
+        return id;
+      }
+      return { pos: b(g.pos), norm: b(g.norm), n: g.pos.length / 3 };
+    }
+
+    var D = C.profondeurMur;
+    var Q = [[uL, haut(uL)], [uR, haut(uR)], [uR, bas(uR)], [uL, bas(uL)]];      // les vantaux
+    var Do = C.dormant, O = C.ouvertureMur;
+    var E = [[-Wp * 0.6, -Hp * 0.9], [Wp * 1.6, -Hp * 0.9], [Wp * 1.6, Hp * 1.9], [-Wp * 0.6, Hp * 1.9]];
+    var decor = vide();
+    cadre(decor, E, O, D, D);          // le mur, prolongé bien au-delà de la photo
+    cadre(decor, O, Do, D, 0);         // l'embrasure, l'appui et le linteau
+    cadre(decor, Do, Q, 0, 0);         // le dormant
+
+    // Le dehors est posé juste derrière la fenêtre pendant le trois-quarts
+    // (il glisse peu derrière les vitrages), puis reculé avant d'avancer :
+    // il grossit alors assez pour que la partie réellement photographiée
+    // remplisse l'écran au moment de passer. Reculer le long des rayons de
+    // la photo ne change rien vu du point de prise de vue : c'est une simple
+    // homothétie centrée sur l'œil. Au-delà de l'image, le bord se prolonge.
+    var Z = C.zoneDehors, M = Wp;
+    var nA = n[0] * A[0] + n[2] * A[2];
+    function echelleDehors(d) { return (nA - d) / (nA - C.distanceDehors); }
+    var dehors = quadPlan(vide(), [[Z[0] - M, Z[1] - M], [Z[2] + M, Z[1] - M], [Z[2] + M, Z[3] + M], [Z[0] - M, Z[3] + M]],
+      -C.distanceDehors);
+
+    var EP = 0.058;   // épaisseur d'un ouvrant bois
+    function vantail(xa, xb) {
+      var q = [[xa, haut(xa)], [xb, haut(xb)], [xb, bas(xb)], [xa, bas(xa)]];
+      var avant = q.map(function (p) { return surPlan(p[0], p[1], 0); });
+      var arriere = avant.map(function (p) { return [p[0] - n[0] * EP, p[1], p[2] - n[2] * EP]; });
+      var chants = vide();
+      for (var k = 0; k < 4; k++) {
+        quad(chants, [avant[k], avant[(k + 1) % 4], arriere[(k + 1) % 4], arriere[k]]);
+      }
+      return { face: tampon(quad(vide(), avant)), chants: tampon(chants) };
+    }
+    var gauche = vantail(uL, uM), principal = vantail(uM, uR);
+
+    var Lv = C.levier, cad = Lv.cadre;
+    var levier = tampon(quadPlan(vide(), [[cad[0], cad[1]], [cad[2], cad[1]], [cad[2], cad[3]], [cad[0], cad[3]]], 0.006));
+    var pivotLevier = surPlan(Lv.pivot[0], Lv.pivot[1], 0.006);
+
+    var G = { decor: tampon(decor), dehors: tampon(dehors) };
+    var CADRE = {
+      photo: [1 / Wp, 1 / Hp, 0, 0],
+      dehors: [1 / (Z[2] - Z[0]), 1 / (Z[3] - Z[1]), -Z[0] / (Z[2] - Z[0]), -Z[1] / (Z[3] - Z[1])],
+      poignee: [1 / (cad[2] - cad[0]), 1 / (cad[3] - cad[1]), -cad[0] / (cad[2] - cad[0]), -cad[1] / (cad[3] - cad[1])]
+    };
+
+    // Charnières : bord droit du principal, bord gauche du semi-fixe ; la
+    // bascule se fait sur le bas du principal.
+    var charniereP = surPlan(uR, bas(uR), 0), charniereG = surPlan(uL, bas(uL), 0);
+    var basP = surPlan(uM, bas(uM), 0);
+
+    /* --- Textures --- */
+    function texture(img) {
+      var id = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, id);
+      gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      return id;
+    }
+    var tex = {}, attendues = 3;
+    function perdu() {
+      if (!enMarche) return;
+      enMarche = false;
+      if (options.surPerte) options.surPerte();
+    }
+    ["photo", "dehors", "poignee"].forEach(function (nom) {
+      chargeImage(C[nom], function (img) {
+        if (!enMarche) return;
+        tex[nom] = texture(img);
+        if (--attendues === 0) {
+          pret = true;
+          scene.setAttribute("data-texture", "chargee");
+          rendu(true);
+        }
+      }, perdu);
+    });
+
+    /* --- Dessin --- */
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var largeur = 0, hauteur = 0;
+    function redimensionne() {
+      var r = scene.getBoundingClientRect();
+      var w = Math.max(1, Math.round(r.width * dpr)), h = Math.max(1, Math.round(r.height * dpr));
+      if (w === largeur && h === hauteur) return false;
+      largeur = w; hauteur = h;
+      canvas.width = w; canvas.height = h;
+      gl.viewport(0, 0, w, h);
+      return true;
+    }
+
+    function progression() {
+      var r = zone.getBoundingClientRect();
+      var course = zone.offsetHeight - window.innerHeight;
+      if (course <= 0) return 1;
+      return borne(-r.top / course, 0, 1);
+    }
+
+    function dessine(g, mode, modele, texture, cadreUv, reglages) {
+      reglages = reglages || {};
+      gl.uniformMatrix4fv(u.uModele, false, modele);
+      gl.uniform1f(u.uMode, mode);
+      gl.uniform1f(u.uOmbre, reglages.ombre === undefined ? 1 : reglages.ombre);
+      gl.uniform4fv(u.uCadre, cadreUv || CADRE.photo);
+      if (reglages.couleur) gl.uniform3fv(u.uCouleur, reglages.couleur);
+      if (texture) gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.bindBuffer(gl.ARRAY_BUFFER, g.pos);
+      gl.vertexAttribPointer(attr.pos, 3, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(gl.ARRAY_BUFFER, g.norm);
+      gl.vertexAttribPointer(attr.norm, 3, gl.FLOAT, false, 0, 0);
+      gl.drawArrays(gl.TRIANGLES, 0, g.n);
+    }
+
+    // Lumière des chants : celle du dehors, qui entre par la fenêtre.
+    var lumiere = [-n[0] * 0.55 + t[0] * 0.2, 0.55, -n[2] * 0.55 + t[2] * 0.2];
+    var ll = Math.hypot(lumiere[0], lumiere[1], lumiere[2]);
+    gl.uniform3fv(u.uLumiere, lumiere.map(function (v) { return v / ll; }));
+    gl.uniformMatrix4fv(u.uPhoto, false, mPhoto);
+    var BOIS = options.couleurChant || [0.68, 0.42, 0.21];
+
+    // Le centre des vantaux : c'est lui que la caméra garde en ligne de mire
+    // pendant le trois-quarts, puis vers lui qu'elle avance pour passer.
+    var uC = (uL + uR) / 2, vC = (haut(uC) + bas(uC)) / 2;
+    var centre = surPlan(uC, vC, 0);
+    var lc = Math.hypot(centre[0], centre[1], centre[2]);
+    var vise0 = [centre[0] / lc, centre[1] / lc, centre[2] / lc];
+    var arrivee = [centre[0] - n[0] * 0.3, centre[1], centre[2] - n[2] * 0.3];
+    var cap = -Math.asin(t[2]);
+
+    // Rotation minimale qui amène la direction a sur la direction b.
+    function aligne(a, b) {
+      var ax = [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+      var s = Math.hypot(ax[0], ax[1], ax[2]);
+      if (s < 1e-6) return identite();
+      var angle = Math.atan2(s, a[0] * b[0] + a[1] * b[1] + a[2] * b[2]);
+      return rotationAxe([ax[0] / s, ax[1] / s, ax[2] / s], angle);
+    }
+
+    function rendu(force) {
+      demande = false;
+      if (!enMarche) return;
+      var p = progression();
+      var retaille = redimensionne();
+      if (!force && !retaille && Math.abs(p - derniere) < 0.0005) return;
+      derniere = p;
+      scene.setAttribute("data-progression", p.toFixed(3));
+      if (options.surProgression) options.surProgression(p);
+      if (!pret) return;
+
+      // La même chorégraphie que la scène dessinée : poignée levée, bascule
+      // en oscillo, retour, poignée à l'horizontale, ouverture à la
+      // française, le semi-fixe suit, puis on passe par l'ouverture.
+      var poignee = Math.PI * lisse(0.02, 0.07, p) - (Math.PI / 2) * lisse(0.38, 0.41, p);
+      var bascule = 0.17 * (lisse(0.08, 0.26, p) - lisse(0.30, 0.38, p));
+      var rotation = 1.50 * lisse(0.42, 0.60, p);
+      var semiFixe = 1.45 * lisse(0.50, 0.68, p);
+      var avance = lisse(0.56, 0.97, p);
+      // Le trois-quarts : on glisse vers la gauche et un peu plus haut pour
+      // voir le vantail basculer, puis on revient dans l'axe avant d'avancer.
+      var biais = lisse(0.03, 0.22, p) - lisse(0.34, 0.58, p);
+
+      // Cadrage : la photo couvre l'écran ; sur un écran étroit (téléphone
+      // en portrait), c'est la fenêtre qui doit tenir en largeur, quitte à
+      // laisser des bandes au-dessus et en dessous.
+      var s = Math.max(largeur / Wp, hauteur / Hp), u0, v0;
+      if (largeur / s < (uR - uL) * 1.15) {
+        s = largeur / ((uR - uL) * 1.1);
+        u0 = uC; v0 = vC;
+      } else {
+        u0 = borne(uC, largeur / (2 * s), Wp - largeur / (2 * s));
+        v0 = hauteur / s > Hp ? Hp / 2 : borne(Hp / 2, hauteur / (2 * s), Hp - hauteur / (2 * s));
+      }
+      var fe = f * (1 - 0.08 * avance), proche = 0.02, loin = 80;
+      var proj = new Float32Array(16);
+      proj[0] = s * fe / (largeur / 2);
+      proj[8] = -s * (cx - u0) / (largeur / 2);
+      proj[5] = s * fe / (hauteur / 2);
+      proj[9] = s * (cy - v0) / (hauteur / 2);
+      proj[10] = (loin + proche) / (proche - loin);
+      proj[11] = -1;
+      proj[14] = 2 * loin * proche / (proche - loin);
+
+      var e = avance * avance * (3 - 2 * avance);
+      var decale = [(-0.27 * t[0] - 0.2 * n[0]) * biais, 0.12 * biais, (-0.27 * t[2] - 0.2 * n[2]) * biais];
+      var oeil = [arrivee[0] * e + decale[0], arrivee[1] * e + decale[1], arrivee[2] * e + decale[2]];
+      var vers = [centre[0] - decale[0], centre[1] - decale[1], centre[2] - decale[2]];
+      var lv = Math.hypot(vers[0], vers[1], vers[2]);
+      var orientation = multiplie(rotationY(cap * avance), aligne(vise0, [vers[0] / lv, vers[1] / lv, vers[2] / lv]));
+      var vue = multiplie(transpose(orientation), translation(-oeil[0], -oeil[1], -oeil[2]));
+
+      gl.uniformMatrix4fv(u.uProj, false, proj);
+      gl.uniformMatrix4fv(u.uVue, false, vue);
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+      var I = identite();
+      var k = echelleDehors(C.distanceDehors + 1.1 * lisse(0.48, 0.6, p));
+      var mD = identite();
+      mD[0] = mD[5] = mD[10] = k;
+      dessine(G.dehors, 2, mD, tex.dehors, CADRE.dehors);
+      dessine(G.decor, 0, I, tex.photo);
+
+      var mP = multiplie(
+        autour(basP[0], basP[1], basP[2], rotationAxe(t, bascule)),
+        autour(charniereP[0], 0, charniereP[2], rotationY(rotation)));
+      var mG = autour(charniereG[0], 0, charniereG[2], rotationY(-semiFixe));
+      // En tournant vers la pièce, la face du vantail quitte la lumière.
+      dessine(principal.face, 1, mP, tex.photo, CADRE.photo, { ombre: 1 - 0.2 * Math.sin(rotation) - 0.5 * bascule });
+      dessine(gauche.face, 1, mG, tex.photo, CADRE.photo, { ombre: 1 - 0.2 * Math.sin(semiFixe) });
+      dessine(principal.chants, 3, mP, null, null, { couleur: BOIS });
+      dessine(gauche.chants, 3, mG, null, null, { couleur: BOIS });
+
+      // Le levier tourne dans le plan du vantail, autour de son carré.
+      var mL = multiplie(mP, autour(pivotLevier[0], pivotLevier[1], pivotLevier[2], rotationAxe(n, poignee)));
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      dessine(levier, 4, mL, tex.poignee, CADRE.poignee, { ombre: 1 - 0.2 * Math.sin(rotation) });
+      gl.disable(gl.BLEND);
+    }
+
+    function planifie() {
+      if (demande) return;
+      demande = true;
+      window.requestAnimationFrame(function () { rendu(false); });
+    }
+    window.addEventListener("scroll", planifie, { passive: true });
+    window.addEventListener("resize", function () {
+      window.requestAnimationFrame(function () { rendu(true); });
+    });
+    canvas.addEventListener("webglcontextlost", function (ev) {
+      ev.preventDefault();
+      perdu();
+    });
+
+    rendu(true);
+
+    return {
+      progression: progression,
+      redessine: function () { rendu(true); },
+      arrete: function () {
+        enMarche = false;
+        window.removeEventListener("scroll", planifie);
+      }
+    };
+  }
+
+  return { demarre: demarre, demarreIntro: demarreIntro, demarreIntroPhoto: demarreIntroPhoto };
 })();
