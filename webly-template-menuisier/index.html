@@ -79,45 +79,56 @@
 <main id="principal">
 
   <!-- ===================== HERO ===================== -->
-  <section class="hero">
-    <div class="hero__couches" aria-hidden="true">
-      <div class="hero__couche hero__couche--fond" data-profondeur="0.16">
-        <img src="assets/images/hero-fond.svg" data-photo="assets/images/hero-fond.jpg"
-             data-cms-image="images.hero_fond" alt="" fetchpriority="high" decoding="async">
+  <!-- Avec WebGL et sans « mouvement réduit », main.js ajoute la classe
+       hero--intro : la section s'allonge et le cadre devient collant pendant
+       que la fenêtre s'ouvre au défilement. Sinon, c'est un haut de page
+       classique, entièrement lisible. -->
+  <section class="hero" id="accueil">
+    <div class="hero__cadre">
+      <div class="hero__couches" aria-hidden="true">
+        <div class="hero__couche hero__couche--fond" data-profondeur="0.16">
+          <img src="assets/images/hero-fond.svg" data-photo="assets/images/hero-fond.jpg"
+               data-cms-image="images.hero_fond" alt="" fetchpriority="high" decoding="async">
+        </div>
+        <div class="hero__voile"></div>
+        <div class="hero__couche hero__couche--avant" data-profondeur="-0.07" style="opacity:0.24;mix-blend-mode:overlay;">
+          <img src="assets/images/hero-avant.svg" data-photo="assets/images/hero-avant.jpg"
+               data-cms-image="images.hero_avant" alt="" loading="lazy" decoding="async">
+        </div>
       </div>
-      <div class="hero__voile"></div>
-      <div class="hero__couche hero__couche--avant" data-profondeur="-0.07" style="opacity:0.24;mix-blend-mode:overlay;">
-        <img src="assets/images/hero-avant.svg" data-photo="assets/images/hero-avant.jpg"
-             data-cms-image="images.hero_avant" alt="" loading="lazy" decoding="async">
+
+      <div class="wrap-large hero__contenu">
+        <span class="annot apparait" data-cms="hero.surtitre">Menuiserie du bâtiment</span>
+        <h1 class="apparait d1" id="titrePrincipal" tabindex="-1">
+          <span data-cms="hero.titre_1">Fenêtres, portes, escaliers.</span>
+          <span class="fin" data-cms="hero.titre_2">Posés au millimètre.</span>
+        </h1>
+        <p class="hero__texte apparait d2" data-cms="hero.texte">
+          Dépose de l'ancien, pose du neuf, étanchéité et finitions. On repart quand
+          la fenêtre ferme d'un doigt et que le chantier est propre.
+        </p>
+        <div class="hero__actions apparait d3">
+          <a href="#devis" class="btn btn--plein">Demander un devis</a>
+          <a href="#chantiers" class="btn btn--clair">Voir les chantiers</a>
+        </div>
+      </div>
+
+      <aside class="cartouche" aria-label="Fiche de l'entreprise">
+        <dl>
+          <dt>Secteur</dt><dd data-cms="cartouche.secteur">À renseigner</dd>
+          <dt>Depuis</dt><dd data-cms="cartouche.depuis">À renseigner</dd>
+          <dt>Qualification</dt><dd data-cms="cartouche.qualification">À renseigner</dd>
+          <dt>Devis</dt><dd data-cms="cartouche.devis">Gratuit</dd>
+        </dl>
+      </aside>
+
+      <div class="hero__filer" aria-hidden="true"><i></i><span>Défiler</span></div>
+
+      <div class="intro" aria-hidden="true">
+        <canvas></canvas>
+        <p class="intro__invite">Faites défiler pour entrer</p>
       </div>
     </div>
-
-    <div class="wrap-large hero__contenu">
-      <span class="annot apparait" data-cms="hero.surtitre">Menuiserie du bâtiment</span>
-      <h1 class="apparait d1">
-        <span data-cms="hero.titre_1">Fenêtres, portes, escaliers.</span>
-        <span class="fin" data-cms="hero.titre_2">Posés au millimètre.</span>
-      </h1>
-      <p class="hero__texte apparait d2" data-cms="hero.texte">
-        Dépose de l'ancien, pose du neuf, étanchéité et finitions. On repart quand
-        la fenêtre ferme d'un doigt et que le chantier est propre.
-      </p>
-      <div class="hero__actions apparait d3">
-        <a href="#devis" class="btn btn--plein">Demander un devis</a>
-        <a href="#chantiers" class="btn btn--clair">Voir les chantiers</a>
-      </div>
-    </div>
-
-    <aside class="cartouche" aria-label="Fiche de l'entreprise">
-      <dl>
-        <dt>Secteur</dt><dd data-cms="cartouche.secteur">À renseigner</dd>
-        <dt>Depuis</dt><dd data-cms="cartouche.depuis">À renseigner</dd>
-        <dt>Qualification</dt><dd data-cms="cartouche.qualification">À renseigner</dd>
-        <dt>Devis</dt><dd data-cms="cartouche.devis">Gratuit</dd>
-      </dl>
-    </aside>
-
-    <div class="hero__filer" aria-hidden="true"><i></i><span>Défiler</span></div>
   </section>
 
   <!-- ===================== PRESTATIONS ===================== -->

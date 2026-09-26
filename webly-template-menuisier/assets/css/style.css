@@ -181,6 +181,15 @@ a { color: inherit; }
 }
 .entete.est-pose .nav { padding-block: 14px; }
 
+/* Tant que l'en-tête survole le haut de page sombre, texte clair. Il ne
+   reprend l'encre qu'une fois posé sur fond papier. */
+.entete:not(.est-pose) .marque__nom { color: var(--papier); }
+.entete:not(.est-pose) .marque__sous,
+.entete:not(.est-pose) .nav-liens a { color: rgba(246, 242, 236, 0.86); }
+.entete:not(.est-pose) .nav-liens a:hover { color: var(--papier); }
+.entete:not(.est-pose) .burger { border-color: rgba(246, 242, 236, 0.4); }
+.entete:not(.est-pose) .burger span { background: var(--papier); }
+
 .marque { display: flex; flex-direction: column; text-decoration: none; margin-right: auto; }
 .marque__nom {
   font-family: var(--font-display); font-weight: 800;
@@ -246,12 +255,25 @@ a { color: inherit; }
    ========================================================================= */
 
 .hero {
+  position: relative;
+  background: var(--encre);
+  color: var(--papier);
+}
+/* Le cadre porte la mise en page et le recadrage. Il est distinct de la
+   section parce qu'un élément collant (sticky) ne colle pas à l'intérieur
+   d'un parent en overflow: hidden — ce que réclame l'intro. */
+.hero__cadre {
   position: relative; min-height: 100svh;
   display: flex; align-items: center;
   padding: 140px 0 90px;
   overflow: hidden;
-  background: var(--encre);
-  color: var(--papier);
+}
+/* Un voile en haut du cadre : l'en-tête reste lisible quelle que soit la
+   photo d'accueil que le client dépose. */
+.hero__cadre::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 180px; z-index: 4;
+  background: linear-gradient(to bottom, rgba(21, 25, 27, 0.62), rgba(21, 25, 27, 0));
+  pointer-events: none;
 }
 .hero__couches { position: absolute; inset: 0; }
 .hero__couche { position: absolute; inset: -6%; will-change: transform; }
@@ -271,6 +293,46 @@ a { color: inherit; }
   max-width: 470px; color: rgba(232, 227, 218, 0.82); font-size: 1.08rem; margin-bottom: 34px;
 }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 14px; }
+
+/* =========================================================================
+   INTRO — entrer dans le site par la fenêtre
+   --intro va de 0 à 1 au défilement (posé par main.js). La section s'allonge,
+   le cadre colle à l'écran, et le calque 3D se retire à la fin.
+   ========================================================================= */
+
+.intro { display: none; }
+
+.hero--intro { height: 340svh; }
+.hero--intro .hero__cadre {
+  position: sticky; top: 0;
+  height: 100svh; min-height: 0;
+}
+.hero--intro .intro {
+  display: block;
+  position: absolute; inset: 0; z-index: 8;
+  pointer-events: none;
+  opacity: clamp(0, calc((1 - var(--intro, 0)) * 8.33), 1);
+}
+.intro canvas { width: 100%; height: 100%; display: block; }
+.intro__invite {
+  position: absolute; left: 0; right: 0; bottom: 34px; margin: 0;
+  text-align: center;
+  font-family: var(--font-mono); font-size: 0.7rem;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(246, 242, 236, 0.72);
+  opacity: clamp(0, calc(1 - var(--intro, 0) * 12), 1);
+}
+
+/* Pendant l'intro, le contenu du haut de page attend : il apparaît quand on
+   a passé la fenêtre. Le voile sombre, lui, ne revient qu'à la fin — à
+   travers la vitre, le dehors doit paraître lumineux. */
+.hero--intro .hero__contenu,
+.hero--intro .cartouche {
+  opacity: clamp(0, calc((var(--intro, 0) - 0.8) * 5), 1);
+  transform: translateY(calc((1 - clamp(0, calc((var(--intro, 0) - 0.8) * 5), 1)) * 24px));
+}
+.hero--intro .hero__voile { opacity: clamp(0, calc((var(--intro, 0) - 0.7) * 3.4), 1); }
+.hero--intro .hero__filer { display: none; }
 
 /* Cartouche de plan : la « fiche technique » du hero. */
 .cartouche {
@@ -700,7 +762,8 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
   .nav-actions .btn { display: none; }
   .menu-mobile { display: flex; }
 
-  .hero { min-height: 92svh; padding: 118px 0 120px; }
+  .hero__cadre { min-height: 92svh; padding: 118px 0 120px; }
+  .hero--intro { height: 300svh; }
   .hero__texte { max-width: none; }
   .cartouche { display: none; }
   .hero__filer { display: none; }

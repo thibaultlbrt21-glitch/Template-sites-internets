@@ -32,15 +32,89 @@
     });
   }
 
-  /* ---------- En-tête ---------- */
   var entete = document.getElementById("entete");
   var hero = document.querySelector(".hero");
 
+  /* ---------- Intro : entrer dans le site par la fenêtre ----------
+     Uniquement si WebGL répond et que le visiteur n'a pas demandé moins
+     d'animations. Sinon le haut de page reste classique, rien ne manque.
+
+     La section s'allonge tout de suite (pas de saut de mise en page), mais
+     la 3D ne démarre qu'à la toute fin de boot() : si la carte graphique est
+     lente, le menu, le formulaire et les apparitions sont déjà en place. */
+  var intro = null;
+  var sceneIntro = hero ? hero.querySelector(".intro") : null;
+  var introPossible = !!(hero && sceneIntro && !reduit &&
+                         window.WEBLY_VISEUR && window.WEBLY_VISEUR.demarreIntro);
+  if (introPossible) hero.classList.add("hero--intro");
+
+  function introActive() {
+    return !!(hero && hero.classList.contains("hero--intro"));
+  }
+
+  // Longueur de défilement occupée par l'intro (0 sans intro).
+  function courseIntro() {
+    if (!introActive()) return 0;
+    return Math.max(0, hero.offsetHeight - window.innerHeight);
+  }
+
+  function renonceIntro() {
+    if (intro && intro.arrete) intro.arrete();
+    intro = null;
+    if (!hero) return;
+    hero.classList.remove("hero--intro");
+    hero.style.removeProperty("--intro");
+    auDefilement();
+  }
+
+  // Au-delà de ce temps de démarrage, l'appareil rend la 3D en logiciel ou
+  // presque : l'animation au défilement saccaderait. On garde le haut de
+  // page classique. (Sur une machine ordinaire, le démarrage prend ~50 ms.)
+  var DEMARRAGE_MAX = 1000;
+
+  function demarreIntro() {
+    if (!introPossible) return;
+    var premiereMatiere = document.querySelector(".matiere");
+    var t0 = window.performance ? performance.now() : Date.now();
+    intro = window.WEBLY_VISEUR.demarreIntro({
+      zone: hero,
+      scene: sceneIntro,
+      texture: premiereMatiere ? premiereMatiere.getAttribute("data-texture") : null,
+      surProgression: function (p) { hero.style.setProperty("--intro", p.toFixed(3)); },
+      surPerte: renonceIntro
+    });
+    var duree = (window.performance ? performance.now() : Date.now()) - t0;
+    if (!intro || duree > DEMARRAGE_MAX) renonceIntro();
+  }
+
+  // Le contenu du haut de page est invisible pendant l'intro : un visiteur
+  // au clavier qui y arrive est amené directement à la fin, pour ne jamais
+  // avoir le focus sur un bouton qu'il ne voit pas.
+  if (introPossible) {
+    hero.addEventListener("focusin", function () {
+      if (!introActive()) return;
+      var c = courseIntro();
+      if (window.scrollY < c - 2) window.scrollTo({ top: c, behavior: "instant" });
+    });
+    var evitement = document.querySelector(".skip-link");
+    var titre = document.getElementById("titrePrincipal");
+    if (evitement && titre) {
+      evitement.addEventListener("click", function (e) {
+        if (!introActive()) return;          // sans intro, le lien fait son travail normal
+        e.preventDefault();
+        window.scrollTo({ top: courseIntro(), behavior: "instant" });
+        titre.focus({ preventScroll: true });
+      });
+    }
+  }
+
+  /* ---------- En-tête ---------- */
   function auDefilement() {
     var y = window.scrollY;
-    if (entete) entete.classList.toggle("est-pose", y > 40);
-    var hauteurHero = hero ? hero.offsetHeight : window.innerHeight;
-    document.body.classList.toggle("est-descendu", y > hauteurHero * 0.6);
+    var c = courseIntro();
+    if (entete) entete.classList.toggle("est-pose", y > c + 40);
+    var hauteurHero = hero ? (c ? window.innerHeight : hero.offsetHeight) : window.innerHeight;
+    document.body.classList.toggle("est-descendu", y > c + hauteurHero * 0.6);
   }
   auDefilement();
   window.addEventListener("scroll", auDefilement, { passive: true });
@@ -115,7 +189,9 @@
   if (couches.length && !reduit) {
     var enAttente = false;
     var applique = function () {
-      var y = window.scrollY;
+      // La parallaxe ne démarre qu'après l'intro : pendant l'ouverture de
+      // la fenêtre, le haut de page est collé à l'écran et ne doit pas glisser.
+      var y = Math.max(0, window.scrollY - courseIntro());
       couches.forEach(function (el) {
         var p = parseFloat(el.getAttribute("data-profondeur")) || 0;
         el.style.transform = "translate3d(0," + (y * p).toFixed(1) + "px,0)";
@@ -295,7 +371,11 @@
     var annonce = document.getElementById("etapeCourante");
     var courante = 0;
 
-    function montreVolet(position) {
+    // « focalise » : seulement quand le visiteur change lui-même d'étape.
+    // Au chargement, déplacer le focus dans le formulaire volerait la
+    // première touche Tab et ferait démarrer un lecteur d'écran en milieu
+    // de page.
+    function montreVolet(position, focalise) {
       courante = Math.max(0, Math.min(volets.length - 1, position));
       volets.forEach(function (v, i) { v.classList.toggle("est-active", i === courante); });
       jauge.forEach(function (s, i) { s.classList.toggle("est-faite", i <= courante); });
@@ -306,7 +386,7 @@
       etat.textContent = "";
       etat.className = "devis__etat";
       var premier = volets[courante].querySelector("input, select, textarea");
-      if (premier) premier.focus({ preventScroll: true });
+      if (focalise && premier) premier.focus({ preventScroll: true });
     }
 
     function messageErreur(champ) {
@@ -359,9 +439,9 @@
         etat.className = "devis__etat est-ko";
         return;
       }
-      montreVolet(courante + 1);
+      montreVolet(courante + 1, true);
     });
-    btnPrec.addEventListener("click", function () { montreVolet(courante - 1); });
+    btnPrec.addEventListener("click", function () { montreVolet(courante - 1, true); });
 
     function valeur(id) {
       var el = document.getElementById(id);
@@ -411,7 +491,7 @@
       // et vider un champ déjà validé.
       for (var i = 0; i < volets.length; i++) {
         if (!valideVolet(i)) {
-          montreVolet(i);
+          montreVolet(i, true);
           etat.textContent = "Merci de compléter cette étape.";
           etat.className = "devis__etat est-ko";
           return;
@@ -423,8 +503,11 @@
       etat.className = "devis__etat est-ok";
     });
 
-    montreVolet(0);
+    montreVolet(0, false);
   }
+
+  /* ---------- Intro 3D : en dernier, pour ne rien bloquer ---------- */
+  if (introPossible) window.setTimeout(demarreIntro, 0);
 
   /* ---------- Année ---------- */
   var annee = document.getElementById("annee");

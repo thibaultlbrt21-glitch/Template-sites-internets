@@ -24,6 +24,37 @@ site sa signature — et qui le distingue des quatre autres templates.
 
 Aucun fichier partagé entre les cinq projets : chacun est autonome.
 
+## L'intro : entrer dans le site par la fenêtre
+
+Le visiteur arrive face à une fenêtre fermée, dans une pièce sombre. Au
+défilement, et uniquement au défilement :
+
+1. la **poignée** se relève et le vantail principal **bascule en oscillo** ;
+2. il se referme, la poignée passe à l'horizontale ;
+3. il **s'ouvre à la française**, puis le semi-fixe s'ouvre à son tour ;
+4. la caméra, partie d'un trois-quarts en hauteur, se recentre et **passe
+   par l'ouverture** — le haut de page apparaît.
+
+Le mur est dessiné sur un **calque transparent** posé sur la page : à travers
+la vitre, c'est le vrai haut de page qu'on voit, pas une image qui l'imite. En
+passant l'ouverture, on arrive donc réellement sur le site, sans raccord.
+
+Garde-fous :
+
+- **pas d'intro** sous `prefers-reduced-motion`, ni sans WebGL : le haut de
+  page est alors classique, rien ne manque ;
+- **appareil trop lent** (plus d'une seconde pour démarrer la 3D, typique
+  d'un rendu logiciel) : l'intro est abandonnée plutôt que de saccader ;
+- la 3D démarre **en dernier**, une fois menu, formulaire et apparitions en
+  place ;
+- **aucune boucle d'animation** : on ne redessine que quand la page défile ;
+- **clavier** : le lien d'évitement mène au titre, intro passée ; un bouton du
+  haut de page qui reçoit le focus fait passer l'intro — jamais de focus sur
+  un élément invisible.
+
+La chorégraphie (seuils de défilement, angles) est décrite en tête de
+`demarreIntro()` dans `assets/js/viseur3d.js`.
+
 ## Le visualiseur 3D
 
 `assets/js/viseur3d.js` — un moteur WebGL écrit à la main, **sans three.js ni
@@ -41,8 +72,10 @@ modélisée d'après des photos de menuiserie PVC réelle :
 Le vantail principal prend **trois positions, animées** au clic :
 **fermée**, **oscillo** (basculé par le haut, la position d'aération) et
 **à la française** (ouvert sur ses paumelles). Comme sur une vraie
-quincaillerie, il ne bascule et ne pivote jamais en même temps : passer
-d'oscillo à la française referme d'abord le mouvement en cours.
+quincaillerie, **c'est la poignée qui commande** : vers le bas fermée, à
+l'horizontale pour la française, vers le haut pour l'oscillo. Le vantail ne
+bouge que poignée en place, et la poignée ne tourne que vantail fermé —
+passer d'oscillo à la française referme, tourne la poignée, puis ouvre.
 
 Le rendu se fait en trois passes — menuiserie, joint, puis vitrage en
 transparence sans écriture de profondeur, sans quoi le verre masquerait les
@@ -149,7 +182,10 @@ Mesuré dans Chromium, pas estimé.
 | Repli sans `site.json` | page complète et identique |
 | Liste vidée | section masquée, lien de menu masqué, contenu retiré du DOM |
 | WebGL | rendu, vitrage transparent, rotation souris et clavier, changement de matériau |
-| Ouvertures 3D | fermée, oscillo, à la française — enchaînements et bouton actif |
+| Ouvertures 3D | fermée, oscillo, à la française — poignée, enchaînements, bouton actif |
+| Intro | début et fin, contenu cliquable après, lien d'évitement, focus clavier, 390 px |
+| Intro — garde-fous | mouvement réduit, sans WebGL, appareil lent : haut de page classique |
+| Navigation sur le haut de page | contraste mesuré sur la capture : 9,7:1 |
 | Section Aides | 4 dispositifs, critères techniques, RGE, renvoi France Rénov', **aucune somme en euros** |
 | Repli sans WebGL | volume CSS 3D affiché, boutons d'ouverture retirés |
 | Devis 4 étapes | cas valides et invalides, retour arrière |

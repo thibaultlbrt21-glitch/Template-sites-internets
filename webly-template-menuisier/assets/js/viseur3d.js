@@ -13,7 +13,14 @@
    Le vantail principal prend trois positions, animées : fermée, oscillo
    (basculé par le haut) et à la française (ouvert sur ses paumelles).
 
-   Rendu en trois passes : la menuiserie, le joint, puis le vitrage en
+   Deux scènes partagent ce moteur :
+     - demarre()      : le comparateur de matériaux, qu'on fait tourner ;
+     - demarreIntro() : l'entrée du site. Au défilement, la fenêtre bascule
+       en oscillo, se referme, s'ouvre en grand, et l'on passe au travers.
+       Le mur est dessiné sur un calque transparent : à travers la vitre,
+       c'est le vrai haut de page qu'on voit, pas une image qui l'imite.
+
+   Rendu en passes : la menuiserie et le mur, le joint, puis le vitrage en
    transparence et sans écriture de profondeur — sans quoi il masquerait les
    montants situés derrière lui.
 
@@ -66,11 +73,48 @@ window.WEBLY_VISEUR = (function () {
     return m;
   }
 
+  // x' = x cos - y sin ; y' = x sin + y cos
+  function rotationZ(a) {
+    var m = identite(), c = Math.cos(a), s = Math.sin(a);
+    m[0] = c; m[1] = s; m[4] = -s; m[5] = c;
+    return m;
+  }
+
   // y' = y cos - z sin ; z' = y sin + z cos
   function rotationX(a) {
     var m = identite(), c = Math.cos(a), s = Math.sin(a);
     m[5] = c; m[6] = s; m[9] = -s; m[10] = c;
     return m;
+  }
+
+  function borne(x, a, b) { return Math.max(a, Math.min(b, x)); }
+
+  // Interpolation douce entre deux seuils : 0 avant a, 1 après b.
+  function lisse(a, b, x) {
+    var t = borne((x - a) / (b - a), 0, 1);
+    return t * t * (3 - 2 * t);
+  }
+
+  // Matrice de vue d'une caméra placée en « oeil » et tournée vers « cible ».
+  function regarde(oeil, cible) {
+    var zx = oeil[0] - cible[0], zy = oeil[1] - cible[1], zz = oeil[2] - cible[2];
+    var l = Math.sqrt(zx * zx + zy * zy + zz * zz) || 1;
+    zx /= l; zy /= l; zz /= l;
+    var xx = zz, xy = 0, xz = -zx;                    // haut (0, 1, 0) × z
+    l = Math.sqrt(xx * xx + xz * xz) || 1;
+    xx /= l; xz /= l;
+    var yx = zy * xz - zz * xy, yy = zz * xx - zx * xz, yz = zx * xy - zy * xx;
+    var m = new Float32Array(16);
+    m[0] = xx; m[4] = xy; m[8] = xz;  m[12] = -(xx * oeil[0] + xy * oeil[1] + xz * oeil[2]);
+    m[1] = yx; m[5] = yy; m[9] = yz;  m[13] = -(yx * oeil[0] + yy * oeil[1] + yz * oeil[2]);
+    m[2] = zx; m[6] = zy; m[10] = zz; m[14] = -(zx * oeil[0] + zy * oeil[1] + zz * oeil[2]);
+    m[15] = 1;
+    return m;
+  }
+
+  // Rotation r autour d'un axe passant par (x, y, z).
+  function autour(x, y, z, r) {
+    return multiplie(translation(x, y, z), multiplie(r, translation(-x, -y, -z)));
   }
 
   // Inverse-transposée de la partie 3x3 : indispensable pour que les
@@ -225,16 +269,17 @@ window.WEBLY_VISEUR = (function () {
 
   function fenetre() {
     var K = COTES;
-    var fixe = { opaque: [], joint: [], verre: [] };
-    var mobile = { opaque: [], joint: [], verre: [] };
+    var dormant = { opaque: [] };
+    var gauche = { opaque: [], joint: [], verre: [] };
+    var droite = { opaque: [], poignee: [], joint: [], verre: [] };
 
     // --- Dormant ---
-    anneau(fixe.opaque, -K.L / 2, K.L / 2, -K.H / 2, K.H / 2, 0, K.d, 0, K.ed);
+    anneau(dormant.opaque, -K.L / 2, K.L / 2, -K.H / 2, K.H / 2, 0, K.d, 0, K.ed);
 
     var W = K.L - 2 * K.d;                 // largeur de l'ouverture en tableau
     var ym = K.H / 2 - K.d + K.r;          // demi-hauteur d'un vantail
-    var gauche = { x0: -W / 2 - K.r, x1: 0 };
-    var droite = { x0: 0, x1: W / 2 + K.r };
+    var vg = { x0: -W / 2 - K.r, x1: 0 };
+    var vd = { x0: 0, x1: W / 2 + K.r };
 
     // --- Un vantail : profil, moulure, joint, vitrage ---
     function vantail(g, v) {
@@ -254,52 +299,84 @@ window.WEBLY_VISEUR = (function () {
       g.verre.push(pave((gx0 + gx1) / 2, 0, K.zV, gx1 - gx0, 2 * gy, 0.024, 1));
     }
 
-    vantail(fixe, gauche);     // vantail semi-fixe
-    vantail(mobile, droite);   // vantail principal, oscillo-battant
+    vantail(gauche, vg);   // vantail semi-fixe
+    vantail(droite, vd);   // vantail principal, oscillo-battant
 
     // --- Paumelles, aux angles extérieurs des deux vantaux ---
-    [gauche.x0 - 0.007, droite.x1 + 0.007].forEach(function (x) {
+    [vg.x0 - 0.007, vd.x1 + 0.007].forEach(function (x) {
       [ym - 0.17, -ym + 0.17].forEach(function (y) {
-        fixe.opaque.push(pave(x, y, K.zAr + 0.034, 0.016, 0.078, 0.022, 1));
+        dormant.opaque.push(pave(x, y, K.zAr + 0.034, 0.016, 0.078, 0.022, 1));
       });
     });
 
     // --- Poignée centrale, sur le montant du vantail principal ---
-    var xp = droite.x0 + (K.o - K.m) / 2;
+    // La rosace et le carré sont fixes ; le levier tourne sur le carré.
+    var xp = vd.x0 + (K.o - K.m) / 2;
     var yp = -0.03;
-    mobile.opaque.push(pave(xp, yp, K.zAv + 0.007, 0.030, 0.080, 0.014, 1));         // rosace
-    mobile.opaque.push(pave(xp, yp, K.zAv + 0.022, 0.014, 0.014, 0.020, 1));         // carré
-    mobile.opaque.push(pave(xp, yp - 0.070, K.zAv + 0.036, 0.022, 0.150, 0.016, 1)); // levier
+    droite.opaque.push(pave(xp, yp, K.zAv + 0.007, 0.030, 0.080, 0.014, 1));          // rosace
+    droite.opaque.push(pave(xp, yp, K.zAv + 0.022, 0.014, 0.014, 0.020, 1));          // carré
+    droite.poignee.push(pave(xp, yp - 0.070, K.zAv + 0.036, 0.022, 0.150, 0.016, 1)); // levier, vers le bas
 
-    function prepare(p) {
-      return { opaque: assemble(p.opaque), joint: assemble(p.joint), verre: assemble(p.verre) };
+    function prepare(parties) {
+      var sortie = {};
+      Object.keys(parties).forEach(function (k) { sortie[k] = assemble(parties[k]); });
+      return sortie;
     }
 
     return {
-      fixe: prepare(fixe),
-      mobile: prepare(mobile),
+      dormant: prepare(dormant),
+      gauche: prepare(gauche),
+      droite: prepare(droite),
       pivots: {
-        oscillo: { y: -ym, z: K.zAr },       // axe horizontal, pied du vantail
-        battant: { x: droite.x1, z: K.zAr }  // axe vertical, côté paumelles
+        oscillo:  { y: -ym, z: K.zAr },    // axe horizontal, pied du vantail principal
+        battant:  { x: vd.x1, z: K.zAr },  // axe vertical, paumelles du vantail principal
+        semiFixe: { x: vg.x0, z: K.zAr },  // axe vertical, paumelles du semi-fixe
+        poignee:  { x: xp, y: yp, z: K.zAv + 0.022 }  // axe du carré de manœuvre
       }
     };
   }
 
-  // Position du vantail principal : bascule (oscillo) puis rotation (battant).
-  function transformeVantail(pivots, bascule, rotation) {
+  // Vantail principal : bascule (oscillo) puis rotation (battant).
+  function transformePrincipal(pivots, bascule, rotation) {
     var o = pivots.oscillo, b = pivots.battant;
-    var mOsc = multiplie(translation(0, o.y, o.z),
-               multiplie(rotationX(bascule), translation(0, -o.y, -o.z)));
-    var mBat = multiplie(translation(b.x, 0, b.z),
-               multiplie(rotationY(rotation), translation(-b.x, 0, -b.z)));
-    return multiplie(mBat, mOsc);
+    return multiplie(autour(b.x, 0, b.z, rotationY(rotation)),
+                     autour(0, o.y, o.z, rotationX(bascule)));
   }
 
-  // Positions d'ouverture : [bascule, rotation], en radians.
+  // Le levier de la poignée, dans le repère du vantail principal.
+  // 0 = vers le bas (fermée), PI/2 = horizontal (à la française),
+  // PI = vers le haut (oscillo) — la convention des oscillo-battants.
+  function transformePoignee(pivots, angle) {
+    var q = pivots.poignee;
+    return autour(q.x, q.y, q.z, rotationZ(angle));
+  }
+
+  // Vantail semi-fixe : il ne s'ouvre qu'à la française, vers la pièce.
+  function transformeSemiFixe(pivots, rotation) {
+    var s = pivots.semiFixe;
+    return autour(s.x, 0, s.z, rotationY(-rotation));
+  }
+
+  // Le mur autour de la fenêtre, et la tablette sous l'appui : le décor de
+  // l'intro. Le mur est percé exactement aux cotes du dormant.
+  function murEtTablette() {
+    var K = COTES, E = 25, L = K.L, H = K.H, zc = 0.02, ep = 0.28;
+    return {
+      mur: assemble([
+        pave(0,  (H / 2 + E) / 2, zc, 2 * E, E - H / 2, ep, 1),
+        pave(0, -(H / 2 + E) / 2, zc, 2 * E, E - H / 2, ep, 1),
+        pave(-(L / 2 + E) / 2, 0, zc, E - L / 2, H, ep, 1),
+        pave( (L / 2 + E) / 2, 0, zc, E - L / 2, H, ep, 1)
+      ]),
+      tablette: assemble([pave(0, -H / 2 - 0.025, 0.26, L + 0.36, 0.05, 0.30, 1)])
+    };
+  }
+
+  // Positions d'ouverture du comparateur : [bascule, rotation, poignée].
   var OUVERTURES = {
-    fermee:  [0, 0],
-    oscillo: [0.17, 0],      // ~10 degrés : l'entrebâillement d'aération
-    battant: [0, 1.05]       // ~60 degrés : ouverte à la française
+    fermee:  [0, 0, 0],
+    oscillo: [0.17, 0, Math.PI],        // ~10 degrés : l'entrebâillement d'aération
+    battant: [0, 1.05, Math.PI / 2]     // ~60 degrés : ouverte à la française
   };
 
   /* ---------------------------------------------------------------------
@@ -324,12 +401,14 @@ window.WEBLY_VISEUR = (function () {
   ].join("\n");
 
   // Deux sources : une clé chaude en haut à gauche, un remplissage froid à
-  // droite. uMode : 0 = matière texturée, 1 = vitrage, 2 = joint.
+  // droite. uMode : 0 = matière texturée, 1 = vitrage, 2 = joint,
+  // 3 = couleur unie (mur et tablette de l'intro).
   var FRAGMENT = [
     "precision mediump float;",
     "uniform sampler2D uTexture;",
     "uniform vec3 uOeil;",
     "uniform float uMode;",
+    "uniform vec3 uCouleur;",
     "varying vec3 vNorm, vPos;",
     "varying vec2 vUv;",
     "",
@@ -349,6 +428,15 @@ window.WEBLY_VISEUR = (function () {
     "  vec3 H = normalize(Lc + V);",
     "  float dc = max(dot(N, Lc), 0.0);",
     "  float dr = max(dot(N, Lr), 0.0) * 0.35;",
+    "",
+    "  if (uMode > 2.5) {",
+    // Mur et tablette : couleur unie, éclairée par le jour qui entre par la
+    // fenêtre — plus claire près de l'ouverture, plus sombre au loin.
+    "    float jour = exp(-dot(vPos.xy, vPos.xy) * 0.6);",
+    "    vec3 c = uCouleur * (0.25 + dc * 0.55 + dr) + uCouleur * jour * 2.2 * vec3(1.1, 1.0, 0.88);",
+    "    gl_FragColor = vec4(developpe(c), 1.0);",
+    "    return;",
+    "  }",
     "",
     "  if (uMode > 1.5) {",
     // Joint : caoutchouc noir, légèrement satiné.
@@ -396,37 +484,26 @@ window.WEBLY_VISEUR = (function () {
   }
 
   /* ---------------------------------------------------------------------
-     Mise en route
+     Socle commun : contexte, programme, tampons, texture
      --------------------------------------------------------------------- */
 
-  function demarre(options) {
-    var scene = options.scene;
-    var canvas = scene.querySelector("canvas");
-    if (!canvas) return null;
-
-    var reduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function prepareGL(canvas, transparent) {
     var gl = null;
+    var reglages = { antialias: true, alpha: !!transparent, premultipliedAlpha: true };
     try {
-      gl = canvas.getContext("webgl", { antialias: true, alpha: false })
-        || canvas.getContext("experimental-webgl", { antialias: true, alpha: false });
+      gl = canvas.getContext("webgl", reglages) || canvas.getContext("experimental-webgl", reglages);
     } catch (e) { gl = null; }
-
-    if (!gl) {
-      // Pas de WebGL : le repli CSS est déjà dans la page, on l'affiche.
-      scene.classList.add("sans-webgl");
-      return null;
-    }
+    if (!gl) return null;
 
     var programme = gl.createProgram();
     var vs = compile(gl, gl.VERTEX_SHADER, SOMMET);
     var fs = compile(gl, gl.FRAGMENT_SHADER, FRAGMENT);
-    if (!vs || !fs) { scene.classList.add("sans-webgl"); return null; }
+    if (!vs || !fs) return null;
     gl.attachShader(programme, vs);
     gl.attachShader(programme, fs);
     gl.linkProgram(programme);
     if (!gl.getProgramParameter(programme, gl.LINK_STATUS)) {
       console.warn("[Webly 3D] édition de liens :", gl.getProgramInfoLog(programme));
-      scene.classList.add("sans-webgl");
       return null;
     }
     gl.useProgram(programme);
@@ -439,6 +516,17 @@ window.WEBLY_VISEUR = (function () {
     gl.enableVertexAttribArray(attr.pos);
     gl.enableVertexAttribArray(attr.norm);
     gl.enableVertexAttribArray(attr.uv);
+
+    var u = {
+      proj: gl.getUniformLocation(programme, "uProj"),
+      vue: gl.getUniformLocation(programme, "uVue"),
+      modele: gl.getUniformLocation(programme, "uModele"),
+      norm: gl.getUniformLocation(programme, "uNorm"),
+      oeil: gl.getUniformLocation(programme, "uOeil"),
+      texture: gl.getUniformLocation(programme, "uTexture"),
+      mode: gl.getUniformLocation(programme, "uMode"),
+      couleur: gl.getUniformLocation(programme, "uCouleur")
+    };
 
     // Un groupe = un jeu de tampons prêt à dessiner.
     function groupe(donnees) {
@@ -460,24 +548,17 @@ window.WEBLY_VISEUR = (function () {
       };
     }
 
-    var geo = fenetre();
-    var G = {
-      fixe:   { opaque: groupe(geo.fixe.opaque),   joint: groupe(geo.fixe.joint),   verre: groupe(geo.fixe.verre) },
-      mobile: { opaque: groupe(geo.mobile.opaque), joint: groupe(geo.mobile.joint), verre: groupe(geo.mobile.verre) }
-    };
+    // Les parties d'un ouvrage (opaque, joint, verre) en groupes.
+    function groupes(parties) {
+      var sortie = {};
+      Object.keys(parties).forEach(function (k) { sortie[k] = groupe(parties[k]); });
+      return sortie;
+    }
 
-    var u = {
-      proj: gl.getUniformLocation(programme, "uProj"),
-      vue: gl.getUniformLocation(programme, "uVue"),
-      modele: gl.getUniformLocation(programme, "uModele"),
-      norm: gl.getUniformLocation(programme, "uNorm"),
-      oeil: gl.getUniformLocation(programme, "uOeil"),
-      texture: gl.getUniformLocation(programme, "uTexture"),
-      mode: gl.getUniformLocation(programme, "uMode")
-    };
-
-    function dessineGroupe(g, mode, modele) {
+    function dessine(g, mode, modele, couleur) {
+      if (!g || !g.nombre) return;
       gl.uniform1f(u.mode, mode);
+      if (couleur) gl.uniform3fv(u.couleur, couleur);
       gl.uniformMatrix4fv(u.modele, false, modele);
       gl.uniformMatrix3fv(u.norm, false, normale3x3(modele));
       gl.bindBuffer(gl.ARRAY_BUFFER, g.pos);
@@ -490,8 +571,8 @@ window.WEBLY_VISEUR = (function () {
       gl.drawElements(gl.TRIANGLES, g.nombre, gl.UNSIGNED_SHORT, 0);
     }
 
-    // --- Texture : un pixel neutre en attendant la vraie, pour qu'il n'y
-    // ait pas de clignotement au premier rendu. ---
+    // Texture : un pixel neutre en attendant la vraie, pour qu'il n'y ait
+    // pas de clignotement au premier rendu.
     var texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE,
@@ -499,7 +580,7 @@ window.WEBLY_VISEUR = (function () {
     gl.uniform1i(u.texture, 0);
 
     var chargementEnCours = 0;
-    function chargeTexture(src) {
+    function chargeTexture(src, fait) {
       var jeton = ++chargementEnCours;
       var img = new Image();
       img.onload = function () {
@@ -518,7 +599,7 @@ window.WEBLY_VISEUR = (function () {
         gl.generateMipmap(gl.TEXTURE_2D);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-        scene.setAttribute("data-texture", "chargee");
+        if (fait) fait();
       };
       img.onerror = function () {
         console.warn("[Webly 3D] texture de matériau introuvable :", src);
@@ -526,11 +607,60 @@ window.WEBLY_VISEUR = (function () {
       img.src = src;
     }
 
+    function camera(proj, vue, oeil) {
+      gl.uniformMatrix4fv(u.proj, false, proj);
+      gl.uniformMatrix4fv(u.vue, false, vue);
+      gl.uniform3fv(u.oeil, oeil);
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+    }
+
     gl.enable(gl.DEPTH_TEST);
+    // Couleur et alpha mélangés séparément : sur un calque transparent,
+    // l'alpha doit s'accumuler, sinon la page apparaîtrait à travers le mur.
+    gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Les deux passes de rendu : opaque (menuiserie, joint, décor), puis
+    // vitrage en transparence sans écriture de profondeur.
+    function passeOpaque() { gl.disable(gl.BLEND); gl.depthMask(true); }
+    function passeVerre() { gl.enable(gl.BLEND); gl.depthMask(false); }
+    function finPasses() { gl.depthMask(true); }
+
+    return {
+      gl: gl, groupe: groupe, groupes: groupes, dessine: dessine,
+      chargeTexture: chargeTexture, camera: camera,
+      passeOpaque: passeOpaque, passeVerre: passeVerre, finPasses: finPasses
+    };
+  }
+
+  /* ---------------------------------------------------------------------
+     Scène 1 — le comparateur de matériaux
+     --------------------------------------------------------------------- */
+
+  function demarre(options) {
+    var scene = options.scene;
+    var canvas = scene.querySelector("canvas");
+    if (!canvas) return null;
+
+    var reduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var ctx = prepareGL(canvas, false);
+    if (!ctx) {
+      // Pas de WebGL : le repli CSS est déjà dans la page, on l'affiche.
+      scene.classList.add("sans-webgl");
+      return null;
+    }
+    var gl = ctx.gl;
     gl.clearColor(0.118, 0.141, 0.153, 1);
 
+    var geo = fenetre();
+    var G = { dormant: ctx.groupes(geo.dormant), gauche: ctx.groupes(geo.gauche), droite: ctx.groupes(geo.droite) };
+
+    function chargeTexture(src) {
+      ctx.chargeTexture(src, function () { scene.setAttribute("data-texture", "chargee"); });
+    }
+
     /* ---- Ouverture du vantail principal ---- */
-    var ouverture = { bascule: 0, rotation: 0, cible: "oscillo" };
+    var ouverture = { bascule: 0, rotation: 0, poignee: 0, cible: "oscillo" };
     if (options.ouverture && OUVERTURES[options.ouverture]) ouverture.cible = options.ouverture;
 
     function avanceOuverture() {
@@ -538,18 +668,24 @@ window.WEBLY_VISEUR = (function () {
       if (reduit) {
         ouverture.bascule = cible[0];
         ouverture.rotation = cible[1];
+        ouverture.poignee = cible[2];
       } else {
-        // Une fenêtre oscillo-battante ne peut pas basculer et pivoter à la
-        // fois : on referme d'abord le mouvement en cours, comme la
-        // quincaillerie l'impose.
-        var viseB = cible[0], viseR = cible[1];
-        if (viseB > 0 && ouverture.rotation > 0.004) viseB = 0;
-        if (viseR > 0 && ouverture.bascule > 0.004) viseR = 0;
+        // Comme sur une vraie quincaillerie : le vantail ne bouge que si la
+        // poignée est dans la bonne position, et la poignée ne tourne que
+        // vantail fermé. Changer de position referme donc d'abord, tourne
+        // la poignée, puis ouvre — jamais bascule et pivot à la fois.
+        var poigneeEnPlace = Math.abs(ouverture.poignee - cible[2]) < 0.02;
+        var viseB = poigneeEnPlace ? cible[0] : 0;
+        var viseR = poigneeEnPlace ? cible[1] : 0;
         ouverture.bascule += (viseB - ouverture.bascule) * 0.09;
         ouverture.rotation += (viseR - ouverture.rotation) * 0.07;
+        var ferme = ouverture.bascule < 0.004 && ouverture.rotation < 0.004;
+        if (ferme && !poigneeEnPlace) ouverture.poignee += (cible[2] - ouverture.poignee) * 0.16;
+        if (poigneeEnPlace) ouverture.poignee = cible[2];
       }
       var atteinte = Math.abs(ouverture.bascule - cible[0]) < 0.003 &&
-                     Math.abs(ouverture.rotation - cible[1]) < 0.003;
+                     Math.abs(ouverture.rotation - cible[1]) < 0.003 &&
+                     Math.abs(ouverture.poignee - cible[2]) < 0.02;
       scene.setAttribute("data-ouverture-atteinte", atteinte ? "oui" : "non");
     }
 
@@ -589,7 +725,7 @@ window.WEBLY_VISEUR = (function () {
       angleY += dx * 0.0085;
       repos = angleY;
       elan = dx * 0.0085;
-      angleX = Math.max(-0.7, Math.min(0.7, angleX + dy * 0.006));
+      angleX = borne(angleX + dy * 0.006, -0.7, 0.7);
       e.preventDefault();
     }
     function pointeurHaut(e) {
@@ -610,8 +746,8 @@ window.WEBLY_VISEUR = (function () {
       var pas = 0.18;
       if (e.key === "ArrowLeft")       { saisit(); angleY -= pas; }
       else if (e.key === "ArrowRight") { saisit(); angleY += pas; }
-      else if (e.key === "ArrowUp")    { saisit(); angleX = Math.max(-0.7, angleX - pas / 2); }
-      else if (e.key === "ArrowDown")  { saisit(); angleX = Math.min(0.7, angleX + pas / 2); }
+      else if (e.key === "ArrowUp")    { saisit(); angleX = borne(angleX - pas / 2, -0.7, 0.7); }
+      else if (e.key === "ArrowDown")  { saisit(); angleX = borne(angleX + pas / 2, -0.7, 0.7); }
       else return;
       repos = angleY;
       e.preventDefault();
@@ -654,31 +790,24 @@ window.WEBLY_VISEUR = (function () {
       avanceOuverture();
 
       var mFixe = multiplie(rotationY(angleY), rotationX(angleX));
-      var mMobile = multiplie(mFixe, transformeVantail(geo.pivots, ouverture.bascule, ouverture.rotation));
-      var proj = perspective(Math.PI / 4.6, largeur / hauteur, 0.1, 100);
+      var mPrincipal = multiplie(mFixe, transformePrincipal(geo.pivots, ouverture.bascule, ouverture.rotation));
+      var mPoignee = multiplie(mPrincipal, transformePoignee(geo.pivots, ouverture.poignee));
 
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-      gl.uniformMatrix4fv(u.proj, false, proj);
-      gl.uniformMatrix4fv(u.vue, false, vue);
-      gl.uniform3fv(u.oeil, oeil);
-      gl.activeTexture(gl.TEXTURE0);
-      gl.bindTexture(gl.TEXTURE_2D, texture);
+      ctx.camera(perspective(Math.PI / 4.6, largeur / hauteur, 0.1, 100), vue, oeil);
 
-      // 1. La menuiserie et le joint, opaques.
-      gl.disable(gl.BLEND);
-      gl.depthMask(true);
-      dessineGroupe(G.fixe.opaque, 0, mFixe);
-      dessineGroupe(G.mobile.opaque, 0, mMobile);
-      dessineGroupe(G.fixe.joint, 2, mFixe);
-      dessineGroupe(G.mobile.joint, 2, mMobile);
+      ctx.passeOpaque();
+      ctx.dessine(G.dormant.opaque, 0, mFixe);
+      ctx.dessine(G.gauche.opaque, 0, mFixe);
+      ctx.dessine(G.droite.opaque, 0, mPrincipal);
+      ctx.dessine(G.droite.poignee, 0, mPoignee);
+      ctx.dessine(G.gauche.joint, 2, mFixe);
+      ctx.dessine(G.droite.joint, 2, mPrincipal);
 
-      // 2. Le vitrage, en transparence et sans écrire la profondeur.
-      gl.enable(gl.BLEND);
-      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-      gl.depthMask(false);
-      dessineGroupe(G.fixe.verre, 1, mFixe);
-      dessineGroupe(G.mobile.verre, 1, mMobile);
-      gl.depthMask(true);
+      ctx.passeVerre();
+      ctx.dessine(G.gauche.verre, 1, mFixe);
+      ctx.dessine(G.droite.verre, 1, mPrincipal);
+      ctx.finPasses();
     }
 
     // Hors écran, on ne calcule rien : inutile de chauffer le téléphone
@@ -708,5 +837,156 @@ window.WEBLY_VISEUR = (function () {
     };
   }
 
-  return { demarre: demarre };
+  /* ---------------------------------------------------------------------
+     Scène 2 — l'intro : entrer dans le site par la fenêtre
+
+     Pilotée uniquement par le défilement : aucune boucle d'animation, on
+     ne redessine que quand la page bouge. La progression p va de 0 (haut de
+     page) à 1 (fin de l'intro) :
+
+       0,02 → 0,07  la poignée se relève
+       0,08 → 0,26  le vantail principal bascule en oscillo
+       0,30 → 0,38  il se referme (il ne peut pas pivoter en restant basculé)
+       0,38 → 0,41  la poignée passe à l'horizontale
+       0,42 → 0,60  le vantail s'ouvre à la française
+       0,50 → 0,68  le semi-fixe s'ouvre à son tour
+       0,56 → 0,97  la caméra avance et passe par l'ouverture
+     --------------------------------------------------------------------- */
+
+  function demarreIntro(options) {
+    var zone = options.zone, scene = options.scene;
+    var canvas = scene && scene.querySelector("canvas");
+    if (!zone || !canvas) return null;
+
+    var ctx = prepareGL(canvas, true);
+    if (!ctx) return null;
+    var gl = ctx.gl;
+    gl.clearColor(0, 0, 0, 0);            // transparent : la page se voit par l'ouverture
+
+    var geo = fenetre();
+    var G = { dormant: ctx.groupes(geo.dormant), gauche: ctx.groupes(geo.gauche), droite: ctx.groupes(geo.droite) };
+    var decor = murEtTablette();
+    var mur = ctx.groupe(decor.mur), tablette = ctx.groupe(decor.tablette);
+    var TEINTE_MUR = new Float32Array([0.012, 0.0125, 0.013]);      // pièce dans la pénombre, en linéaire
+    var TEINTE_TABLETTE = new Float32Array([0.30, 0.285, 0.26]);    // pierre claire
+    var I = identite();
+
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var largeur = 0, hauteur = 0;
+    function redimensionne() {
+      var r = scene.getBoundingClientRect();
+      var w = Math.max(1, Math.round(r.width * dpr));
+      var h = Math.max(1, Math.round(r.height * dpr));
+      if (w === largeur && h === hauteur) return false;
+      largeur = w; hauteur = h;
+      canvas.width = w; canvas.height = h;
+      gl.viewport(0, 0, w, h);
+      return true;
+    }
+
+    function progression() {
+      var r = zone.getBoundingClientRect();
+      var course = zone.offsetHeight - window.innerHeight;
+      if (course <= 0) return 1;
+      return borne(-r.top / course, 0, 1);
+    }
+
+    var derniere = -1, demande = false, enMarche = true;
+
+    function rendu(force) {
+      demande = false;
+      if (!enMarche) return;
+      var p = progression();
+      var retaille = redimensionne();
+      if (!force && !retaille && Math.abs(p - derniere) < 0.0005) return;
+      derniere = p;
+      scene.setAttribute("data-progression", p.toFixed(3));
+      if (options.surProgression) options.surProgression(p);
+
+      var poignee = Math.PI * lisse(0.02, 0.07, p) - (Math.PI / 2) * lisse(0.38, 0.41, p);
+      var bascule = 0.2 * (lisse(0.08, 0.26, p) - lisse(0.30, 0.38, p));
+      var rotPrincipal = 1.50 * lisse(0.42, 0.60, p);
+      var rotSemiFixe = 1.45 * lisse(0.50, 0.68, p);
+      var avance = lisse(0.56, 0.97, p);
+
+      // Distance de départ : la fenêtre occupe environ 60 % de la hauteur
+      // d'écran, et jamais plus de 80 % de sa largeur — sur un téléphone en
+      // portrait, c'est la largeur qui commande.
+      var aspect = largeur / hauteur;
+      var fov0 = Math.PI / 4, t = Math.tan(fov0 / 2);
+      var d0 = Math.max((COTES.H / 0.62) / (2 * t), (COTES.L / 0.8) / (2 * t * aspect));
+      var zCam = d0 + (-0.8 - d0) * avance;
+      var biais = 1 - lisse(0.36, 0.64, p);
+      var xCam = -0.6 * biais, yCam = 0.02 + 0.28 * biais;
+      var oeil = [xCam, yCam, zCam];
+
+      // Au départ on regarde le centre de la fenêtre ; à mesure que le biais
+      // s'efface, on regarde droit devant — la caméra peut alors traverser
+      // le plan de la fenêtre sans se retourner.
+      var versCentre = [-xCam, -yCam, -zCam];
+      var l = Math.sqrt(versCentre[0] * versCentre[0] + versCentre[1] * versCentre[1] + versCentre[2] * versCentre[2]) || 1;
+      var dir = [versCentre[0] / l * biais, versCentre[1] / l * biais, versCentre[2] / l * biais - (1 - biais)];
+      var cible = [xCam + dir[0], yCam + dir[1], zCam + dir[2]];
+
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      ctx.camera(perspective(fov0 + avance * 0.25, aspect, 0.03, 60),
+                 regarde(oeil, cible),
+                 new Float32Array(oeil));
+
+      var mPrincipal = transformePrincipal(geo.pivots, bascule, rotPrincipal);
+      var mPoignee = multiplie(mPrincipal, transformePoignee(geo.pivots, poignee));
+      var mSemiFixe = transformeSemiFixe(geo.pivots, rotSemiFixe);
+
+      ctx.passeOpaque();
+      ctx.dessine(mur, 3, I, TEINTE_MUR);
+      ctx.dessine(tablette, 3, I, TEINTE_TABLETTE);
+      ctx.dessine(G.dormant.opaque, 0, I);
+      ctx.dessine(G.gauche.opaque, 0, mSemiFixe);
+      ctx.dessine(G.droite.opaque, 0, mPrincipal);
+      ctx.dessine(G.droite.poignee, 0, mPoignee);
+      ctx.dessine(G.gauche.joint, 2, mSemiFixe);
+      ctx.dessine(G.droite.joint, 2, mPrincipal);
+
+      ctx.passeVerre();
+      ctx.dessine(G.gauche.verre, 1, mSemiFixe);
+      ctx.dessine(G.droite.verre, 1, mPrincipal);
+      ctx.finPasses();
+    }
+
+    function planifie() {
+      if (demande) return;
+      demande = true;
+      window.requestAnimationFrame(function () { rendu(false); });
+    }
+
+    window.addEventListener("scroll", planifie, { passive: true });
+    window.addEventListener("resize", function () {
+      window.requestAnimationFrame(function () { rendu(true); });
+    });
+
+    canvas.addEventListener("webglcontextlost", function (e) {
+      e.preventDefault();
+      enMarche = false;
+      if (options.surPerte) options.surPerte();
+    });
+
+    ctx.chargeTexture(options.texture || "assets/images/materiau-pvc.svg", function () {
+      scene.setAttribute("data-texture", "chargee");
+      rendu(true);
+    });
+    rendu(true);
+
+    return {
+      progression: progression,
+      redessine: function () { rendu(true); },
+      // Abandon (appareil trop lent, contexte perdu) : on cesse d'écouter
+      // le défilement, le haut de page classique reprend la main.
+      arrete: function () {
+        enMarche = false;
+        window.removeEventListener("scroll", planifie);
+      }
+    };
+  }
+
+  return { demarre: demarre, demarreIntro: demarreIntro };
 })();
