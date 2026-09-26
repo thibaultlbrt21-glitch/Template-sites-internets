@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" width="1200" height="1500" role="img" aria-label="L'atelier">
+<defs>
+  <filter id="v" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.004 0.6" numOctaves="4" seed="233" result="f"/>
+    <feColorMatrix in="f" type="matrix" result="fg"
+      values="0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0.9 0 0 0 0"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.02 0.01" numOctaves="3" seed="273" result="o"/>
+    <feDisplacementMap in="fg" in2="o" scale="30" xChannelSelector="R" yChannelSelector="G" result="fd"/>
+    <feComposite in="fd" in2="SourceGraphic" operator="in"/>
+  </filter>
+  <filter id="g">
+    <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="240"/>
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer><feFuncA type="linear" slope="0.13"/></feComponentTransfer>
+  </filter>
+  <filter id="flou"><feGaussianBlur stdDeviation="22"/></filter>
+  <linearGradient id="fond" x1="0" y1="0" x2="0.4" y2="1">
+    <stop offset="0%" stop-color="#dcb681"/><stop offset="50%" stop-color="#b98a52"/>
+    <stop offset="100%" stop-color="#6b4a20"/>
+  </linearGradient>
+  <linearGradient id="rasant" x1="0" y1="0" x2="1" y2="0.7">
+    <stop offset="0%" stop-color="#fff5e4" stop-opacity="0.30"/>
+    <stop offset="38%" stop-color="#fff5e4" stop-opacity="0.05"/>
+    <stop offset="100%" stop-color="#0d0f10" stop-opacity="0.52"/>
+  </linearGradient>
+</defs>
+<rect width="1200" height="1500" fill="url(#fond)"/>
+<rect width="1200" height="1500" fill="#6b4a20" opacity="0.5" filter="url(#v)"/><rect x="0" y="870" width="1200" height="90" fill="#dcb681" opacity="0.36"/><rect x="0" y="960" width="1200" height="540" fill="#6b4a20" opacity="0.44"/><rect x="96" y="960" width="16" height="540" fill="#000" opacity="0.3"/><rect x="1032" y="960" width="16" height="540" fill="#000" opacity="0.3"/><rect x="192" y="630" width="14" height="240" fill="#000" opacity="0.22"/><rect x="240" y="540" width="14" height="330" fill="#000" opacity="0.22"/><rect x="288" y="675" width="14" height="195" fill="#000" opacity="0.22"/><rect x="840" y="795" width="60" height="75" fill="#000" opacity="0.22"/><ellipse cx="360" cy="450" rx="408" ry="450" fill="#fff3df" opacity="0.14" filter="url(#flou)"/><circle cx="264.00" cy="300.00" r="3" fill="#fff6e6" opacity="0.5"/><circle cx="408.00" cy="480.00" r="2.4" fill="#fff6e6" opacity="0.4"/><circle cx="336.00" cy="660.00" r="3.4" fill="#fff6e6" opacity="0.34"/><circle cx="528.00" cy="270.00" r="2.4" fill="#fff6e6" opacity="0.42"/><circle cx="600.00" cy="570.00" r="3" fill="#fff6e6" opacity="0.3"/><circle cx="192.00" cy="540.00" r="2.4" fill="#fff6e6" opacity="0.36"/><circle cx="720.00" cy="390.00" r="2.6" fill="#fff6e6" opacity="0.32"/><circle cx="456.00" cy="780.00" r="2.2" fill="#fff6e6" opacity="0.3"/><rect width="1200" height="1500" fill="url(#rasant)"/><rect width="1200" height="1500" filter="url(#g)" opacity="0.55"/></svg>

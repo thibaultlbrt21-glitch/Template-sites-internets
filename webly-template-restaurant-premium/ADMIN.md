@@ -45,21 +45,23 @@ sans JavaScript voient un site complet. *(Vérifié : voir § 7.)*
 
 ---
 
-## 2. Avant de commencer — spécifique à CE dépôt
+## 2. Avant de commencer — vérifier la branche
 
-> **La branche publiée n'est pas encore `main`.**
->
-> Aujourd'hui, le site en ligne est déployé depuis la branche
-> `claude/everything-claude-code-t5ohfd`, parce que la Pull Request #1
-> n'est pas encore fusionnée.
->
-> **Fusionnez la PR #1** (bouton « Merge pull request » sur GitHub) avant
-> d'activer l'espace client. Sinon, les modifications du client partiraient
-> sur `main`, qui ne contient pas encore les sites.
->
-> Si vous préférez ne pas fusionner tout de suite, changez la ligne
-> `branch:` de `admin/config.yml` pour y mettre le nom de la branche
-> réellement publiée.
+`admin/config.yml` indique à l'espace client sur quelle branche écrire :
+
+```yaml
+backend:
+  branch: main
+```
+
+Cette valeur doit être **la branche que GitHub Pages publie**. Sur ce dépôt
+c'est `main` : la PR #1 a été fusionnée, le site en ligne en vient. Rien à
+faire ici.
+
+Pour un nouveau dépôt client, vérifiez-le avant d'activer quoi que ce soit —
+un espace client qui écrit sur une branche non publiée donne l'impression que
+« ça ne marche pas », alors que les modifications sont bien enregistrées,
+mais ailleurs.
 
 ---
 

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1125" width="900" height="1125" role="img" aria-label="Fenêtres bois-aluminium posées en rénovation">
+<defs>
+  <filter id="v" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.004 0.6" numOctaves="4" seed="311" result="f"/>
+    <feColorMatrix in="f" type="matrix" result="fg" values="0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0.9 0 0 0 0"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.02 0.01" numOctaves="3" seed="351" result="o"/>
+    <feDisplacementMap in="fg" in2="o" scale="30" xChannelSelector="R" yChannelSelector="G" result="fd"/>
+    <feComposite in="fd" in2="SourceGraphic" operator="in"/>
+  </filter>
+  <filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="318"/>
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer><feFuncA type="linear" slope="0.13"/></feComponentTransfer></filter>
+  <filter id="flou"><feGaussianBlur stdDeviation="26"/></filter>
+  <linearGradient id="fond" x1="0" y1="0" x2="0.4" y2="1">
+    <stop offset="0%" stop-color="#c0c5c9"/><stop offset="50%" stop-color="#8d9297"/><stop offset="100%" stop-color="#4a4e52"/>
+  </linearGradient>
+  <linearGradient id="jour" x1="0" y1="0" x2="0.3" y2="1">
+    <stop offset="0%" stop-color="#eef4f8" stop-opacity="0.92"/>
+    <stop offset="100%" stop-color="#b9cbd8" stop-opacity="0.62"/>
+  </linearGradient>
+  <linearGradient id="rasant" x1="0" y1="0" x2="1" y2="0.7">
+    <stop offset="0%" stop-color="#fff5e4" stop-opacity="0.26"/>
+    <stop offset="38%" stop-color="#fff5e4" stop-opacity="0.04"/>
+    <stop offset="100%" stop-color="#0d0f10" stop-opacity="0.50"/>
+  </linearGradient>
+</defs>
+<rect width="900" height="1125" fill="url(#fond)"/>
+<rect width="900" height="1125" fill="#4a4e52" opacity="0.5" filter="url(#v)"/><rect width="900" height="1125" fill="#4a4e52" opacity="0.22"/><rect x="90" y="180" width="324" height="518" fill="url(#jour)"/><rect x="90" y="180" width="324" height="518" fill="none" stroke="#c0c5c9" stroke-width="16" opacity="0.85"/><rect x="245" y="180" width="14" height="518" fill="#c0c5c9" opacity="0.8"/><rect x="90" y="377" width="324" height="9" fill="#c0c5c9" opacity="0.7"/><rect x="90" y="180" width="324" height="518" stroke="#7fb3d1" stroke-opacity="0.22" fill="none" stroke-width="1"/><rect x="486" y="180" width="324" height="518" fill="url(#jour)"/><rect x="486" y="180" width="324" height="518" fill="none" stroke="#c0c5c9" stroke-width="16" opacity="0.85"/><rect x="641" y="180" width="14" height="518" fill="#c0c5c9" opacity="0.8"/><rect x="486" y="377" width="324" height="9" fill="#c0c5c9" opacity="0.7"/><rect x="486" y="180" width="324" height="518" stroke="#7fb3d1" stroke-opacity="0.22" fill="none" stroke-width="1"/><rect x="90" y="788" width="720" height="225" fill="url(#jour)"/><rect x="90" y="788" width="720" height="225" fill="none" stroke="#c0c5c9" stroke-width="16" opacity="0.85"/><rect x="90" y="788" width="720" height="225" stroke="#7fb3d1" stroke-opacity="0.22" fill="none" stroke-width="1"/><ellipse cx="450" cy="472" rx="450" ry="315" fill="#eef4f8" opacity="0.10" filter="url(#flou)"/><rect width="900" height="1125" fill="url(#rasant)"/><rect width="900" height="1125" filter="url(#g)" opacity="0.55"/></svg>

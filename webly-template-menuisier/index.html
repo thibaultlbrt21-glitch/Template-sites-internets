@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atelier Bois &amp; Trait — Menuisier poseur : fenêtres, portes, volets, escaliers</title>
+<meta name="description" content="Menuiserie du bâtiment : pose et remplacement de fenêtres, portes d'entrée, volets, escaliers, parquets, terrasses et portes de garage. Métré, dépose, pose et finitions. Devis gratuit.">
+<link rel="canonical" href="https://votre-domaine-a-renseigner.fr/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Atelier Bois &amp; Trait">
+<meta property="og:title" content="Atelier Bois &amp; Trait — Menuisier poseur">
+<meta property="og:description" content="Fenêtres, portes, volets, escaliers. Pose et rénovation, du métré aux finitions.">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:url" content="https://votre-domaine-a-renseigner.fr/">
+<meta property="og:image" content="https://votre-domaine-a-renseigner.fr/assets/images/hero-fond.jpg">
+<meta name="theme-color" content="#15191b">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/style.css">
+
+<!-- Données structurées — uniquement les champs vérifiables.
+     Complétez streetAddress, telephone, geo, openingHours et areaServed avec
+     les informations réelles de l'entreprise (voir README.md). -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HomeAndConstructionBusiness",
+  "additionalType": "https://schema.org/Carpenter",
+  "name": "Atelier Bois & Trait",
+  "description": "Menuiserie du bâtiment : pose et remplacement de fenêtres, portes, volets, escaliers, parquets et terrasses.",
+  "url": "https://votre-domaine-a-renseigner.fr/",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "FR"
+  }
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#principal">Aller au contenu principal</a>
+
+<!-- ===================== EN-TÊTE ===================== -->
+<header class="entete" id="entete">
+  <div class="wrap-large nav">
+    <a href="#principal" class="marque">
+      <span class="marque__nom" data-cms="marque.nom">Atelier Bois &amp; Trait</span>
+      <span class="marque__sous" data-cms="marque.baseline">Menuiserie du bâtiment</span>
+    </a>
+
+    <ul class="nav-liens">
+      <li><a href="#prestations">Prestations</a></li>
+      <li><a href="#chantiers">Chantiers</a></li>
+      <li><a href="#materiaux">Matériaux</a></li>
+      <li><a href="#aides">Aides</a></li>
+      <li><a href="#devis">Devis</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="#devis" class="btn btn--sm btn--plein">Demander un devis</a>
+      <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menuMobile">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="menu-mobile" id="menuMobile" aria-label="Menu principal">
+  <button class="menu-mobile__fermer" id="fermerMenu">Fermer</button>
+  <ul>
+    <li><a href="#prestations">Prestations</a></li>
+    <li><a href="#chantiers">Chantiers</a></li>
+    <li><a href="#materiaux">Matériaux</a></li>
+    <li><a href="#aides">Aides</a></li>
+    <li><a href="#devis">Devis</a></li>
+    <li><a href="#infos">Contact</a></li>
+  </ul>
+  <a href="#devis" class="btn btn--plein">Demander un devis</a>
+</nav>
+
+<main id="principal">
+
+  <!-- ===================== HERO ===================== -->
+  <!-- Avec WebGL et sans « mouvement réduit », main.js ajoute la classe
+       hero--intro : la section s'allonge et le cadre devient collant pendant
+       que la fenêtre s'ouvre au défilement. Sinon, c'est un haut de page
+       classique, entièrement lisible. -->
+  <section class="hero" id="accueil">
+    <div class="hero__cadre">
+      <div class="hero__couches" aria-hidden="true">
+        <div class="hero__couche hero__couche--fond" data-profondeur="0.16">
+          <img src="assets/images/hero-fond.svg" data-photo="assets/images/hero-fond.jpg"
+               data-cms-image="images.hero_fond" alt="" fetchpriority="high" decoding="async">
+        </div>
+        <div class="hero__voile"></div>
+        <div class="hero__couche hero__couche--avant" data-profondeur="-0.07" style="opacity:0.24;mix-blend-mode:overlay;">
+          <img src="assets/images/hero-avant.svg" data-photo="assets/images/hero-avant.jpg"
+               data-cms-image="images.hero_avant" alt="" loading="lazy" decoding="async">
+        </div>
+      </div>
+
+      <div class="wrap-large hero__contenu">
+        <span class="annot apparait" data-cms="hero.surtitre">Menuiserie du bâtiment</span>
+        <h1 class="apparait d1" id="titrePrincipal" tabindex="-1">
+          <span data-cms="hero.titre_1">Fenêtres, portes, escaliers.</span>
+          <span class="fin" data-cms="hero.titre_2">Posés au millimètre.</span>
+        </h1>
+        <p class="hero__texte apparait d2" data-cms="hero.texte">
+          Dépose de l'ancien, pose du neuf, étanchéité et finitions. On repart quand
+          la fenêtre ferme d'un doigt et que le chantier est propre.
+        </p>
+        <div class="hero__actions apparait d3">
+          <a href="#devis" class="btn btn--plein">Demander un devis</a>
+          <a href="#chantiers" class="btn btn--clair">Voir les chantiers</a>
+        </div>
+      </div>
+
+      <aside class="cartouche" aria-label="Fiche de l'entreprise">
+        <dl>
+          <dt>Secteur</dt><dd data-cms="cartouche.secteur">À renseigner</dd>
+          <dt>Depuis</dt><dd data-cms="cartouche.depuis">À renseigner</dd>
+          <dt>Qualification</dt><dd data-cms="cartouche.qualification">À renseigner</dd>
+          <dt>Devis</dt><dd data-cms="cartouche.devis">Gratuit</dd>
+        </dl>
+      </aside>
+
+      <div class="hero__filer" aria-hidden="true"><i></i><span>Défiler</span></div>
+
+      <div class="intro" aria-hidden="true" data-photo="assets/images/intro-fenetre.json">
+        <canvas></canvas>
+        <p class="intro__invite">Faites défiler pour entrer</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PRESTATIONS ===================== -->
+  <section class="section" id="prestations">
+    <div class="wrap">
+      <div class="tete">
+        <span class="annot apparait">Prestations</span>
+        <h2 class="apparait d1" data-cms="prestations.titre">Ce que l'entreprise pose</h2>
+        <p class="apparait d1" data-cms="prestations.texte">
+          Rénovation comme neuf, maison individuelle comme copropriété. Tout ce qui
+          ferme, s'ouvre, monte ou se marche.
+        </p>
+      </div>
+
+      <div class="metiers" data-cms-list="prestations.liste">
+        <article class="metier apparait" data-tilt>
+          <div class="metier__profondeur">
+            <span class="metier__num">01</span>
+            <h3>Fenêtres &amp; portes-fenêtres</h3>
+            <p>PVC, aluminium, bois ou mixte. Remplacement en rénovation sur dormant existant, ou dépose totale.</p>
+          </div>
+        </article>
+        <article class="metier apparait d1" data-tilt>
+          <div class="metier__profondeur">
+            <span class="metier__num">02</span>
+            <h3>Portes d'entrée</h3>
+            <p>Isolantes, à serrure multipoints, avec ou sans vitrage. Réglage et étanchéité compris.</p>
+          </div>
+        </article>
+        <article class="metier apparait d2" data-tilt>
+          <div class="metier__profondeur">
+            <span class="metier__num">03</span>
+            <h3>Volets &amp; stores</h3>
+            <p>Volets roulants, battants, brise-soleil orientables. Motorisation et commande à distance.</p>
+          </div>
+        </article>
+        <article class="metier apparait" data-tilt>
+          <div class="metier__profondeur">
+            <span class="metier__num">04</span>
+            <h3>Escaliers</h3>
+            <p>Droit, quart tournant, hélicoïdal. Limon, crémaillère, garde-corps et main courante.</p>
+          </div>
+        </article>
+        <article class="metier apparait d1" data-tilt>
+          <div class="metier__profondeur">
+            <span class="metier__num">05</span>
+            <h3>Portes intérieures &amp; huisseries</h3>
+            <p>Portes battantes, coulissantes, à galandage. Pose de bâtis et reprise des finitions.</p>
+          </div>
+        </article>
+        <article class="metier apparait d2" data-tilt>
+          <div class="metier__profondeur">
+            <span class="metier__num">06</span>
+            <h3>Parquets &amp; sols</h3>
+            <p>Massif, contrecollé, stratifié. Pose collée ou flottante, ponçage et rénovation.</p>
+          </div>
+        </article>
+        <article class="metier apparait" data-tilt>
+          <div class="metier__profondeur">
+            <span class="metier__num">07</span>
+            <h3>Terrasses, pergolas, bardages</h3>
+            <p>Bois ou composite, sur plots ou lambourdes. Garde-corps et habillages de façade.</p>
+          </div>
+        </article>
+        <article class="metier apparait d1" data-tilt>
+          <div class="metier__profondeur">
+            <span class="metier__num">08</span>
+            <h3>Portes de garage &amp; portails</h3>
+            <p>Sectionnelle, enroulable, battante. Motorisation, télécommande et mise en sécurité.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CHANTIERS ===================== -->
+  <section class="section section--papier2" id="chantiers">
+    <div class="wrap">
+      <div class="tete">
+        <span class="annot apparait">Chantiers</span>
+        <h2 class="apparait d1" data-cms="chantiers.titre">Du relevé à la dernière vis</h2>
+        <p class="apparait d1" data-cms="chantiers.texte">
+          En rénovation, rien n'est d'équerre : un tableau de fenêtre a rarement deux
+          côtés identiques. C'est là que le métier se joue.
+        </p>
+      </div>
+
+      <div class="filtres apparait d1" role="group" aria-label="Filtrer les chantiers">
+        <button type="button" class="filtre" data-filtre="tout" aria-pressed="true">Tout</button>
+        <button type="button" class="filtre" data-filtre="fermetures" aria-pressed="false">Fenêtres &amp; fermetures</button>
+        <button type="button" class="filtre" data-filtre="portes" aria-pressed="false">Portes</button>
+        <button type="button" class="filtre" data-filtre="interieur" aria-pressed="false">Intérieur</button>
+        <button type="button" class="filtre" data-filtre="exterieur" aria-pressed="false">Extérieur</button>
+      </div>
+
+      <div class="galerie apparait d2" id="galerie" data-cms-list="chantiers.ouvrages">
+        <button type="button" class="oeuvre oeuvre--grande" data-categorie="fermetures" data-index="0">
+          <img src="assets/images/real-fenetres.svg" data-photo="assets/images/real-fenetres.jpg" alt="Fenêtres bois-aluminium posées en rénovation" loading="lazy" decoding="async">
+          <span class="oeuvre__voile">
+            <span class="oeuvre__titre">Fenêtres bois-aluminium</span>
+            <span class="oeuvre__meta">Rénovation · Dépose totale</span>
+          </span>
+        </button>
+        <button type="button" class="oeuvre" data-categorie="portes" data-index="1">
+          <img src="assets/images/real-porte.svg" data-photo="assets/images/real-porte.jpg" alt="Porte d'entrée isolante" loading="lazy" decoding="async">
+          <span class="oeuvre__voile">
+            <span class="oeuvre__titre">Porte d'entrée isolante</span>
+            <span class="oeuvre__meta">Aluminium · Serrure multipoints</span>
+          </span>
+        </button>
+        <button type="button" class="oeuvre" data-categorie="fermetures" data-index="2">
+          <img src="assets/images/real-volets.svg" data-photo="assets/images/real-volets.jpg" alt="Volets roulants motorisés" loading="lazy" decoding="async">
+          <span class="oeuvre__voile">
+            <span class="oeuvre__titre">Volets roulants motorisés</span>
+            <span class="oeuvre__meta">Rénovation · Commande radio</span>
+          </span>
+        </button>
+        <button type="button" class="oeuvre" data-categorie="interieur" data-index="3">
+          <img src="assets/images/real-escalier.svg" data-photo="assets/images/real-escalier.jpg" alt="Escalier quart tournant" loading="lazy" decoding="async">
+          <span class="oeuvre__voile">
+            <span class="oeuvre__titre">Escalier quart tournant</span>
+            <span class="oeuvre__meta">Chêne · Garde-corps assorti</span>
+          </span>
+        </button>
+        <button type="button" class="oeuvre" data-categorie="portes" data-index="4">
+          <img src="assets/images/real-portes-interieures.svg" data-photo="assets/images/real-portes-interieures.jpg" alt="Portes intérieures et huisseries" loading="lazy" decoding="async">
+          <span class="oeuvre__voile">
+            <span class="oeuvre__titre">Portes intérieures</span>
+            <span class="oeuvre__meta">Bâtis et finitions · 6 ouvertures</span>
+          </span>
+        </button>
+        <button type="button" class="oeuvre" data-categorie="interieur" data-index="5">
+          <img src="assets/images/real-parquet.svg" data-photo="assets/images/real-parquet.jpg" alt="Parquet point de Hongrie" loading="lazy" decoding="async">
+          <span class="oeuvre__voile">
+            <span class="oeuvre__titre">Parquet point de Hongrie</span>
+            <span class="oeuvre__meta">Chêne · Pose collée</span>
+          </span>
+        </button>
+        <button type="button" class="oeuvre" data-categorie="exterieur" data-index="6">
+          <img src="assets/images/real-terrasse.svg" data-photo="assets/images/real-terrasse.jpg" alt="Terrasse et bardage bois" loading="lazy" decoding="async">
+          <span class="oeuvre__voile">
+            <span class="oeuvre__titre">Terrasse et bardage</span>
+            <span class="oeuvre__meta">Sur plots · Garde-corps</span>
+          </span>
+        </button>
+        <button type="button" class="oeuvre" data-categorie="exterieur" data-index="7">
+          <img src="assets/images/real-garage.svg" data-photo="assets/images/real-garage.jpg" alt="Porte de garage sectionnelle" loading="lazy" decoding="async">
+          <span class="oeuvre__voile">
+            <span class="oeuvre__titre">Porte de garage sectionnelle</span>
+            <span class="oeuvre__meta">Motorisée · Portillon intégré</span>
+          </span>
+        </button>
+      </div>
+
+      <p class="note-honnete apparait" data-cms="chantiers.mention" data-cms-optional>
+        Visuels d'exemple générés pour la démonstration. À remplacer par les
+        photographies réelles des chantiers — avant/après si possible, c'est ce qui
+        convainc le mieux en rénovation.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================== MATÉRIAUX (3D) ===================== -->
+  <section class="section section--encre" id="materiaux">
+    <div class="grille-plan" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="tete">
+        <span class="annot apparait">Matériaux</span>
+        <h2 class="apparait d1" data-cms="materiaux.titre">Comparez avant de choisir</h2>
+        <p class="apparait d1" data-cms="materiaux.texte">
+          PVC, aluminium, bois, mixte : le choix se joue sur l'entretien, la finesse
+          des profilés et le budget. Faites tourner la fenêtre, ouvrez-la,
+          changez de matériau.
+        </p>
+      </div>
+
+      <div class="viseur">
+        <div class="viseur__scene apparait" id="scene3d" tabindex="0"
+             role="img" aria-label="Fenêtre deux vantaux oscillo-battante en trois dimensions, manipulable. Utilisez les flèches du clavier pour la faire tourner.">
+          <canvas></canvas>
+          <!-- Repli si WebGL est indisponible : un volume en CSS 3D. -->
+          <div class="viseur__repli" aria-hidden="true">
+            <div class="cube">
+              <div class="f1"></div><div class="f2"></div><div class="f3"></div>
+              <div class="f4"></div><div class="f5"></div><div class="f6"></div>
+            </div>
+          </div>
+          <span class="viseur__aide">Glissez pour faire tourner</span>
+        </div>
+
+        <div class="apparait d1">
+          <div class="matieres" role="group" aria-label="Choisir un matériau" data-cms-list="materiaux.liste">
+            <button type="button" class="matiere" aria-pressed="true"
+                    data-texture="assets/images/materiau-pvc.svg"
+                    data-entretien="Aucun, un coup d'éponge" data-isolation="Très bonne" data-duree="30 à 40 ans" data-budget="Le plus accessible">
+              <span class="matiere__pastille" style="background:#eceae4"></span>PVC
+            </button>
+            <button type="button" class="matiere" aria-pressed="false"
+                    data-texture="assets/images/materiau-alu.svg"
+                    data-entretien="Aucun" data-isolation="Bonne avec rupture de pont thermique" data-duree="40 ans et plus" data-budget="Intermédiaire à élevé">
+              <span class="matiere__pastille" style="background:#70757a"></span>Aluminium
+            </button>
+            <button type="button" class="matiere" aria-pressed="false"
+                    data-texture="assets/images/materiau-bois.svg"
+                    data-entretien="Lasure tous les 5 à 10 ans" data-isolation="Excellente" data-duree="50 ans si entretenu" data-budget="Intermédiaire">
+              <span class="matiere__pastille" style="background:#b1834c"></span>Bois
+            </button>
+            <button type="button" class="matiere" aria-pressed="false"
+                    data-texture="assets/images/materiau-mixte.svg"
+                    data-entretien="Aucun côté extérieur" data-isolation="Excellente" data-duree="50 ans et plus" data-budget="Le plus élevé">
+              <span class="matiere__pastille" style="background:#9c7a52"></span>Mixte bois-alu
+            </button>
+          </div>
+
+          <div class="ouvertures" role="group" aria-label="Position d'ouverture du vantail principal">
+            <span class="ouvertures__titre">Ouverture</span>
+            <button type="button" class="ouverture" data-ouverture="fermee" aria-pressed="false">Fermée</button>
+            <button type="button" class="ouverture" data-ouverture="oscillo" aria-pressed="true">Oscillo</button>
+            <button type="button" class="ouverture" data-ouverture="battant" aria-pressed="false">À la française</button>
+          </div>
+
+          <div class="viseur__fiche">
+            <dl>
+              <dt>Matériau</dt><dd id="ficheNom">PVC</dd>
+              <dt>Entretien</dt><dd id="ficheEntretien">Aucun, un coup d'éponge</dd>
+              <dt>Isolation</dt><dd id="ficheIsolation">Très bonne</dd>
+              <dt>Durée de vie</dt><dd id="ficheDuree">30 à 40 ans</dd>
+              <dt>Budget</dt><dd id="ficheBudget">Le plus accessible</dd>
+            </dl>
+          </div>
+
+          <p class="note-honnete" data-cms="materiaux.mention" data-cms-optional>
+            Ordres de grandeur indicatifs, à confirmer selon la gamme posée et
+            l'exposition. Le mixte bois-alu a l'aluminium dehors et le bois dedans :
+            aucun entretien côté rue, chaleur du bois côté pièce.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== AIDES ===================== -->
+  <section class="section" id="aides">
+    <div class="wrap">
+      <div class="tete">
+        <span class="annot apparait">Aides &amp; qualifications</span>
+        <h2 class="apparait d1" data-cms="aides.titre">Le remplacement de menuiseries est aidé</h2>
+        <p class="apparait d1" data-cms="aides.texte">
+          Remplacer du simple vitrage ouvre droit à plusieurs dispositifs, cumulables
+          entre eux. Tous exigent une pose par une entreprise qualifiée RGE.
+        </p>
+      </div>
+
+      <div class="metiers metiers--quatre apparait d1" data-cms-list="aides.dispositifs">
+        <article class="metier" data-tilt>
+          <div class="metier__profondeur">
+            <span class="metier__num">MaPrimeRénov'</span>
+            <h3>Prime de l'État</h3>
+            <p>Logement de plus de 15 ans, résidence principale, remplacement de simple vitrage. Montant selon les revenus du foyer.</p>
+          </div>
+        </article>
+        <article class="metier" data-tilt>
+          <div class="metier__profondeur">
+            <span class="metier__num">CEE</span>
+            <h3>Prime énergie</h3>
+            <p>Versée par les fournisseurs d'énergie, cumulable avec MaPrimeRénov'. À demander <em>avant</em> la signature du devis.</p>
+          </div>
+        </article>
+        <article class="metier" data-tilt>
+          <div class="metier__profondeur">
+            <span class="metier__num">TVA 5,5 %</span>
+            <h3>Taux réduit</h3>
+            <p>Au lieu de 10 % ou 20 %. Logement achevé depuis plus de 2 ans, matériel et pose facturés par l'entreprise.</p>
+          </div>
+        </article>
+        <article class="metier" data-tilt>
+          <div class="metier__profondeur">
+            <span class="metier__num">Éco-PTZ</span>
+            <h3>Prêt à taux zéro</h3>
+            <p>Pour financer le reste à charge sans intérêts. Cumulable avec les aides précédentes.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="apparait d2" style="margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:34px;" data-split>
+        <div>
+          <span class="bloc-info__label">Les critères techniques</span>
+          <p>
+            Pour être éligibles, les fenêtres et portes-fenêtres posées en métropole
+            doivent atteindre un coefficient thermique <strong>Uw ≤ 1,3 W/m²·K</strong>
+            et un facteur solaire <strong>Sw ≥ 0,3</strong>, et remplacer du simple
+            vitrage. Ces valeurs figurent sur la fiche technique du fabricant : nous
+            vous la remettons avec le devis.
+          </p>
+        </div>
+        <div>
+          <span class="bloc-info__label">Notre qualification</span>
+          <p data-cms="aides.qualification">
+            Certification RGE à renseigner (organisme, numéro, date de validité).
+            Sans cette qualification, aucune des aides ci-dessus n'est versée — c'est
+            la première chose à vérifier chez n'importe quel artisan.
+          </p>
+        </div>
+      </div>
+
+      <p class="note-honnete apparait" data-cms="aides.mention">
+        Montants, plafonds et conditions évoluent chaque année et dépendent de votre
+        situation. Nous ne promettons aucun montant par avance : nous vous orientons
+        vers <strong>France Rénov'</strong>, le service public gratuit
+        (france-renov.gouv.fr, 0 808 800 700), et nous fournissons les pièces
+        nécessaires au dossier.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================== L'ENTREPRISE ===================== -->
+  <section class="section section--papier2" id="entreprise">
+    <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center;" data-split>
+      <figure class="apparait" style="margin:0;">
+        <img src="assets/images/atelier.svg" data-photo="assets/images/atelier.jpg"
+             data-cms-image="images.entreprise" alt="L'équipe sur un chantier"
+             loading="lazy" decoding="async" style="border-radius:4px;width:100%;">
+      </figure>
+      <div>
+        <span class="annot apparait">L'entreprise</span>
+        <h2 class="apparait d1" data-cms="entreprise.titre">Les mêmes du devis à la pose</h2>
+        <p class="apparait d1" data-cms="entreprise.paragraphe_1">
+          Celui qui prend les cotes est celui qui pose. Pas de sous-traitance en
+          cascade, pas d'équipe qui découvre le chantier le matin même : c'est ce qui
+          évite les mauvaises surprises au moment du montage.
+        </p>
+        <p class="apparait d2" data-cms="entreprise.paragraphe_2">
+          Dépose de l'ancien, évacuation en déchèterie, calfeutrement, réglage des
+          ouvrants et nettoyage. Un chantier de fenêtres se juge autant à la propreté
+          des finitions qu'à la marque du profilé.
+        </p>
+        <div class="apparait d2" style="margin-top:30px;">
+          <a href="#devis" class="btn">Parler de votre projet</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PROCESSUS ===================== -->
+  <section class="section">
+    <div class="wrap">
+      <div class="tete tete--centre">
+        <span class="annot apparait">Déroulé</span>
+        <h2 class="apparait d1" data-cms="processus.titre">Comment ça se passe</h2>
+      </div>
+      <div class="etapes apparait d1" data-cms-list="processus.etapes">
+        <div class="etape">
+          <span class="etape__num">Étape 01</span>
+          <h3>Visite et métré</h3>
+          <p>Relevé de chaque ouverture, une par une. En rénovation, aucune n'a les mêmes cotes que sa voisine.</p>
+        </div>
+        <div class="etape">
+          <span class="etape__num">Étape 02</span>
+          <h3>Devis et aides</h3>
+          <p>Chiffrage détaillé, fiches techniques jointes, et les pièces nécessaires à vos demandes d'aides.</p>
+        </div>
+        <div class="etape">
+          <span class="etape__num">Étape 03</span>
+          <h3>Commande et fabrication</h3>
+          <p>Menuiseries fabriquées à vos cotes. Délai annoncé au devis, confirmé à la commande.</p>
+        </div>
+        <div class="etape">
+          <span class="etape__num">Étape 04</span>
+          <h3>Dépose et pose</h3>
+          <p>Ancien évacué, neuf posé, étanchéité, réglages et finitions. Chantier laissé propre.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== DEVIS ===================== -->
+  <section class="section section--encre" id="devis">
+    <div class="grille-plan" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="tete">
+        <span class="annot apparait">Devis</span>
+        <h2 class="apparait d1" data-cms="devis.titre">Décrivez votre chantier</h2>
+        <p class="apparait d1" data-cms="devis.texte">
+          Quatre questions, deux minutes. Votre messagerie s'ouvrira avec la demande
+          déjà rédigée — il ne restera qu'à l'envoyer.
+        </p>
+      </div>
+
+      <div class="devis">
+        <form id="formDevis" class="apparait d1" novalidate>
+          <div class="devis__jauge" aria-hidden="true">
+            <span class="est-faite"></span><span></span><span></span><span></span>
+          </div>
+          <p id="etapeCourante" aria-live="polite" style="position:absolute;left:-9999px;">Étape 1 sur 4</p>
+
+          <!-- Étape 1 -->
+          <fieldset class="volet est-active" data-volet="1" style="border:0;padding:0;margin:0;">
+            <legend class="volet__titre">01 — Quel type de chantier ?</legend>
+            <div class="choix">
+              <label><input type="radio" name="ouvrage" value="Fenêtres ou portes-fenêtres" required> Fenêtres, portes-fenêtres
+                <span class="choix__note">Remplacement ou neuf</span></label>
+              <label><input type="radio" name="ouvrage" value="Porte d'entrée"> Porte d'entrée
+                <span class="choix__note">Isolante, multipoints</span></label>
+              <label><input type="radio" name="ouvrage" value="Volets ou stores"> Volets, stores
+                <span class="choix__note">Roulants, battants, BSO</span></label>
+              <label><input type="radio" name="ouvrage" value="Escalier"> Escalier
+                <span class="choix__note">Droit, tournant, garde-corps</span></label>
+              <label><input type="radio" name="ouvrage" value="Portes intérieures"> Portes intérieures
+                <span class="choix__note">Bâtis, coulissantes</span></label>
+              <label><input type="radio" name="ouvrage" value="Parquet ou sol"> Parquet, sol
+                <span class="choix__note">Pose ou rénovation</span></label>
+              <label><input type="radio" name="ouvrage" value="Terrasse, pergola ou bardage"> Terrasse, pergola, bardage
+                <span class="choix__note">Extérieur</span></label>
+              <label><input type="radio" name="ouvrage" value="Porte de garage ou portail"> Porte de garage, portail
+                <span class="choix__note">Motorisation comprise</span></label>
+            </div>
+            <p class="champ__erreur" id="ouvrageErreur" aria-live="polite"></p>
+          </fieldset>
+
+          <!-- Étape 2 -->
+          <fieldset class="volet" data-volet="2" style="border:0;padding:0;margin:0;">
+            <legend class="volet__titre">02 — Le chantier</legend>
+            <div class="duo">
+              <div class="champ">
+                <label for="quantite">Nombre d'ouvertures ou surface</label>
+                <input type="text" id="quantite" name="quantite" placeholder="ex. 7 fenêtres et 1 porte-fenêtre">
+              </div>
+              <div class="champ">
+                <label for="materiau">Matériau souhaité</label>
+                <select id="materiau" name="materiau">
+                  <option value="Sans préférence">Sans préférence — à conseiller</option>
+                  <option value="PVC">PVC</option>
+                  <option value="Aluminium">Aluminium</option>
+                  <option value="Bois">Bois</option>
+                  <option value="Mixte bois-alu">Mixte bois-aluminium</option>
+                </select>
+              </div>
+            </div>
+            <div class="duo">
+              <div class="champ">
+                <label for="typePose">Type de pose</label>
+                <select id="typePose" name="typePose">
+                  <option value="Je ne sais pas">Je ne sais pas</option>
+                  <option value="Rénovation sur dormant existant">Rénovation, sur dormant existant</option>
+                  <option value="Dépose totale">Dépose totale de l'ancien</option>
+                  <option value="Neuf ou extension">Construction neuve ou extension</option>
+                </select>
+              </div>
+              <div class="champ">
+                <label for="anciennete">Âge du logement</label>
+                <select id="anciennete" name="anciennete">
+                  <option value="Non précisé">Non précisé</option>
+                  <option value="Plus de 15 ans">Plus de 15 ans</option>
+                  <option value="Entre 2 et 15 ans">Entre 2 et 15 ans</option>
+                  <option value="Moins de 2 ans">Moins de 2 ans</option>
+                </select>
+              </div>
+            </div>
+            <div class="champ">
+              <label for="details">Décrivez le chantier</label>
+              <textarea id="details" name="details" rows="3" placeholder="Étage, accès, état de l'existant, contraintes de copropriété..."></textarea>
+            </div>
+          </fieldset>
+
+          <!-- Étape 3 -->
+          <fieldset class="volet" data-volet="3" style="border:0;padding:0;margin:0;">
+            <legend class="volet__titre">03 — Budget et délai</legend>
+            <div class="champ">
+              <label for="budget">Budget envisagé</label>
+              <select id="budget" name="budget">
+                <option value="Non défini">Je ne sais pas encore</option>
+                <option value="Moins de 3 000 €">Moins de 3 000 €</option>
+                <option value="3 000 à 8 000 €">3 000 à 8 000 €</option>
+                <option value="8 000 à 15 000 €">8 000 à 15 000 €</option>
+                <option value="Plus de 15 000 €">Plus de 15 000 €</option>
+              </select>
+            </div>
+            <div class="champ">
+              <label for="delai">Quand souhaitez-vous que ce soit posé ?</label>
+              <select id="delai" name="delai">
+                <option value="Dès que possible">Dès que possible</option>
+                <option value="Sous 3 mois">Dans les 3 mois</option>
+                <option value="Sous 6 mois">Dans les 6 mois</option>
+                <option value="Plus tard">Plus tard, je me renseigne</option>
+              </select>
+            </div>
+            <div class="champ">
+              <label for="adresseChantier">Commune du chantier</label>
+              <input type="text" id="adresseChantier" name="adresseChantier" placeholder="ex. Dijon">
+            </div>
+          </fieldset>
+
+          <!-- Étape 4 -->
+          <fieldset class="volet" data-volet="4" style="border:0;padding:0;margin:0;">
+            <legend class="volet__titre">04 — Pour vous répondre</legend>
+            <div class="duo">
+              <div class="champ">
+                <label for="nom">Nom <span class="obl">*</span></label>
+                <input type="text" id="nom" name="nom" required autocomplete="name" placeholder="Votre nom">
+                <p class="champ__erreur" id="nomErreur" aria-live="polite"></p>
+              </div>
+              <div class="champ">
+                <label for="courriel">Email <span class="obl">*</span></label>
+                <input type="email" id="courriel" name="courriel" required autocomplete="email" placeholder="vous@exemple.fr">
+                <p class="champ__erreur" id="courrielErreur" aria-live="polite"></p>
+              </div>
+            </div>
+            <div class="champ">
+              <label for="telephone">Téléphone <span class="obl">*</span></label>
+              <input type="tel" id="telephone" name="telephone" required autocomplete="tel"
+                     pattern="^[0-9+\(\)\s.\-]{6,20}$" placeholder="06 12 34 56 78">
+              <p class="champ__erreur" id="telephoneErreur" aria-live="polite"></p>
+            </div>
+            <p class="devis__note">
+              Vos informations ne sont ni stockées ni transmises par ce site : la
+              demande part depuis votre propre messagerie.
+            </p>
+          </fieldset>
+
+          <div class="devis__pied">
+            <button type="button" class="btn" id="precedent" hidden>Précédent</button>
+            <button type="button" class="btn btn--clair" id="suivant">Suivant</button>
+            <button type="submit" class="btn btn--plein" id="envoyer" hidden>Envoyer la demande</button>
+            <p class="devis__etat" id="etatDevis" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+
+        <aside class="devis__aparte apparait d2">
+          <h3 data-cms="devis.aparte_titre">Ce qui vous attend</h3>
+          <ul data-cms-list="devis.garanties">
+            <li><span>01</span><div><strong>Réponse sous 48 h ouvrées.</strong> Un premier retour, même pour dire que le chantier ne rentre pas dans nos cordes.</div></li>
+            <li><span>02</span><div><strong>Visite et métré gratuits.</strong> Aucun devis sérieux ne se fait sans être venu mesurer chaque ouverture.</div></li>
+            <li><span>03</span><div><strong>Devis détaillé.</strong> Fourniture, dépose, pose et finitions séparées, fiches techniques jointes.</div></li>
+            <li><span>04</span><div><strong>Aucun engagement.</strong> Le devis est gratuit et ne vous lie à rien.</div></li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== AVIS ===================== -->
+  <section class="section" id="avis">
+    <div class="wrap">
+      <div class="tete tete--centre">
+        <span class="annot apparait">Avis</span>
+        <h2 class="apparait d1" data-cms="avis_titre">Ce qu'en disent les clients</h2>
+      </div>
+      <div class="avis-grille apparait d1" data-cms-list="avis">
+        <article class="avis-carte">
+          <div class="avis-carte__etoiles" aria-label="Note à intégrer">★★★★★</div>
+          <p class="avis-carte__texte">« Avis client à intégrer »</p>
+          <p class="avis-carte__nom">Prénom N. — source à préciser</p>
+        </article>
+        <article class="avis-carte">
+          <div class="avis-carte__etoiles" aria-label="Note à intégrer">★★★★★</div>
+          <p class="avis-carte__texte">« Avis client à intégrer »</p>
+          <p class="avis-carte__nom">Prénom N. — source à préciser</p>
+        </article>
+        <article class="avis-carte">
+          <div class="avis-carte__etoiles" aria-label="Note à intégrer">★★★★★</div>
+          <p class="avis-carte__texte">« Avis client à intégrer »</p>
+          <p class="avis-carte__nom">Prénom N. — source à préciser</p>
+        </article>
+      </div>
+      <p class="note-honnete" data-cms="avis_note" data-cms-optional>
+        Emplacements réservés aux avis réellement reçus — à connecter à Google Avis
+        ou Houzz. Aucun avis n'est inventé ici.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================== INFOS ===================== -->
+  <section class="section section--papier2" id="infos">
+    <div class="wrap">
+      <div class="tete">
+        <span class="annot apparait">Infos pratiques</span>
+        <h2 class="apparait d1" data-cms="infos.titre">Nous joindre</h2>
+      </div>
+      <div class="infos-grille apparait d1">
+        <div class="bloc-info">
+          <span class="bloc-info__label">Adresse</span>
+          <p>
+            <span data-cms="infos.adresse_1">Adresse à renseigner</span><br>
+            <span data-cms="infos.adresse_2">Code postal et ville à renseigner</span>
+          </p>
+        </div>
+        <div class="bloc-info">
+          <span class="bloc-info__label">Contact</span>
+          <p>
+            <span data-cms="infos.telephone">Téléphone à renseigner</span><br>
+            <span data-cms="infos.email">Email à renseigner</span>
+          </p>
+        </div>
+        <div class="bloc-info">
+          <span class="bloc-info__label">Bureau ouvert</span>
+          <table class="horaires" data-cms-list="infos.horaires">
+            <tr><td>Lundi — Vendredi</td><td>Horaires à renseigner</td></tr>
+            <tr><td>Samedi</td><td>Sur rendez-vous</td></tr>
+            <tr><td>Dimanche</td><td>Fermé</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="apparait d2" style="margin-top:44px;">
+        <span class="bloc-info__label">Zone d'intervention</span>
+        <div class="zone-liste" data-cms-list="infos.zones">
+          <span>Communes à renseigner</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== PIED ===================== -->
+<footer class="pied">
+  <div class="wrap-large">
+    <div class="pied__marque" aria-hidden="true" data-cms="marque.nom">Atelier Bois &amp; Trait</div>
+    <div class="pied__cols">
+      <div>
+        <h4>L'entreprise</h4>
+        <p style="max-width:340px;" data-cms="pied.texte">
+          Menuiserie du bâtiment : fenêtres, portes, volets, escaliers, parquets et
+          terrasses. Métré, dépose, pose et finitions.
+        </p>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#prestations">Prestations</a></li>
+          <li><a href="#chantiers">Chantiers</a></li>
+          <li><a href="#materiaux">Matériaux</a></li>
+          <li><a href="#aides">Aides à la rénovation</a></li>
+          <li><a href="#devis">Demander un devis</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Suivre</h4>
+        <ul data-cms-list="pied.reseaux">
+          <li><a href="#">Instagram (lien à renseigner)</a></li>
+          <li><a href="#">Houzz (lien à renseigner)</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pied__bas">
+      <span>&copy; <span id="annee"></span> <span data-cms="marque.nom">Atelier Bois &amp; Trait</span>. Tous droits réservés.</span>
+      <div class="pied__legal">
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="politique-de-confidentialite.html">Politique de confidentialité</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== VISIONNEUSE ===================== -->
+<div class="visionneuse" id="visionneuse" role="dialog" aria-modal="true" aria-label="Chantier en grand">
+  <button type="button" class="visionneuse__fermer" data-fermer-visionneuse>Fermer</button>
+  <button type="button" class="visionneuse__nav visionneuse__nav--prec" data-visionneuse-prec aria-label="Chantier précédent">←</button>
+  <button type="button" class="visionneuse__nav visionneuse__nav--suiv" data-visionneuse-suiv aria-label="Chantier suivant">→</button>
+  <figure>
+    <img id="visionneuseImage" src="" alt="">
+    <figcaption id="visionneuseLegende"></figcaption>
+  </figure>
+</div>
+
+<div class="appel-mobile">
+  <a href="#devis" class="btn btn--plein">Demander un devis</a>
+</div>
+
+<script src="assets/js/content.js"></script>
+<script src="assets/js/viseur3d.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

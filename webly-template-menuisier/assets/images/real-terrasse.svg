@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1125" width="900" height="1125" role="img" aria-label="Terrasse et bardage">
+<defs>
+  <filter id="v" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.004 0.6" numOctaves="4" seed="139" result="f"/>
+    <feColorMatrix in="f" type="matrix" result="fg"
+      values="0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0.9 0 0 0 0"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.02 0.01" numOctaves="3" seed="179" result="o"/>
+    <feDisplacementMap in="fg" in2="o" scale="30" xChannelSelector="R" yChannelSelector="G" result="fd"/>
+    <feComposite in="fd" in2="SourceGraphic" operator="in"/>
+  </filter>
+  <filter id="g">
+    <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="146"/>
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer><feFuncA type="linear" slope="0.13"/></feComponentTransfer>
+  </filter>
+  <filter id="flou"><feGaussianBlur stdDeviation="22"/></filter>
+  <linearGradient id="fond" x1="0" y1="0" x2="0.4" y2="1">
+    <stop offset="0%" stop-color="#caa073"/><stop offset="50%" stop-color="#a97c4e"/>
+    <stop offset="100%" stop-color="#5f3d1f"/>
+  </linearGradient>
+  <linearGradient id="rasant" x1="0" y1="0" x2="1" y2="0.7">
+    <stop offset="0%" stop-color="#fff5e4" stop-opacity="0.30"/>
+    <stop offset="38%" stop-color="#fff5e4" stop-opacity="0.05"/>
+    <stop offset="100%" stop-color="#0d0f10" stop-opacity="0.52"/>
+  </linearGradient>
+</defs>
+<rect width="900" height="1125" fill="url(#fond)"/>
+<rect width="900" height="1125" fill="#5f3d1f" opacity="0.5" filter="url(#v)"/><rect x="0.0" y="0" width="49.8" height="1125" fill="#5f3d1f" opacity="0.10"/><rect x="49.8" y="0" width="19.4" height="1125" fill="#000" opacity="0.30"/><rect x="69.2" y="0" width="49.8" height="1125" fill="#5f3d1f" opacity="0.20"/><rect x="119.1" y="0" width="19.4" height="1125" fill="#000" opacity="0.30"/><rect x="138.5" y="0" width="49.8" height="1125" fill="#5f3d1f" opacity="0.29"/><rect x="188.3" y="0" width="19.4" height="1125" fill="#000" opacity="0.30"/><rect x="207.7" y="0" width="49.8" height="1125" fill="#5f3d1f" opacity="0.15"/><rect x="257.5" y="0" width="19.4" height="1125" fill="#000" opacity="0.30"/><rect x="276.9" y="0" width="49.8" height="1125" fill="#5f3d1f" opacity="0.24"/><rect x="326.8" y="0" width="19.4" height="1125" fill="#000" opacity="0.30"/><rect x="346.2" y="0" width="49.8" height="1125" fill="#5f3d1f" opacity="0.10"/><rect x="396.0" y="0" width="19.4" height="1125" fill="#000" opacity="0.30"/><rect x="415.4" y="0" width="49.8" height="1125" fill="#5f3d1f" opacity="0.20"/><rect x="465.2" y="0" width="19.4" height="1125" fill="#000" opacity="0.30"/><rect x="484.6" y="0" width="49.8" height="1125" fill="#5f3d1f" opacity="0.29"/><rect x="534.5" y="0" width="19.4" height="1125" fill="#000" opacity="0.30"/><rect x="553.8" y="0" width="49.8" height="1125" fill="#5f3d1f" opacity="0.15"/><rect x="603.7" y="0" width="19.4" height="1125" fill="#000" opacity="0.30"/><rect x="623.1" y="0" width="49.8" height="1125" fill="#5f3d1f" opacity="0.24"/><rect x="672.9" y="0" width="19.4" height="1125" fill="#000" opacity="0.30"/><rect x="692.3" y="0" width="49.8" height="1125" fill="#5f3d1f" opacity="0.10"/><rect x="742.2" y="0" width="19.4" height="1125" fill="#000" opacity="0.30"/><rect x="761.5" y="0" width="49.8" height="1125" fill="#5f3d1f" opacity="0.20"/><rect x="811.4" y="0" width="19.4" height="1125" fill="#000" opacity="0.30"/><rect x="830.8" y="0" width="49.8" height="1125" fill="#5f3d1f" opacity="0.29"/><rect x="880.6" y="0" width="19.4" height="1125" fill="#000" opacity="0.30"/><rect x="0" y="518" width="900" height="14" fill="#caa073" opacity="0.26"/><rect width="900" height="1125" fill="url(#rasant)"/><rect width="900" height="1125" filter="url(#g)" opacity="0.55"/></svg>

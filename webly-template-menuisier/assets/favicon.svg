@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="10" fill="#15191b"/>
+  <!-- Équerre de menuisier : l'outil du trait juste. -->
+  <path d="M14 14 L14 50 L50 50" fill="none" stroke="#b9793f" stroke-width="7" stroke-linecap="square"/>
+  <path d="M24 24 L24 40 L40 40" fill="none" stroke="#7fb3d1" stroke-width="3" stroke-linecap="square" opacity="0.85"/>
+</svg>

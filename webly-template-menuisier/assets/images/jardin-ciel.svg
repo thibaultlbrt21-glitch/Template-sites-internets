@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 1024" width="2048" height="1024">
+<defs>
+  <linearGradient id="ciel" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#b9d0df"/><stop offset="0.4" stop-color="#dbe6ea"/>
+    <stop offset="0.6" stop-color="#eef1ea"/><stop offset="1" stop-color="#eef1ea"/>
+  </linearGradient>
+  <radialGradient id="soleil" cx="0.3" cy="0.25" r="0.65">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.6"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="lointain" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#a9b9a3"/><stop offset="1" stop-color="#8ea087"/>
+  </linearGradient>
+  <linearGradient id="champ" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#b8c894"/><stop offset="1" stop-color="#8aa656"/>
+  </linearGradient>
+  <filter id="lisiere" x="-5%" y="-30%" width="110%" height="160%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.014 0.04" numOctaves="4" seed="5" result="b"/>
+    <feDisplacementMap in="SourceGraphic" in2="b" scale="60" xChannelSelector="R" yChannelSelector="G" result="d"/>
+    <feGaussianBlur in="d" stdDeviation="4"/>
+  </filter>
+  
+  <filter id="grainLointain" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="9" result="bruit"/>
+    <feColorMatrix in="bruit" type="luminanceToAlpha" result="lum0"/>
+    <feComponentTransfer in="lum0" result="lum">
+      <feFuncA type="table" tableValues="0 0.05 0.35 0.75 1"/>
+    </feComponentTransfer>
+    <feFlood flood-color="#c3cfbb" result="c"/>
+    <feComposite in="c" in2="lum" operator="in" result="lumiere"/>
+    <feFlood flood-color="#8d9f86" result="s"/>
+    <feMerge result="melange"><feMergeNode in="s"/><feMergeNode in="lumiere"/></feMerge>
+    <feComposite in="melange" in2="SourceAlpha" operator="in" result="net"/>
+    <feGaussianBlur in="net" stdDeviation="3"/>
+  </filter>
+  <filter id="herbe"><feTurbulence type="fractalNoise" baseFrequency="0.5 0.05" numOctaves="2" seed="3"/>
+    <feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope="0.08"/></feComponentTransfer></filter>
+</defs>
+<rect width="2048" height="1024" fill="url(#ciel)"/>
+<rect width="2048" height="1024" fill="url(#soleil)"/>
+<!-- Lisière lointaine, bleuie et adoucie par la distance -->
+<g filter="url(#lisiere)">
+  <path d="M0 560 C 180 505, 300 480, 420 525 S 700 455, 860 510 S 1150 478, 1300 522 S 1600 486, 1760 518 S 1980 488, 2048 508 L 2048 700 L 0 700 Z" fill="url(#lointain)"/>
+</g>
+<g filter="url(#lisiere)" opacity="0.7">
+  <path d="M0 566 C 180 511, 300 486, 420 531 S 700 461, 860 516 S 1150 484, 1300 528 S 1600 492, 1760 524 S 1980 494, 2048 514 L 2048 700 L 0 700 Z" fill="#ffffff" filter="url(#grainLointain)"/>
+</g>
+<rect x="0" y="645" width="2048" height="379" fill="url(#champ)"/>
+<rect x="0" y="645" width="2048" height="379" filter="url(#herbe)"/>
+</svg>
