@@ -238,7 +238,7 @@
   var scene = document.getElementById("scene3d");
   var viseur = null;
   if (scene && window.WEBLY_VISEUR) {
-    viseur = window.WEBLY_VISEUR.demarre({ scene: scene });
+    viseur = window.WEBLY_VISEUR.demarre({ scene: scene, ouverture: "oscillo" });
   }
 
   var boutonsMatiere = Array.prototype.slice.call(document.querySelectorAll(".matiere"));
@@ -259,6 +259,18 @@
   }
   boutonsMatiere.forEach(function (b) {
     b.addEventListener("click", function () { appliqueMatiere(b); });
+  });
+
+  // Positions d'ouverture : sans WebGL, le repli CSS ne sait pas les
+  // montrer — on retire les boutons plutôt que d'en laisser d'inopérants.
+  var groupeOuverture = document.querySelector(".ouvertures");
+  var boutonsOuverture = Array.prototype.slice.call(document.querySelectorAll(".ouverture"));
+  if (groupeOuverture && !viseur) groupeOuverture.hidden = true;
+  boutonsOuverture.forEach(function (b) {
+    b.addEventListener("click", function () {
+      boutonsOuverture.forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+      if (viseur) viseur.changeOuverture(b.getAttribute("data-ouverture"));
+    });
   });
   if (boutonsMatiere.length) {
     var actif = boutonsMatiere.filter(function (b) { return b.getAttribute("aria-pressed") === "true"; })[0]

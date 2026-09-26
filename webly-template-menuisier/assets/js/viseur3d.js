@@ -2,20 +2,23 @@
    VISUALISEUR 3D — WebGL écrit à la main, sans aucune librairie
    -------------------------------------------------------------------------
    Pourquoi pas three.js : le template ne doit dépendre d'aucun CDN. Une
-   bibliothèque 3D pèse 600 ko et tombe avec son hébergeur ; ce fichier fait
-   quelques kilo-octets et ne dépend de rien.
+   bibliothèque 3D pèse plusieurs centaines de kilo-octets et tombe avec son
+   hébergeur ; ce fichier ne dépend de rien.
 
-   Ce qu'il fait : une fenêtre à deux vantaux — dormant, ouvrants, vitrages,
-   petit bois, poignée — construite par le code, habillée du matériau choisi
-   (bois, PVC, aluminium), éclairée en Blinn-Phong. Un vantail est
-   entrebâillé : c'est ce qui la fait lire comme une fenêtre au premier coup
-   d'œil. Le visiteur la fait tourner au doigt, à la souris ou au clavier.
+   Ce qu'il montre : une fenêtre deux vantaux oscillo-battante, modélisée
+   d'après des photos de menuiserie réelle —
+     - dormant, ouvrants au profil mouluré (un gradin vers le vitrage),
+     - joint de vitrage noir, double vitrage d'un seul tenant par vantail,
+     - poignée centrale sur le vantail principal, paumelles apparentes.
+   Le vantail principal prend trois positions, animées : fermée, oscillo
+   (basculé par le haut) et à la française (ouvert sur ses paumelles).
 
-   Le vitrage est rendu en second, en transparence, sans écriture de
-   profondeur : sans cela il masquerait les montants situés derrière lui.
+   Rendu en trois passes : la menuiserie, le joint, puis le vitrage en
+   transparence et sans écriture de profondeur — sans quoi il masquerait les
+   montants situés derrière lui.
 
-   Si WebGL manque, si la carte graphique refuse, ou si le visiteur demande
-   moins d'animations : on n'insiste pas, le repli CSS prend la main.
+   Si WebGL manque, si la carte graphique refuse, ou si le contexte est
+   perdu : on n'insiste pas, le repli CSS prend la main.
    ========================================================================= */
 
 window.WEBLY_VISEUR = (function () {
@@ -56,12 +59,14 @@ window.WEBLY_VISEUR = (function () {
     return m;
   }
 
+  // x' = x cos + z sin ; z' = -x sin + z cos
   function rotationY(a) {
     var m = identite(), c = Math.cos(a), s = Math.sin(a);
     m[0] = c; m[2] = -s; m[8] = s; m[10] = c;
     return m;
   }
 
+  // y' = y cos - z sin ; z' = y sin + z cos
   function rotationX(a) {
     var m = identite(), c = Math.cos(a), s = Math.sin(a);
     m[5] = c; m[6] = s; m[9] = -s; m[10] = c;
@@ -86,28 +91,34 @@ window.WEBLY_VISEUR = (function () {
   }
 
   /* ---------------------------------------------------------------------
-     Géométrie — un pavé, sommet par sommet, avec ses UV.
-     Le meuble est un assemblage de pavés : c'est exactement ainsi qu'on
-     dessine un meuble sur un plan.
+     Géométrie
      --------------------------------------------------------------------- */
 
+  // Un pavé, sommet par sommet, avec ses normales et ses UV.
+  // Le fil de la matière suit toujours la grande longueur de chaque pièce,
+  // comme sur une vraie menuiserie : sur un montant vertical, le veinage du
+  // bois monte ; sur une traverse, il court à l'horizontale.
   function pave(cx, cy, cz, lx, ly, lz, echelleUV) {
     var x = lx / 2, y = ly / 2, z = lz / 2;
     var s = echelleUV || 1;
+    // Décalage propre à chaque pièce : deux montants voisins ne montrent pas
+    // exactement le même motif.
+    var decal = (cx * 1.73 + cy * 2.31 + cz * 0.71) % 1;
     var positions = [], normales = [], uvs = [], indices = [];
 
-    // face: origine, axe u, axe v, normale, largeur u, largeur v
+    // face : origine, axe u, axe v, normale, longueur u, longueur v
     var faces = [
-      [[-x,-y, z], [1,0,0], [0,1,0], [ 0, 0, 1], lx, ly],  // devant
-      [[ x,-y,-z], [-1,0,0],[0,1,0], [ 0, 0,-1], lx, ly],  // derrière
-      [[ x,-y, z], [0,0,-1],[0,1,0], [ 1, 0, 0], lz, ly],  // droite
-      [[-x,-y,-z], [0,0,1], [0,1,0], [-1, 0, 0], lz, ly],  // gauche
-      [[-x, y, z], [1,0,0], [0,0,-1],[ 0, 1, 0], lx, lz],  // dessus
-      [[-x,-y,-z], [1,0,0], [0,0,1], [ 0,-1, 0], lx, lz]   // dessous
+      [[-x,-y, z], [1,0,0], [0,1,0], [ 0, 0, 1], lx, ly],   // devant
+      [[ x,-y,-z], [-1,0,0],[0,1,0], [ 0, 0,-1], lx, ly],   // derrière
+      [[ x,-y, z], [0,0,-1],[0,1,0], [ 1, 0, 0], lz, ly],   // droite
+      [[-x,-y,-z], [0,0,1], [0,1,0], [-1, 0, 0], lz, ly],   // gauche
+      [[-x, y, z], [1,0,0], [0,0,-1],[ 0, 1, 0], lx, lz],   // dessus
+      [[-x,-y,-z], [1,0,0], [0,0,1], [ 0,-1, 0], lx, lz]    // dessous
     ];
 
     faces.forEach(function (f) {
       var o = f[0], u = f[1], v = f[2], n = f[3], lu = f[4], lv = f[5];
+      var enLong = lv > lu;
       var base = positions.length / 3;
       for (var j = 0; j < 2; j++) {
         for (var i = 0; i < 2; i++) {
@@ -117,7 +128,8 @@ window.WEBLY_VISEUR = (function () {
             cz + o[2] + u[2] * lu * i + v[2] * lv * j
           );
           normales.push(n[0], n[1], n[2]);
-          uvs.push(i * lu * s, j * lv * s);
+          if (enLong) uvs.push(j * lv * s + decal, i * lu * s);
+          else        uvs.push(i * lu * s + decal, j * lv * s);
         }
       }
       indices.push(base, base + 1, base + 2, base + 2, base + 1, base + 3);
@@ -143,97 +155,152 @@ window.WEBLY_VISEUR = (function () {
     };
   }
 
-  // Une fenêtre à deux vantaux, aux proportions d'une menuiserie réelle
-  // (1,20 m x 1,40 m environ, ramenés à l'échelle de la scène).
-  // Le vantail droit est entrebâillé d'une quinzaine de degrés.
+  // Un cadre de quatre pièces : deux traverses pleine largeur, deux montants
+  // entre elles. `retrait` décale le cadre vers l'intérieur du rectangle.
+  function anneau(pieces, x0, x1, y0, y1, retrait, largeur, zc, epaisseur) {
+    var a = x0 + retrait, b = x1 - retrait, c = y0 + retrait, d = y1 - retrait;
+    var mx = (a + b) / 2, my = (c + d) / 2, lx = b - a, ly = d - c, l = largeur;
+    pieces.push(pave(mx, d - l / 2, zc, lx, l, epaisseur, 0.8));           // traverse haute
+    pieces.push(pave(mx, c + l / 2, zc, lx, l, epaisseur, 0.8));           // traverse basse
+    pieces.push(pave(a + l / 2, my, zc, l, ly - 2 * l, epaisseur, 0.8));   // montant gauche
+    pieces.push(pave(b - l / 2, my, zc, l, ly - 2 * l, epaisseur, 0.8));   // montant droit
+  }
+
+  // Un biseau à coupes d'onglet : quatre trapèzes inclinés vers le vitrage.
+  // Chaque face penche d'un côté différent, donc prend une lumière
+  // différente : c'est ce qui dessine les diagonales aux quatre coins d'un
+  // ouvrant mouluré, et fait lire la moulure même vue de face.
+  function biseau(x0, x1, y0, y1, retrait, largeur, zHaut, zBas) {
+    var a = x0 + retrait, b = x1 - retrait, c = y0 + retrait, d = y1 - retrait;
+    var ia = a + largeur, ib = b - largeur, ic = c + largeur, id = d - largeur;
+    // Chaque côté : deux sommets sur l'arête extérieure (haute), deux sur
+    // l'arête intérieure (basse, côté vitrage). « enLong » : le côté court
+    // en x ou en y, pour orienter le fil de la matière.
+    var cotes = [
+      { q: [[a, d], [b, d], [ib, id], [ia, id]], enX: true },    // haut
+      { q: [[b, c], [a, c], [ia, ic], [ib, ic]], enX: true },    // bas
+      { q: [[a, c], [a, d], [ia, id], [ia, ic]], enX: false },   // gauche
+      { q: [[b, d], [b, c], [ib, ic], [ib, id]], enX: false }    // droit
+    ];
+    var positions = [], normales = [], uvs = [], indices = [];
+    cotes.forEach(function (cote) {
+      var q = cote.q;
+      var P = [
+        [q[0][0], q[0][1], zHaut], [q[1][0], q[1][1], zHaut],
+        [q[2][0], q[2][1], zBas],  [q[3][0], q[3][1], zBas]
+      ];
+      var e1 = [P[1][0] - P[0][0], P[1][1] - P[0][1], P[1][2] - P[0][2]];
+      var e2 = [P[3][0] - P[0][0], P[3][1] - P[0][1], P[3][2] - P[0][2]];
+      var n = [e1[1] * e2[2] - e1[2] * e2[1], e1[2] * e2[0] - e1[0] * e2[2], e1[0] * e2[1] - e1[1] * e2[0]];
+      var l = Math.sqrt(n[0] * n[0] + n[1] * n[1] + n[2] * n[2]) || 1;
+      var sens = n[2] < 0 ? -1 : 1;              // toujours tournée vers la pièce
+      n = [n[0] / l * sens, n[1] / l * sens, n[2] / l * sens];
+
+      var base = positions.length / 3;
+      P.forEach(function (v) {
+        positions.push(v[0], v[1], v[2]);
+        normales.push(n[0], n[1], n[2]);
+        uvs.push(cote.enX ? v[0] * 0.8 : v[1] * 0.8, cote.enX ? v[1] * 0.8 : v[0] * 0.8);
+      });
+      indices.push(base, base + 1, base + 2, base, base + 2, base + 3);
+    });
+    return { positions: positions, normales: normales, uvs: uvs, indices: indices };
+  }
+
+  // Cotes, en unités de scène (1 unité ≈ 1 mètre). Proportions relevées sur
+  // une fenêtre PVC deux vantaux standard : profils d'ouvrant larges,
+  // dormant fin, ouvrants en saillie sur le dormant.
+  var COTES = {
+    L: 1.30, H: 1.44,        // hors-tout du dormant
+    d: 0.055,                // face vue du dormant
+    ed: 0.11,                // profondeur du dormant
+    r: 0.014,                // recouvrement de l'ouvrant sur le dormant
+    o: 0.088,                // face vue du profil d'ouvrant
+    m: 0.022,                // largeur de la moulure, côté vitrage
+    zAv: 0.098,              // face avant de l'ouvrant (en saillie)
+    zAr: 0.022,              // face arrière de l'ouvrant
+    zV: 0.050,               // plan du vitrage
+    j: 0.009                 // joint de vitrage
+  };
+
   function fenetre() {
-    var L = 1.30, H = 1.62;       // hors-tout du dormant
-    var d = 0.085;                // largeur du dormant
-    var e = 0.075;                // épaisseur
-    var o = 0.062;                // largeur des montants d'ouvrant
+    var K = COTES;
+    var fixe = { opaque: [], joint: [], verre: [] };
+    var mobile = { opaque: [], joint: [], verre: [] };
 
-    var cadre = [];
+    // --- Dormant ---
+    anneau(fixe.opaque, -K.L / 2, K.L / 2, -K.H / 2, K.H / 2, 0, K.d, 0, K.ed);
 
-    // --- Dormant : quatre traverses ---
-    cadre.push(pave(0,  H/2 - d/2, 0, L, d, e, 1.4));          // haut
-    cadre.push(pave(0, -H/2 + d/2, 0, L, d, e * 1.15, 1.4));   // bas (appui plus épais)
-    cadre.push(pave(-L/2 + d/2, 0, 0, d, H - d*2, e, 1.4));    // gauche
-    cadre.push(pave( L/2 - d/2, 0, 0, d, H - d*2, e, 1.4));    // droite
+    var W = K.L - 2 * K.d;                 // largeur de l'ouverture en tableau
+    var ym = K.H / 2 - K.d + K.r;          // demi-hauteur d'un vantail
+    var gauche = { x0: -W / 2 - K.r, x1: 0 };
+    var droite = { x0: 0, x1: W / 2 + K.r };
 
-    // --- Un vantail : cadre + petit bois. Renvoie aussi son vitrage. ---
-    var lv = (L - d * 2) / 2;      // largeur d'un vantail
-    var hv = H - d * 2;            // hauteur d'un vantail
-
-    function vantail(pieces, verres, cx, cz, poignee) {
-      pieces.push(pave(cx, hv/2 - o/2, cz, lv, o, e * 0.8, 1.6));
-      pieces.push(pave(cx, -hv/2 + o/2, cz, lv, o, e * 0.8, 1.6));
-      pieces.push(pave(cx - lv/2 + o/2, 0, cz, o, hv - o*2, e * 0.8, 1.6));
-      pieces.push(pave(cx + lv/2 - o/2, 0, cz, o, hv - o*2, e * 0.8, 1.6));
-
-      // Une seule traverse horizontale, aux deux tiers de la hauteur :
-      // c'est le dessin d'une menuiserie contemporaine. Deux meneaux
-      // verticaux donnaient un effet de barreaudage.
-      var yTraverse = hv * 0.16;
-      var hTraverse = o * 0.48;
-      pieces.push(pave(cx, yTraverse, cz, lv - o * 2, hTraverse, e * 0.55, 1.6));
-
-      if (poignee) {
-        pieces.push(pave(cx + lv/2 - o*1.4, -0.04, cz + e * 0.55, o * 0.5, o * 0.5, e * 0.45, 1));
-        pieces.push(pave(cx + lv/2 - o*1.4, -0.16, cz + e * 0.8, o * 0.34, 0.22, o * 0.34, 1));
-      }
-
-      // Deux vitrages par vantail, calés entre les montants et la traverse.
-      // On part des cotes réelles du vantail plutôt que de fractions
-      // approchées : sinon le verre déborde du cadre.
-      var hautTraverse = yTraverse + hTraverse / 2;   // bord haut de la traverse
-      var basTraverse  = yTraverse - hTraverse / 2;
-      var hautVantail  = hv / 2 - o;                  // bord bas du montant haut
-      var basVantail   = -hv / 2 + o;
-
-      var hHaut = hautVantail - hautTraverse;
-      var hBas  = basTraverse - basVantail;
-      var largeurVitre = lv - o * 2.2;                // légèrement en retrait
-
-      verres.push(pave(cx, hautTraverse + hHaut / 2, cz, largeurVitre, hHaut, e * 0.16, 1));
-      verres.push(pave(cx, basVantail + hBas / 2, cz, largeurVitre, hBas, e * 0.16, 1));
+    // --- Un vantail : profil, moulure, joint, vitrage ---
+    function vantail(g, v) {
+      var ep = K.zAv - K.zAr, zc = (K.zAv + K.zAr) / 2;
+      // Profil principal.
+      anneau(g.opaque, v.x0, v.x1, -ym, ym, 0, K.o - K.m, zc, ep);
+      // Moulure : un socle plus bas côté vitrage, coiffé d'un biseau à
+      // coupes d'onglet qui descend du profil vers le joint.
+      var creux = 0.02;
+      anneau(g.opaque, v.x0, v.x1, -ym, ym, K.o - K.m, K.m, zc - creux / 2, ep - creux);
+      g.opaque.push(biseau(v.x0, v.x1, -ym, ym, K.o - K.m, K.m, K.zAv, K.zAv - creux));
+      // Joint noir autour du vitrage.
+      anneau(g.joint, v.x0, v.x1, -ym, ym, K.o, K.j, K.zV, 0.034);
+      // Double vitrage, d'un seul tenant.
+      var gx0 = v.x0 + K.o + K.j * 0.5, gx1 = v.x1 - K.o - K.j * 0.5;
+      var gy = ym - K.o - K.j * 0.5;
+      g.verre.push(pave((gx0 + gx1) / 2, 0, K.zV, gx1 - gx0, 2 * gy, 0.024, 1));
     }
 
-    // L'ouverture du dormant va de -lv à +lv : un vantail de chaque côté.
-    var verres = [];
-    vantail(cadre, verres, -lv / 2, 0, false);   // vantail gauche, fermé
+    vantail(fixe, gauche);     // vantail semi-fixe
+    vantail(mobile, droite);   // vantail principal, oscillo-battant
 
-    // Le vantail droit est entrebâillé. On l'assemble à part, centré à sa
-    // place fermée, puis on fait pivoter ses sommets autour du gond droit.
-    var battant = [], verreBattant = [];
-    vantail(battant, verreBattant, lv / 2, 0, true);
+    // --- Paumelles, aux angles extérieurs des deux vantaux ---
+    [gauche.x0 - 0.007, droite.x1 + 0.007].forEach(function (x) {
+      [ym - 0.17, -ym + 0.17].forEach(function (y) {
+        fixe.opaque.push(pave(x, y, K.zAr + 0.034, 0.016, 0.078, 0.022, 1));
+      });
+    });
 
-    var gond = lv;                 // le gond est au bord droit de l'ouverture
-    var angle = 0.52;              // ~30 degrés : lisible d'emblée
+    // --- Poignée centrale, sur le montant du vantail principal ---
+    var xp = droite.x0 + (K.o - K.m) / 2;
+    var yp = -0.03;
+    mobile.opaque.push(pave(xp, yp, K.zAv + 0.007, 0.030, 0.080, 0.014, 1));         // rosace
+    mobile.opaque.push(pave(xp, yp, K.zAv + 0.022, 0.014, 0.014, 0.020, 1));         // carré
+    mobile.opaque.push(pave(xp, yp - 0.070, K.zAv + 0.036, 0.022, 0.150, 0.016, 1)); // levier
 
-    // Rotation autour de l'axe vertical passant par x = gond.
-    function pivote(p) {
-      var c = Math.cos(angle), s2 = Math.sin(angle);
-      for (var i = 0; i < p.positions.length; i += 3) {
-        var x = p.positions[i] - gond;           // repère du gond
-        var z = p.positions[i + 2];
-        p.positions[i]     = (x * c + z * s2) + gond;
-        p.positions[i + 2] = (-x * s2 + z * c);
-
-        var nx = p.normales[i], nz = p.normales[i + 2];
-        p.normales[i]     = nx * c + nz * s2;    // les normales tournent aussi,
-        p.normales[i + 2] = -nx * s2 + nz * c;   // mais ne se translatent pas
-      }
-      return p;
+    function prepare(p) {
+      return { opaque: assemble(p.opaque), joint: assemble(p.joint), verre: assemble(p.verre) };
     }
-
-    battant.forEach(pivote);
-    verreBattant.forEach(pivote);
 
     return {
-      opaque: assemble(cadre.concat(battant)),
-      verre: assemble(verres.concat(verreBattant))
+      fixe: prepare(fixe),
+      mobile: prepare(mobile),
+      pivots: {
+        oscillo: { y: -ym, z: K.zAr },       // axe horizontal, pied du vantail
+        battant: { x: droite.x1, z: K.zAr }  // axe vertical, côté paumelles
+      }
     };
   }
+
+  // Position du vantail principal : bascule (oscillo) puis rotation (battant).
+  function transformeVantail(pivots, bascule, rotation) {
+    var o = pivots.oscillo, b = pivots.battant;
+    var mOsc = multiplie(translation(0, o.y, o.z),
+               multiplie(rotationX(bascule), translation(0, -o.y, -o.z)));
+    var mBat = multiplie(translation(b.x, 0, b.z),
+               multiplie(rotationY(rotation), translation(-b.x, 0, -b.z)));
+    return multiplie(mBat, mOsc);
+  }
+
+  // Positions d'ouverture : [bascule, rotation], en radians.
+  var OUVERTURES = {
+    fermee:  [0, 0],
+    oscillo: [0.17, 0],      // ~10 degrés : l'entrebâillement d'aération
+    battant: [0, 1.05]       // ~60 degrés : ouverte à la française
+  };
 
   /* ---------------------------------------------------------------------
      Nuanceurs
@@ -256,52 +323,63 @@ window.WEBLY_VISEUR = (function () {
     "}"
   ].join("\n");
 
-  // Deux sources : une clé chaude en haut à gauche (la verrière de
-  // l'atelier), un remplissage froid à droite. C'est ce contraste qui
-  // donne du volume plutôt qu'un aplat.
+  // Deux sources : une clé chaude en haut à gauche, un remplissage froid à
+  // droite. uMode : 0 = matière texturée, 1 = vitrage, 2 = joint.
   var FRAGMENT = [
     "precision mediump float;",
     "uniform sampler2D uTexture;",
     "uniform vec3 uOeil;",
-    "uniform float uVerre;",
+    "uniform float uMode;",
     "varying vec3 vNorm, vPos;",
     "varying vec2 vUv;",
+    "",
+    // Exposition puis compression à point blanc : un PVC blanc reste blanc
+    // satiné au lieu de virer au gris, sans brûler les reflets.
+    "vec3 developpe(vec3 c) {",
+    "  c *= 1.6;",
+    "  c = c * (1.0 + c / 4.84) / (1.0 + c);",
+    "  return pow(c, vec3(1.0 / 2.2));",
+    "}",
+    "",
     "void main() {",
     "  vec3 N = normalize(vNorm);",
     "  vec3 V = normalize(uOeil - vPos);",
-    // La texture est en sRGB : on la ramène en linéaire avant d'éclairer,
-    // sinon la correction gamma finale la délaverait une seconde fois.
-    "  vec3 base = pow(texture2D(uTexture, vUv).rgb, vec3(2.2));",
-    "",
-    "  vec3 Lc = normalize(vec3(-0.55, 0.85, 0.7));",
-    "  vec3 Lr = normalize(vec3(0.9, 0.15, 0.35));",
-    "",
-    "  float dc = max(dot(N, Lc), 0.0);",
-    "  float dr = max(dot(N, Lr), 0.0) * 0.32;",
-    "",
+    "  vec3 Lc = normalize(vec3(-0.5, 0.8, 0.9));",
+    "  vec3 Lr = normalize(vec3(0.9, 0.2, 0.4));",
     "  vec3 H = normalize(Lc + V);",
-    "  float spec = pow(max(dot(N, H), 0.0), 42.0) * 0.20;",
+    "  float dc = max(dot(N, Lc), 0.0);",
+    "  float dr = max(dot(N, Lr), 0.0) * 0.35;",
     "",
-    "  vec3 ambiant = base * 0.14;",
-    "  vec3 cle = base * dc * vec3(1.06, 0.98, 0.86);",
-    "  vec3 remplissage = base * dr * vec3(0.72, 0.82, 0.95);",
+    "  if (uMode > 1.5) {",
+    // Joint : caoutchouc noir, légèrement satiné.
+    "    vec3 noir = vec3(0.016, 0.017, 0.019);",
+    "    float s = pow(max(dot(N, H), 0.0), 24.0) * 0.10;",
+    "    gl_FragColor = vec4(developpe(noir * (0.35 + dc + dr) + vec3(s)), 1.0);",
+    "    return;",
+    "  }",
     "",
-    "  vec3 couleur = ambiant + cle + remplissage + vec3(spec);",
-    "  couleur = couleur / (couleur + vec3(1.35));",         // compression douce
-    "  couleur = pow(couleur, vec3(1.0 / 2.2));",            // correction gamma
-    "  if (uVerre > 0.5) {",
-    // Vitrage : teinte froide, reflet fort et rasant (Fresnel), très
-    // transparent de face. C'est le reflet qui fait lire le verre.
+    "  if (uMode > 0.5) {",
+    // Vitrage : teinte froide, reflet rasant (Fresnel), très transparent de
+    // face. C'est le reflet qui fait lire le verre.
     "    float fresnel = pow(1.0 - abs(dot(N, V)), 3.0);",
     "    vec3 ciel = vec3(0.62, 0.72, 0.80);",
-    "    vec3 teinte = vec3(0.30, 0.42, 0.44);",
+    "    vec3 teinte = vec3(0.24, 0.30, 0.33);",
     "    float miroir = pow(max(dot(N, H), 0.0), 90.0);",
     "    vec3 vitre = mix(teinte, ciel, fresnel) + vec3(miroir * 0.85);",
     "    vitre = pow(vitre / (vitre + vec3(1.1)), vec3(1.0 / 2.2));",
-    "    gl_FragColor = vec4(vitre, 0.22 + fresnel * 0.55);",
+    "    gl_FragColor = vec4(vitre, 0.30 + fresnel * 0.50);",
     "    return;",
     "  }",
-    "  gl_FragColor = vec4(couleur, 1.0);",
+    "",
+    // La texture est en sRGB : on la ramène en linéaire avant d'éclairer,
+    // sinon la correction gamma finale la délaverait une seconde fois.
+    "  vec3 base = pow(texture2D(uTexture, vUv).rgb, vec3(2.2));",
+    "  float spec = pow(max(dot(N, H), 0.0), 36.0) * 0.16;",
+    "  vec3 couleur = base * 0.22",
+    "               + base * dc * vec3(1.04, 1.0, 0.94)",
+    "               + base * dr * vec3(0.80, 0.88, 1.0)",
+    "               + vec3(spec);",
+    "  gl_FragColor = vec4(developpe(couleur), 1.0);",
     "}"
   ].join("\n");
 
@@ -353,16 +431,16 @@ window.WEBLY_VISEUR = (function () {
     }
     gl.useProgram(programme);
 
-    var geo = fenetre();
-
     var attr = {
       pos: gl.getAttribLocation(programme, "aPos"),
       norm: gl.getAttribLocation(programme, "aNorm"),
       uv: gl.getAttribLocation(programme, "aUv")
     };
+    gl.enableVertexAttribArray(attr.pos);
+    gl.enableVertexAttribArray(attr.norm);
+    gl.enableVertexAttribArray(attr.uv);
 
-    // Un groupe = un jeu de tampons prêt à dessiner. La menuiserie et son
-    // vitrage en forment deux, parce qu'ils ne se dessinent pas pareil.
+    // Un groupe = un jeu de tampons prêt à dessiner.
     function groupe(donnees) {
       function tampon(tableau) {
         var b = gl.createBuffer();
@@ -382,22 +460,11 @@ window.WEBLY_VISEUR = (function () {
       };
     }
 
-    function lie(g) {
-      gl.bindBuffer(gl.ARRAY_BUFFER, g.pos);
-      gl.vertexAttribPointer(attr.pos, 3, gl.FLOAT, false, 0, 0);
-      gl.bindBuffer(gl.ARRAY_BUFFER, g.norm);
-      gl.vertexAttribPointer(attr.norm, 3, gl.FLOAT, false, 0, 0);
-      gl.bindBuffer(gl.ARRAY_BUFFER, g.uv);
-      gl.vertexAttribPointer(attr.uv, 2, gl.FLOAT, false, 0, 0);
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, g.indices);
-    }
-
-    gl.enableVertexAttribArray(attr.pos);
-    gl.enableVertexAttribArray(attr.norm);
-    gl.enableVertexAttribArray(attr.uv);
-
-    var menuiserie = groupe(geo.opaque);
-    var vitrage = groupe(geo.verre);
+    var geo = fenetre();
+    var G = {
+      fixe:   { opaque: groupe(geo.fixe.opaque),   joint: groupe(geo.fixe.joint),   verre: groupe(geo.fixe.verre) },
+      mobile: { opaque: groupe(geo.mobile.opaque), joint: groupe(geo.mobile.joint), verre: groupe(geo.mobile.verre) }
+    };
 
     var u = {
       proj: gl.getUniformLocation(programme, "uProj"),
@@ -406,32 +473,50 @@ window.WEBLY_VISEUR = (function () {
       norm: gl.getUniformLocation(programme, "uNorm"),
       oeil: gl.getUniformLocation(programme, "uOeil"),
       texture: gl.getUniformLocation(programme, "uTexture"),
-      verre: gl.getUniformLocation(programme, "uVerre")
+      mode: gl.getUniformLocation(programme, "uMode")
     };
 
-    // Texture : un pixel de bois en attendant que l'échantillon arrive,
-    // pour que rien ne clignote au premier rendu.
+    function dessineGroupe(g, mode, modele) {
+      gl.uniform1f(u.mode, mode);
+      gl.uniformMatrix4fv(u.modele, false, modele);
+      gl.uniformMatrix3fv(u.norm, false, normale3x3(modele));
+      gl.bindBuffer(gl.ARRAY_BUFFER, g.pos);
+      gl.vertexAttribPointer(attr.pos, 3, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(gl.ARRAY_BUFFER, g.norm);
+      gl.vertexAttribPointer(attr.norm, 3, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(gl.ARRAY_BUFFER, g.uv);
+      gl.vertexAttribPointer(attr.uv, 2, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, g.indices);
+      gl.drawElements(gl.TRIANGLES, g.nombre, gl.UNSIGNED_SHORT, 0);
+    }
+
+    // --- Texture : un pixel neutre en attendant la vraie, pour qu'il n'y
+    // ait pas de clignotement au premier rendu. ---
     var texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE,
-      new Uint8Array([185, 138, 82, 255]));
+      new Uint8Array([230, 228, 222, 255]));
     gl.uniform1i(u.texture, 0);
 
     var chargementEnCours = 0;
     function chargeTexture(src) {
       var jeton = ++chargementEnCours;
       var img = new Image();
-      img.crossOrigin = "anonymous";
       img.onload = function () {
-        if (jeton !== chargementEnCours) return;   // une autre essence a été demandée entre-temps
+        if (jeton !== chargementEnCours) return;   // une autre matière a été demandée entre-temps
+        // WebGL 1 n'autorise la répétition d'une texture qu'en puissance de
+        // deux. On redessine donc l'image sur un canevas 512 x 512 : la
+        // matière se répète le long des profils au lieu d'être étirée.
+        var toile = document.createElement("canvas");
+        toile.width = toile.height = 512;
+        toile.getContext("2d").drawImage(img, 0, 0, 512, 512);
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
-        // Les SVG rendus ne sont pas garantis en puissance de deux :
-        // on reste en CLAMP + LINEAR, qui n'exige rien.
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, toile);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+        gl.generateMipmap(gl.TEXTURE_2D);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         scene.setAttribute("data-texture", "chargee");
       };
@@ -444,32 +529,74 @@ window.WEBLY_VISEUR = (function () {
     gl.enable(gl.DEPTH_TEST);
     gl.clearColor(0.118, 0.141, 0.153, 1);
 
-    /* ---- Manipulation ---- */
-    var angleY = -0.55, angleX = -0.10;
-    var vitesse = reduit ? 0 : 0.0035;
+    /* ---- Ouverture du vantail principal ---- */
+    var ouverture = { bascule: 0, rotation: 0, cible: "oscillo" };
+    if (options.ouverture && OUVERTURES[options.ouverture]) ouverture.cible = options.ouverture;
+
+    function avanceOuverture() {
+      var cible = OUVERTURES[ouverture.cible];
+      if (reduit) {
+        ouverture.bascule = cible[0];
+        ouverture.rotation = cible[1];
+      } else {
+        // Une fenêtre oscillo-battante ne peut pas basculer et pivoter à la
+        // fois : on referme d'abord le mouvement en cours, comme la
+        // quincaillerie l'impose.
+        var viseB = cible[0], viseR = cible[1];
+        if (viseB > 0 && ouverture.rotation > 0.004) viseB = 0;
+        if (viseR > 0 && ouverture.bascule > 0.004) viseR = 0;
+        ouverture.bascule += (viseB - ouverture.bascule) * 0.09;
+        ouverture.rotation += (viseR - ouverture.rotation) * 0.07;
+      }
+      var atteinte = Math.abs(ouverture.bascule - cible[0]) < 0.003 &&
+                     Math.abs(ouverture.rotation - cible[1]) < 0.003;
+      scene.setAttribute("data-ouverture-atteinte", atteinte ? "oui" : "non");
+    }
+
+    function changeOuverture(nom) {
+      if (!OUVERTURES[nom]) return;
+      ouverture.cible = nom;
+      scene.setAttribute("data-ouverture", nom);
+    }
+    scene.setAttribute("data-ouverture", ouverture.cible);
+
+    /* ---- Manipulation ----
+       Au repos, la fenêtre se balance doucement autour d'un trois-quarts,
+       comme sur un présentoir : elle ne passe jamais de profil ou de dos
+       sans qu'on le lui demande. */
+    var repos = typeof options.angle === "number" ? options.angle : 0.5;
+    var phase = 0, angleY = repos;
+    var angleX = typeof options.inclinaison === "number" ? options.inclinaison : 0.08;
     var manipule = false, dernierX = 0, dernierY = 0, elan = 0;
+
+    function saisit() {
+      repos = angleY;
+      phase = 0;
+      scene.classList.add("est-manipulee");
+    }
 
     function pointeurBas(e) {
       manipule = true;
       elan = 0;
       dernierX = e.clientX; dernierY = e.clientY;
-      scene.classList.add("est-manipulee");
-      scene.setPointerCapture && scene.setPointerCapture(e.pointerId);
+      saisit();
+      if (scene.setPointerCapture) scene.setPointerCapture(e.pointerId);
     }
     function pointeurBouge(e) {
       if (!manipule) return;
       var dx = e.clientX - dernierX, dy = e.clientY - dernierY;
       dernierX = e.clientX; dernierY = e.clientY;
       angleY += dx * 0.0085;
+      repos = angleY;
       elan = dx * 0.0085;
-      angleX = Math.max(-0.75, Math.min(0.75, angleX + dy * 0.006));
+      angleX = Math.max(-0.7, Math.min(0.7, angleX + dy * 0.006));
       e.preventDefault();
     }
     function pointeurHaut(e) {
       manipule = false;
-      scene.releasePointerCapture && e.pointerId !== undefined &&
-        scene.hasPointerCapture && scene.hasPointerCapture(e.pointerId) &&
+      if (scene.hasPointerCapture && e.pointerId !== undefined && scene.hasPointerCapture(e.pointerId)) {
         scene.releasePointerCapture(e.pointerId);
+      }
     }
 
     scene.addEventListener("pointerdown", pointeurBas);
@@ -481,12 +608,13 @@ window.WEBLY_VISEUR = (function () {
     // Accessible au clavier : la scène est focusable, les flèches tournent.
     scene.addEventListener("keydown", function (e) {
       var pas = 0.18;
-      if (e.key === "ArrowLeft")       { angleY -= pas; e.preventDefault(); }
-      else if (e.key === "ArrowRight") { angleY += pas; e.preventDefault(); }
-      else if (e.key === "ArrowUp")    { angleX = Math.max(-0.75, angleX - pas / 2); e.preventDefault(); }
-      else if (e.key === "ArrowDown")  { angleX = Math.min(0.75, angleX + pas / 2); e.preventDefault(); }
+      if (e.key === "ArrowLeft")       { saisit(); angleY -= pas; }
+      else if (e.key === "ArrowRight") { saisit(); angleY += pas; }
+      else if (e.key === "ArrowUp")    { saisit(); angleX = Math.max(-0.7, angleX - pas / 2); }
+      else if (e.key === "ArrowDown")  { saisit(); angleX = Math.min(0.7, angleX + pas / 2); }
       else return;
-      scene.classList.add("est-manipulee");
+      repos = angleY;
+      e.preventDefault();
     });
 
     /* ---- Rendu ---- */
@@ -503,8 +631,9 @@ window.WEBLY_VISEUR = (function () {
       gl.viewport(0, 0, w, h);
     }
 
-    var vue = translation(0, 0, -4.1);
-    var oeil = new Float32Array([0, 0, 4.1]);
+    var distance = 3.7;
+    var vue = translation(0, 0, -distance);
+    var oeil = new Float32Array([0, 0, distance]);
     var enMarche = true;
     var visible = true;
 
@@ -516,38 +645,39 @@ window.WEBLY_VISEUR = (function () {
       redimensionne();
 
       if (!manipule) {
-        angleY += vitesse + elan;
+        repos += elan;
         elan *= 0.94;
         if (Math.abs(elan) < 0.0002) elan = 0;
+        if (!reduit) phase += 0.006;
+        angleY = repos + Math.sin(phase) * 0.3;
       }
+      avanceOuverture();
 
-      var modele = multiplie(rotationY(angleY), rotationX(angleX));
+      var mFixe = multiplie(rotationY(angleY), rotationX(angleX));
+      var mMobile = multiplie(mFixe, transformeVantail(geo.pivots, ouverture.bascule, ouverture.rotation));
       var proj = perspective(Math.PI / 4.6, largeur / hauteur, 0.1, 100);
 
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
       gl.uniformMatrix4fv(u.proj, false, proj);
       gl.uniformMatrix4fv(u.vue, false, vue);
-      gl.uniformMatrix4fv(u.modele, false, modele);
-      gl.uniformMatrix3fv(u.norm, false, normale3x3(modele));
       gl.uniform3fv(u.oeil, oeil);
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, texture);
 
-      // 1. La menuiserie, opaque.
+      // 1. La menuiserie et le joint, opaques.
       gl.disable(gl.BLEND);
       gl.depthMask(true);
-      gl.uniform1f(u.verre, 0);
-      lie(menuiserie);
-      gl.drawElements(gl.TRIANGLES, menuiserie.nombre, gl.UNSIGNED_SHORT, 0);
+      dessineGroupe(G.fixe.opaque, 0, mFixe);
+      dessineGroupe(G.mobile.opaque, 0, mMobile);
+      dessineGroupe(G.fixe.joint, 2, mFixe);
+      dessineGroupe(G.mobile.joint, 2, mMobile);
 
-      // 2. Le vitrage, en transparence. Sans depthMask(false) il masquerait
-      // les montants situés derrière lui.
+      // 2. Le vitrage, en transparence et sans écrire la profondeur.
       gl.enable(gl.BLEND);
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
       gl.depthMask(false);
-      gl.uniform1f(u.verre, 1);
-      lie(vitrage);
-      gl.drawElements(gl.TRIANGLES, vitrage.nombre, gl.UNSIGNED_SHORT, 0);
+      dessineGroupe(G.fixe.verre, 1, mFixe);
+      dessineGroupe(G.mobile.verre, 1, mMobile);
       gl.depthMask(true);
     }
 
@@ -573,6 +703,7 @@ window.WEBLY_VISEUR = (function () {
 
     return {
       changeTexture: chargeTexture,
+      changeOuverture: changeOuverture,
       arrete: function () { enMarche = false; }
     };
   }

@@ -434,6 +434,25 @@ a { color: inherit; }
 .matiere:hover { border-color: var(--bois-sur-encre); color: var(--papier); }
 .matiere[aria-pressed="true"] { border-color: var(--bois-sur-encre); background: rgba(217, 168, 111, 0.12); color: var(--papier); }
 
+/* Positions d'ouverture du vantail principal. Teinte « plan » plutôt que
+   « bois » : on parle de mécanisme, pas de matière. */
+.ouvertures { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 16px 0 4px; }
+.ouvertures__titre {
+  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--plan-sur-encre); margin-right: 6px;
+}
+.ouverture {
+  padding: 8px 14px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--ligne-encre); background: transparent;
+  color: var(--texte-doux-sur-encre);
+  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em;
+  transition: all var(--transition);
+}
+.ouverture:hover { border-color: var(--plan-sur-encre); color: var(--papier); }
+.ouverture[aria-pressed="true"] {
+  border-color: var(--plan-sur-encre); background: rgba(127, 179, 209, 0.12); color: var(--papier);
+}
+
 .viseur__fiche {
   margin-top: 22px; border-top: 1px solid var(--ligne-encre); padding-top: 18px;
   font-family: var(--font-mono); font-size: 0.74rem; line-height: 2;

@@ -289,13 +289,14 @@
         <h2 class="apparait d1" data-cms="materiaux.titre">Comparez avant de choisir</h2>
         <p class="apparait d1" data-cms="materiaux.texte">
           PVC, aluminium, bois, mixte : le choix se joue sur l'entretien, la finesse
-          des profilés et le budget. Faites tourner la fenêtre, changez de matériau.
+          des profilés et le budget. Faites tourner la fenêtre, ouvrez-la,
+          changez de matériau.
         </p>
       </div>
 
       <div class="viseur">
         <div class="viseur__scene apparait" id="scene3d" tabindex="0"
-             role="img" aria-label="Fenêtre à deux vantaux en trois dimensions, manipulable. Utilisez les flèches du clavier pour la faire tourner.">
+             role="img" aria-label="Fenêtre deux vantaux oscillo-battante en trois dimensions, manipulable. Utilisez les flèches du clavier pour la faire tourner.">
           <canvas></canvas>
           <!-- Repli si WebGL est indisponible : un volume en CSS 3D. -->
           <div class="viseur__repli" aria-hidden="true">
@@ -329,6 +330,13 @@
                     data-entretien="Aucun côté extérieur" data-isolation="Excellente" data-duree="50 ans et plus" data-budget="Le plus élevé">
               <span class="matiere__pastille" style="background:#9c7a52"></span>Mixte bois-alu
             </button>
+          </div>
+
+          <div class="ouvertures" role="group" aria-label="Position d'ouverture du vantail principal">
+            <span class="ouvertures__titre">Ouverture</span>
+            <button type="button" class="ouverture" data-ouverture="fermee" aria-pressed="false">Fermée</button>
+            <button type="button" class="ouverture" data-ouverture="oscillo" aria-pressed="true">Oscillo</button>
+            <button type="button" class="ouverture" data-ouverture="battant" aria-pressed="false">À la française</button>
           </div>
 
           <div class="viseur__fiche">

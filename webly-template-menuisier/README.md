@@ -27,27 +27,44 @@ Aucun fichier partagé entre les cinq projets : chacun est autonome.
 ## Le visualiseur 3D
 
 `assets/js/viseur3d.js` — un moteur WebGL écrit à la main, **sans three.js ni
-aucune librairie**. Une fenêtre à deux vantaux — dormant, ouvrants, traverse,
-poignée — construite par le code, habillée du matériau choisi et éclairée en
-Blinn-Phong avec deux sources : une clé chaude et un remplissage froid.
+aucune librairie**. Il montre une **fenêtre deux vantaux oscillo-battante**,
+modélisée d'après des photos de menuiserie PVC réelle :
 
-Un vantail est entrebâillé : c'est ce qui la fait lire comme une fenêtre au
-premier coup d'œil plutôt que comme un cadre. Le **vitrage est rendu en
-seconde passe**, en transparence et sans écriture de profondeur — sans quoi il
-masquerait les montants situés derrière lui.
+- dormant fin, ouvrants larges et **en saillie** sur le dormant ;
+- **profil mouluré** : un biseau à coupes d'onglet descend du profil vers le
+  vitrage. Chaque face penche d'un côté différent et prend une lumière
+  différente — c'est ce qui dessine les diagonales aux quatre coins, et fait
+  lire la moulure même vue de face ;
+- **joint de vitrage noir**, double vitrage d'un seul tenant par vantail ;
+- **poignée centrale** sur le vantail principal, **paumelles** apparentes.
 
-- Rotation au doigt, à la souris, **et au clavier** (la scène est focusable,
+Le vantail principal prend **trois positions, animées** au clic :
+**fermée**, **oscillo** (basculé par le haut, la position d'aération) et
+**à la française** (ouvert sur ses paumelles). Comme sur une vraie
+quincaillerie, il ne bascule et ne pivote jamais en même temps : passer
+d'oscillo à la française referme d'abord le mouvement en cours.
+
+Le rendu se fait en trois passes — menuiserie, joint, puis vitrage en
+transparence sans écriture de profondeur, sans quoi le verre masquerait les
+montants situés derrière lui. La matière suit le **fil de chaque pièce** :
+le veinage monte sur les montants et court sur les traverses. Les textures
+sont redessinées en 512 × 512 pour pouvoir se répéter le long des profils au
+lieu d'être étirées (WebGL 1 n'autorise la répétition qu'en puissance de deux).
+
+- Rotation au doigt, à la souris **et au clavier** (la scène est focusable,
   les flèches la font tourner)
-- Inertie après le relâchement, rotation lente au repos
+- Au repos, balancement doux autour d'un trois-quarts, comme sur un
+  présentoir : la fenêtre ne passe jamais de dos sans qu'on le lui demande
 - Changement de matériau en direct (PVC, alu, bois, mixte), avec fiche
   technique synchronisée : entretien, isolation, durée de vie, budget
 - Ne calcule rien quand la section est hors écran
 - **Replis en cascade** : si WebGL manque, si la compilation échoue, si le
-  contexte est perdu, ou si `prefers-reduced-motion` est actif → un volume en
-  CSS 3D prend la place, sans page cassée
+  contexte est perdu → un volume en CSS 3D prend la place, et les boutons
+  d'ouverture, inopérants dans ce cas, sont retirés. Sous
+  `prefers-reduced-motion`, les positions changent sans animation.
 
-Pourquoi pas three.js : une librairie 3D pèse plusieurs centaines de kilo-octets
-et dépend d'un CDN qui peut tomber. Ce fichier fait 15 ko et ne dépend de rien.
+Pourquoi pas three.js : une librairie 3D pèse plusieurs centaines de
+kilo-octets et dépend d'un CDN qui peut tomber. Ce fichier ne dépend de rien.
 
 ## Le reste des fonctionnalités
 
@@ -132,8 +149,9 @@ Mesuré dans Chromium, pas estimé.
 | Repli sans `site.json` | page complète et identique |
 | Liste vidée | section masquée, lien de menu masqué, contenu retiré du DOM |
 | WebGL | rendu, vitrage transparent, rotation souris et clavier, changement de matériau |
+| Ouvertures 3D | fermée, oscillo, à la française — enchaînements et bouton actif |
 | Section Aides | 4 dispositifs, critères techniques, RGE, renvoi France Rénov', **aucune somme en euros** |
-| Repli sans WebGL | volume CSS 3D affiché |
+| Repli sans WebGL | volume CSS 3D affiché, boutons d'ouverture retirés |
 | Devis 4 étapes | cas valides et invalides, retour arrière |
 | Galerie | filtres + visionneuse clavier |
 | Largeurs | 390 px et 1440 px, sans scroll horizontal |
@@ -166,7 +184,7 @@ webly-template-menuisier/
     ├── favicon.svg
     ├── css/style.css             Design system « plan et bois »
     ├── js/content.js             Injecte site.json dans la page
-    ├── js/viseur3d.js            Moteur WebGL, sans dépendance (fenêtre + vitrage)
+    ├── js/viseur3d.js            Moteur WebGL, sans dépendance (fenêtre oscillo-battante)
     ├── js/main.js                Navigation, filtres, visionneuse, devis
     └── images/                   Ambiances générées + README
 ```
