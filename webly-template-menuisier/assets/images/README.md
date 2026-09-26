@@ -38,6 +38,10 @@ place — jamais d'image cassée.
 | `materiau-bois.jpg` | Profilé bois lasuré | carré |
 | `materiau-mixte.jpg` | Profilé mixte bois-aluminium | carré |
 
+Les deux plans du jardin vu par la fenêtre de l'intro, `jardin-ciel.svg` et
+`jardin-haie.svg`, sont eux aussi générés. Ils restent en SVG : l'intro les
+redessine en texture 3D, un jardin photographié y paraîtrait plat.
+
 Les quatre textures de matériaux servent aussi au **visualiseur 3D** :
 photographiez un morceau de profilé bien à plat, bien éclairé, sans reflet.
 C'est ce qui donne un rendu crédible une fois plaqué sur la fenêtre.

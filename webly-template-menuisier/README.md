@@ -26,8 +26,14 @@ Aucun fichier partagé entre les cinq projets : chacun est autonome.
 
 ## L'intro : entrer dans le site par la fenêtre
 
-Le visiteur arrive face à une fenêtre fermée, dans une pièce sombre. Au
-défilement, et uniquement au défilement :
+Le visiteur arrive dans une **chambre claire**, face à une fenêtre PVC
+blanche oscillo-battante deux vantaux, aux cotes d'un modèle du commerce
+(**105 × 108 cm**, vantail principal à droite, poignée centrale). La scène
+est **recréée** d'après l'ambiance d'une photo de référence — elle ne la
+reprend pas : mur beige, chevet en noyer, bouquet d'hortensias, livres et
+bougeoir, suspension à abat-jour blanc, lampe globe sur un tabouret, et un
+jardin derrière la vitre (haie, arbre, pelouse). Au défilement, et
+uniquement au défilement :
 
 1. la **poignée** se relève et le vantail principal **bascule en oscillo** ;
 2. il se referme, la poignée passe à l'horizontale ;
@@ -35,9 +41,22 @@ défilement, et uniquement au défilement :
 4. la caméra, partie d'un trois-quarts en hauteur, se recentre et **passe
    par l'ouverture** — le haut de page apparaît.
 
-Le mur est dessiné sur un **calque transparent** posé sur la page : à travers
-la vitre, c'est le vrai haut de page qu'on voit, pas une image qui l'imite. En
-passant l'ouverture, on arrive donc réellement sur le site, sans raccord.
+L'éclairage imite une photo d'intérieur de jour : la fenêtre est la source
+principale (jour direct qui décroît avec la distance, ciel sur les chants
+des profilés), une lumière rebondie chaude éclaire le reste, plus sombre dans
+les coins et au pied des meubles ; la suspension pose un halo chaud sur le
+mur. Courbe filmique (ACES) pour des hautes lumières douces, jardin
+légèrement surexposé comme sur une vraie photo exposée pour la pièce.
+
+Détails de quincaillerie visibles : **têtières** métal sur les chants des
+vantaux, **compas d'oscillo** qui apparaît quand le vantail bascule,
+paumelles, arêtes des profilés arrondies.
+
+Le jardin (`assets/images/jardin-ciel.svg`, `jardin-haie.svg`) est une
+illustration générée, en deux plans pour la parallaxe. En passant
+l'ouverture, on entre dans ce jardin, puis le haut de page du site apparaît
+en fondu. En portrait (téléphone), le cadrage s'élargit pour garder le chevet
+et son bouquet dans l'image.
 
 Garde-fous :
 

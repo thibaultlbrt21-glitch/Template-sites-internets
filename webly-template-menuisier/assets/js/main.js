@@ -112,7 +112,12 @@
   function auDefilement() {
     var y = window.scrollY;
     var c = courseIntro();
-    if (entete) entete.classList.toggle("est-pose", y > c + 40);
+    if (entete) {
+      entete.classList.toggle("est-pose", y > c + 40);
+      // Pendant l'intro, l'en-tête flotte sur une chambre claire : texte
+      // foncé, jusqu'à ce que le calque 3D commence à se retirer.
+      entete.classList.toggle("sur-clair", c > 0 && y < c * 0.86);
+    }
     var hauteurHero = hero ? (c ? window.innerHeight : hero.offsetHeight) : window.innerHeight;
     document.body.classList.toggle("est-descendu", y > c + hauteurHero * 0.6);
   }

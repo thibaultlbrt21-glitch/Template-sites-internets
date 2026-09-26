@@ -189,6 +189,12 @@ a { color: inherit; }
 .entete:not(.est-pose) .nav-liens a:hover { color: var(--papier); }
 .entete:not(.est-pose) .burger { border-color: rgba(246, 242, 236, 0.4); }
 .entete:not(.est-pose) .burger span { background: var(--papier); }
+.entete.sur-clair:not(.est-pose) .marque__nom { color: var(--encre); }
+.entete.sur-clair:not(.est-pose) .marque__sous,
+.entete.sur-clair:not(.est-pose) .nav-liens a { color: rgba(21, 25, 27, 0.78); }
+.entete.sur-clair:not(.est-pose) .nav-liens a:hover { color: var(--encre); }
+.entete.sur-clair:not(.est-pose) .burger { border-color: rgba(21, 25, 27, 0.35); }
+.entete.sur-clair:not(.est-pose) .burger span { background: var(--encre); }
 
 .marque { display: flex; flex-direction: column; text-decoration: none; margin-right: auto; }
 .marque__nom {
@@ -311,7 +317,7 @@ a { color: inherit; }
   display: block;
   position: absolute; inset: 0; z-index: 8;
   pointer-events: none;
-  opacity: clamp(0, calc((1 - var(--intro, 0)) * 8.33), 1);
+  opacity: clamp(0, calc((0.95 - var(--intro, 0)) * 10), 1);
 }
 .intro canvas { width: 100%; height: 100%; display: block; }
 .intro__invite {
@@ -319,7 +325,7 @@ a { color: inherit; }
   text-align: center;
   font-family: var(--font-mono); font-size: 0.7rem;
   letter-spacing: 0.2em; text-transform: uppercase;
-  color: rgba(246, 242, 236, 0.72);
+  color: rgba(21, 25, 27, 0.66);
   opacity: clamp(0, calc(1 - var(--intro, 0) * 12), 1);
 }
 
@@ -328,8 +334,8 @@ a { color: inherit; }
    travers la vitre, le dehors doit paraître lumineux. */
 .hero--intro .hero__contenu,
 .hero--intro .cartouche {
-  opacity: clamp(0, calc((var(--intro, 0) - 0.8) * 5), 1);
-  transform: translateY(calc((1 - clamp(0, calc((var(--intro, 0) - 0.8) * 5), 1)) * 24px));
+  opacity: clamp(0, calc((var(--intro, 0) - 0.88) * 8.4), 1);
+  transform: translateY(calc((1 - clamp(0, calc((var(--intro, 0) - 0.88) * 8.4), 1)) * 24px));
 }
 .hero--intro .hero__voile { opacity: clamp(0, calc((var(--intro, 0) - 0.7) * 3.4), 1); }
 .hero--intro .hero__filer { display: none; }
