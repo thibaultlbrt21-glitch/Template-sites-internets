@@ -1,0 +1,271 @@
+{
+  "marque": {
+    "nom": "TDS Fermetures",
+    "baseline": "Portes · fenêtres · volets · portails"
+  },
+  "hero": {
+    "surtitre": "Porte · Fenêtre · Volet · Portail · Automatisme · Visiophone",
+    "titre_1": "Vos fermetures,",
+    "titre_2": "posées avec soin.",
+    "texte": "Fenêtres, volets roulants, portes, portails et clôtures, portes de garage, pergolas, automatismes et visiophones. Un seul interlocuteur, du premier conseil au service après-vente."
+  },
+  "cartouche": {
+    "dirigeant": "Tiago Dos Santos",
+    "metier": "Fermetures & automatismes",
+    "sav": "SAV réactif"
+  },
+  "images": {
+    "hero_fond": "assets/images/hero-fond.svg",
+    "entreprise": "assets/logo/tds-fermetures.svg"
+  },
+  "engagements": [
+    {
+      "titre": "Accompagnement",
+      "texte": "Conseils sur le choix des produits, les dimensions et les options, avant de chiffrer quoi que ce soit."
+    },
+    {
+      "titre": "Qualité",
+      "texte": "Des produits choisis pour durer et un devis détaillé qui dit précisément ce qui est posé."
+    },
+    {
+      "titre": "Pose soignée",
+      "texte": "Prise de cotes, pose, réglages et finitions faits proprement, chantier laissé net."
+    },
+    {
+      "titre": "SAV réactif",
+      "texte": "Un réglage, une panne de motorisation, une question : un seul numéro à appeler."
+    }
+  ],
+  "prestations": {
+    "titre": "Tout ce qui ferme la maison",
+    "texte": "Des fenêtres au portail, de la porte d'entrée à la porte de garage, et l'électricité qui les fait fonctionner : automatismes et visiophones.",
+    "liste": [
+      {
+        "titre": "Fenêtres",
+        "texte": "Fenêtres et portes-fenêtres, en rénovation ou en neuf. Prise de cotes, pose, étanchéité et réglages."
+      },
+      {
+        "titre": "Volets roulants",
+        "texte": "Manuels ou motorisés, en rénovation sur fenêtre existante ou avec une menuiserie neuve."
+      },
+      {
+        "titre": "Portes",
+        "texte": "Portes d'entrée et de service : choix du modèle, pose, réglage de la fermeture."
+      },
+      {
+        "titre": "Portails & clôtures",
+        "texte": "Portails battants ou coulissants, portillons et clôtures, avec ou sans motorisation."
+      },
+      {
+        "titre": "Portes de garage",
+        "texte": "Sectionnelles, enroulables ou battantes, motorisées avec télécommande."
+      },
+      {
+        "titre": "Pergolas",
+        "texte": "Pour abriter une terrasse : étude de l'emplacement, des dimensions et des options."
+      },
+      {
+        "titre": "Automatismes",
+        "texte": "Motorisation de portails, de portes de garage et de volets, télécommandes et commandes centralisées."
+      },
+      {
+        "titre": "Visiophones",
+        "texte": "Voir et parler à qui sonne, et ouvrir le portail à distance."
+      }
+    ]
+  },
+  "chantiers": {
+    "titre": "En images",
+    "texte": "Fenêtres, volets, portes, portails, garages et pergolas : un aperçu des ouvrages que nous posons.",
+    "ouvrages": [
+      {
+        "titre": "Fenêtres",
+        "meta": "Rénovation",
+        "categorie": "fermetures",
+        "image": "assets/images/real-fenetres.svg",
+        "alt": "Illustration : fenêtres posées en rénovation"
+      },
+      {
+        "titre": "Volets roulants",
+        "meta": "Motorisés",
+        "categorie": "fermetures",
+        "image": "assets/images/real-volets.svg",
+        "alt": "Illustration : volets roulants motorisés"
+      },
+      {
+        "titre": "Porte d'entrée",
+        "meta": "Pose et réglages",
+        "categorie": "portes",
+        "image": "assets/images/real-porte.svg",
+        "alt": "Illustration : porte d'entrée"
+      },
+      {
+        "titre": "Porte de garage",
+        "meta": "Sectionnelle motorisée",
+        "categorie": "portes",
+        "image": "assets/images/real-garage.svg",
+        "alt": "Illustration : porte de garage sectionnelle"
+      },
+      {
+        "titre": "Portail & clôture",
+        "meta": "Motorisé · Visiophone",
+        "categorie": "exterieur",
+        "image": "assets/images/real-portail.svg",
+        "alt": "Illustration : portail coulissant et clôture"
+      },
+      {
+        "titre": "Pergola",
+        "meta": "Terrasse",
+        "categorie": "exterieur",
+        "image": "assets/images/real-pergola.svg",
+        "alt": "Illustration : pergola sur terrasse"
+      }
+    ],
+    "mention": "Illustrations d'exemple, pas des chantiers réels. À remplacer par les photos des réalisations de TDS Fermetures depuis l'espace client."
+  },
+  "materiaux": {
+    "titre": "Comparez avant de choisir",
+    "texte": "PVC, aluminium, bois, mixte : le choix se joue sur l'entretien, la finesse des profilés et le budget. Faites tourner la fenêtre, ouvrez-la, changez de matériau.",
+    "liste": [
+      {
+        "nom": "PVC",
+        "couleur": "#eceae4",
+        "texture": "assets/images/materiau-pvc.svg",
+        "entretien": "Aucun, un coup d'éponge",
+        "isolation": "Très bonne",
+        "duree": "30 à 40 ans",
+        "budget": "Le plus accessible"
+      },
+      {
+        "nom": "Aluminium",
+        "couleur": "#70757a",
+        "texture": "assets/images/materiau-alu.svg",
+        "entretien": "Aucun",
+        "isolation": "Bonne avec rupture de pont thermique",
+        "duree": "40 ans et plus",
+        "budget": "Intermédiaire à élevé"
+      },
+      {
+        "nom": "Bois",
+        "couleur": "#b1834c",
+        "texture": "assets/images/materiau-bois.svg",
+        "entretien": "Lasure tous les 5 à 10 ans",
+        "isolation": "Excellente",
+        "duree": "50 ans si entretenu",
+        "budget": "Intermédiaire"
+      },
+      {
+        "nom": "Mixte bois-alu",
+        "couleur": "#9c7a52",
+        "texture": "assets/images/materiau-mixte.svg",
+        "entretien": "Aucun côté extérieur",
+        "isolation": "Excellente",
+        "duree": "50 ans et plus",
+        "budget": "Le plus élevé"
+      }
+    ],
+    "mention": "Ordres de grandeur indicatifs, à confirmer selon la gamme posée et l'exposition. Le mixte bois-alu a l'aluminium dehors et le bois dedans : aucun entretien côté rue, chaleur du bois côté pièce."
+  },
+  "aides": {
+    "titre": "Changer ses fenêtres peut être aidé",
+    "texte": "Remplacer du simple vitrage ouvre droit à plusieurs dispositifs, cumulables entre eux. Tous exigent une pose par une entreprise qualifiée RGE.",
+    "dispositifs": [
+      {
+        "sigle": "MaPrimeRénov'",
+        "titre": "Prime de l'État",
+        "texte": "Logement de plus de 15 ans, résidence principale, remplacement de simple vitrage. Montant selon les revenus du foyer."
+      },
+      {
+        "sigle": "CEE",
+        "titre": "Prime énergie",
+        "texte": "Versée par les fournisseurs d'énergie, cumulable avec MaPrimeRénov'. À demander avant la signature du devis."
+      },
+      {
+        "sigle": "TVA 5,5 %",
+        "titre": "Taux réduit",
+        "texte": "Au lieu de 10 % ou 20 %. Logement achevé depuis plus de 2 ans, matériel et pose facturés par l'entreprise."
+      },
+      {
+        "sigle": "Éco-PTZ",
+        "titre": "Prêt à taux zéro",
+        "texte": "Pour financer le reste à charge sans intérêts. Cumulable avec les aides précédentes."
+      }
+    ],
+    "qualification": "Qualification RGE à renseigner (organisme, numéro, date de validité). Sans cette qualification, aucune des aides ci-dessus n'est versée — c'est la première chose à vérifier chez n'importe quel artisan.",
+    "mention": "Montants, plafonds et conditions évoluent chaque année et dépendent de votre situation. Aucun montant n'est promis par avance : le service public France Rénov' vous renseigne gratuitement (france-renov.gouv.fr, 0 808 800 700)."
+  },
+  "entreprise": {
+    "titre": "Un seul interlocuteur",
+    "paragraphe_1": "TDS Fermetures, c'est Tiago Dos Santos. C'est lui que vous appelez pour un conseil, un devis ou le service après-vente — pas un standard.",
+    "paragraphe_2": "Portes, fenêtres, volets, portails, automatismes, visiophones : tout ce qui ferme et sécurise la maison, avec la même exigence de pose."
+  },
+  "processus": {
+    "titre": "Comment ça se passe",
+    "etapes": [
+      {
+        "titre": "Premier contact",
+        "texte": "Par téléphone ou avec le formulaire : vous décrivez votre projet."
+      },
+      {
+        "titre": "Visite et conseils",
+        "texte": "Prise de cotes sur place et choix des produits, des coloris et des options."
+      },
+      {
+        "titre": "Devis détaillé",
+        "texte": "Fourniture, pose et options chiffrées séparément, pour savoir ce que vous payez."
+      },
+      {
+        "titre": "Pose et suivi",
+        "texte": "Pose, mise en service des automatismes, explications, puis SAV si besoin."
+      }
+    ]
+  },
+  "devis": {
+    "titre": "Votre demande de devis",
+    "texte": "Quatre étapes, deux minutes. Votre demande arrive directement dans la boîte mail de TDS Fermetures.",
+    "email_reception": "tiagotdsfermetures.21@hotmail.com",
+    "aparte_titre": "Ce qui vous attend",
+    "garanties": [
+      {
+        "titre": "Un vrai échange.",
+        "texte": "Vos besoins d'abord, les produits ensuite."
+      },
+      {
+        "titre": "Une visite sur place.",
+        "texte": "Pour prendre les cotes exactes avant de chiffrer."
+      },
+      {
+        "titre": "Un devis détaillé.",
+        "texte": "Fourniture, pose et options séparées."
+      },
+      {
+        "titre": "Un SAV réactif.",
+        "texte": "Le même numéro après la pose."
+      }
+    ]
+  },
+  "avis_titre": "Ce qu'en disent les clients",
+  "avis": [],
+  "avis_note": "Avis recueillis auprès de clients réels — source indiquée sous chaque avis.",
+  "infos": {
+    "titre": "Nous joindre",
+    "telephone": "06 58 00 82 26",
+    "email": "tiagotdsfermetures.21@hotmail.com",
+    "email_fournisseurs": "sarltdsfermetures.21@hotmail.com",
+    "adresse_1": "Adresse à renseigner",
+    "adresse_2": "Code postal et ville à renseigner",
+    "horaires": [
+      {
+        "jours": "Lundi — Vendredi",
+        "horaire": "Horaires à renseigner"
+      }
+    ],
+    "zones": [
+      "Communes à renseigner"
+    ]
+  },
+  "pied": {
+    "texte": "Porte, fenêtre, volet, portail, automatisme, visiophone. Accompagnement, qualité, pose soignée, SAV réactif.",
+    "reseaux": []
+  }
+}
