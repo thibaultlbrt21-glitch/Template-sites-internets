@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+# L'espace client n'a rien à faire dans les résultats de recherche.
+Disallow: /admin/
+
+Sitemap: https://votre-domaine-a-renseigner.fr/sitemap.xml

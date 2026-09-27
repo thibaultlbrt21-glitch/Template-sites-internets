@@ -7,6 +7,8 @@ name: Deploy sites to GitHub Pages
 #   /webly-template-restaurant/         -> webly-template-restaurant/
 #   /webly-template-restaurant-mini/    -> webly-template-restaurant-mini/
 #   /webly-template-restaurant-premium/ -> webly-template-restaurant-premium/
+#   /tds-fermetures/                    -> tds-fermetures/ (TDS Fermetures)
+#   /webly-template-menuisier/          -> redirection vers /tds-fermetures/
 #
 # To add another site later: add one more `cp -r` line in "Assemble
 # combined site" below, and its own path filter under `paths:`.
@@ -21,6 +23,7 @@ on:
       - "webly-template-restaurant/**"
       - "webly-template-restaurant-mini/**"
       - "webly-template-restaurant-premium/**"
+      - "tds-fermetures/**"
       - ".github/workflows/deploy-pages.yml"
   workflow_dispatch: {}
 
@@ -57,6 +60,12 @@ jobs:
           cp -r webly-template-restaurant-mini/. _site/webly-template-restaurant-mini/
           mkdir -p _site/webly-template-restaurant-premium
           cp -r webly-template-restaurant-premium/. _site/webly-template-restaurant-premium/
+          mkdir -p _site/tds-fermetures
+          cp -r tds-fermetures/. _site/tds-fermetures/
+          # L'ancienne adresse du site (avant qu'il devienne TDS Fermetures)
+          # renvoie vers la nouvelle, pour les liens déjà partagés.
+          mkdir -p _site/webly-template-menuisier
+          printf '%s\n' '<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=../tds-fermetures/"><link rel="canonical" href="../tds-fermetures/"><title>TDS Fermetures</title></head><body><a href="../tds-fermetures/">TDS Fermetures</a></body></html>' > _site/webly-template-menuisier/index.html
 
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
