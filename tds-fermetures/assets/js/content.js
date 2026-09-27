@@ -186,30 +186,6 @@
     });
   }
 
-  function rendMatieres(liste) {
-    var cible = conteneur("materiaux.liste");
-    if (!cible) return;
-    if (!Array.isArray(liste) || !liste.length) { videEtMasque(cible, document.getElementById("materiaux")); return; }
-
-    cible.textContent = "";
-    liste.forEach(function (e, i) {
-      var bouton = el("button", "matiere");
-      bouton.type = "button";
-      bouton.setAttribute("aria-pressed", String(i === 0));
-      bouton.setAttribute("data-texture", e.texture || "");
-      bouton.setAttribute("data-entretien", e.entretien || "");
-      bouton.setAttribute("data-isolation", e.isolation || "");
-      bouton.setAttribute("data-duree", e.duree || "");
-      bouton.setAttribute("data-budget", e.budget || "");
-
-      var pastille = el("span", "matiere__pastille");
-      pastille.style.background = e.couleur || "#F39200";
-      bouton.appendChild(pastille);
-      bouton.appendChild(document.createTextNode(e.nom || ""));
-      cible.appendChild(bouton);
-    });
-  }
-
   // Les dispositifs d'aide ont la même forme que les prestations, mais leur
   // « numéro » est un nom court (MaPrimeRénov', CEE...) et non un rang.
   function rendDispositifs(liste) {
@@ -335,7 +311,6 @@
     rendEngagements(data.engagements);
     rendPrestations(get(data, "prestations.liste"));
     rendChantiers(get(data, "chantiers.ouvrages"));
-    rendMatieres(get(data, "materiaux.liste"));
     rendDispositifs(get(data, "aides.dispositifs"));
     rendEtapes(get(data, "processus.etapes"));
     rendGaranties(get(data, "devis.garanties"));

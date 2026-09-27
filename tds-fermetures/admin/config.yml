@@ -50,8 +50,8 @@ collections:
         file: "tds-fermetures/content/site.json"
         description: >-
           Tout ce qui s'affiche sur le site. Laissez un champ vide pour garder
-          le texte déjà en place ; videz une liste entière (chantiers, avis,
-          matériaux) pour masquer la section correspondante.
+          le texte déjà en place ; videz une liste entière (réalisations,
+          avis) pour masquer la section correspondante.
         fields:
 
           - label: "Nom et signature"
@@ -164,31 +164,6 @@ collections:
                     required: false
                     hint: "Ce que montre la photo, en quelques mots. Sert aux personnes malvoyantes et au référencement."
               - { label: "Mention sous la galerie", name: "mention", widget: "text", required: false }
-
-          - label: "Matériaux et visualiseur 3D"
-            name: "materiaux"
-            widget: "object"
-            collapsed: true
-            fields:
-              - { label: "Titre de la section", name: "titre", widget: "string" }
-              - { label: "Texte sous le titre", name: "texte", widget: "text", required: false }
-              - label: "Matériaux proposés"
-                name: "liste"
-                widget: "list"
-                label_singular: "Matériau"
-                summary: "{{fields.nom}}"
-                hint: >-
-                  L'image sert de texture à la fenêtre en 3D : photographiez un profilé
-                  bien à plat, bien éclairé, sans reflet.
-                fields:
-                  - { label: "Nom", name: "nom", widget: "string" }
-                  - { label: "Couleur de la pastille", name: "couleur", widget: "string", required: false, hint: "Code couleur, par exemple #70757a." }
-                  - { label: "Texture (image)", name: "texture", widget: "image" }
-                  - { label: "Entretien", name: "entretien", widget: "string", required: false }
-                  - { label: "Isolation", name: "isolation", widget: "string", required: false }
-                  - { label: "Durée de vie", name: "duree", widget: "string", required: false }
-                  - { label: "Budget", name: "budget", widget: "string", required: false }
-              - { label: "Mention sous le visualiseur", name: "mention", widget: "text", required: false }
 
           - label: "Aides à la rénovation"
             name: "aides"

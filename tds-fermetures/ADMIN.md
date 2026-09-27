@@ -147,11 +147,9 @@ Tout est en français, avec une aide sous chaque champ.
 - **Photos principales** : accueil (fond), section « L'entreprise » (le logo par défaut)
 - **Prestations** : ajouter, supprimer, réordonner — la numérotation se refait
   toute seule
-- **Chantiers** : titre, sous-titre, catégorie, photo, texte alternatif.
+- **Réalisations** : titre, sous-titre, catégorie, photo, texte alternatif.
   Le premier de la liste s'affiche en grand ; un filtre qui n'a plus aucun
   chantier disparaît tout seul
-- **Matériaux** : nom, couleur, **texture appliquée à la fenêtre en 3D**,
-  entretien, isolation, durée de vie, budget
 - **Aides à la rénovation** : dispositifs, conditions, et la **qualification
   RGE** de l'entreprise
 - **L'entreprise** et le **déroulé d'un chantier**

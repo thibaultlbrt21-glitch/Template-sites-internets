@@ -195,12 +195,6 @@ a { color: inherit; }
 .entete:not(.est-pose) .nav-liens a:hover { color: var(--papier); }
 .entete:not(.est-pose) .burger { border-color: rgba(247, 247, 245, 0.4); }
 .entete:not(.est-pose) .burger span { background: var(--papier); }
-.entete.sur-clair:not(.est-pose) .marque__nom { color: var(--encre); }
-.entete.sur-clair:not(.est-pose) .marque__sous,
-.entete.sur-clair:not(.est-pose) .nav-liens a { color: rgba(35, 35, 34, 0.78); }
-.entete.sur-clair:not(.est-pose) .nav-liens a:hover { color: var(--encre); }
-.entete.sur-clair:not(.est-pose) .burger { border-color: rgba(35, 35, 34, 0.35); }
-.entete.sur-clair:not(.est-pose) .burger span { background: var(--encre); }
 
 .marque { display: flex; flex-direction: column; text-decoration: none; margin-right: auto; }
 .marque__nom {
@@ -271,9 +265,7 @@ a { color: inherit; }
   background: var(--encre);
   color: var(--papier);
 }
-/* Le cadre porte la mise en page et le recadrage. Il est distinct de la
-   section parce qu'un élément collant (sticky) ne colle pas à l'intérieur
-   d'un parent en overflow: hidden — ce que réclame l'intro. */
+/* Le cadre porte la mise en page et le recadrage de l'accueil. */
 .hero__cadre {
   position: relative; min-height: 100svh;
   display: flex; align-items: center;
@@ -305,62 +297,6 @@ a { color: inherit; }
   max-width: 470px; color: rgba(237, 237, 234, 0.82); font-size: 1.08rem; margin-bottom: 34px;
 }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 14px; }
-
-/* =========================================================================
-   INTRO — entrer dans le site par la fenêtre
-   --intro va de 0 à 1 au défilement (posé par main.js). La section s'allonge,
-   le cadre colle à l'écran, et le calque 3D se retire à la fin.
-   ========================================================================= */
-
-.intro { display: none; }
-
-.hero--intro { height: 340svh; }
-.hero--intro .hero__cadre {
-  position: sticky; top: 0;
-  height: 100svh; min-height: 0;
-}
-.hero--intro .intro {
-  display: block;
-  position: absolute; inset: 0; z-index: 8;
-  pointer-events: none;
-  opacity: clamp(0, calc((0.92 - var(--intro, 0)) * 8.33), 1);
-}
-.intro canvas { width: 100%; height: 100%; display: block; }
-/* Intro photo : on attend la photo, puis elle apparaît en fondu. Un voile
-   en haut garde l'en-tête lisible sur un mur clair. */
-.intro[data-photo] { background: #1b1917; }
-.intro[data-photo] canvas { opacity: 0; transition: opacity 0.6s ease; }
-.intro[data-photo][data-texture="chargee"] canvas { opacity: 1; }
-.intro[data-photo]::before {
-  content: ""; position: absolute; inset: 0 0 auto 0; height: 150px; z-index: 1;
-  background: linear-gradient(rgba(14, 11, 9, 0.62), rgba(14, 11, 9, 0));
-}
-.intro[data-photo] .intro__invite {
-  left: 50%; right: auto; transform: translateX(-50%);
-  padding: 8px 14px; border-radius: 999px; white-space: nowrap;
-  color: rgba(247, 247, 245, 0.9);
-  background: rgba(20, 16, 12, 0.5);
-  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-}
-.intro__invite {
-  position: absolute; left: 0; right: 0; bottom: 34px; margin: 0;
-  text-align: center;
-  font-family: var(--font-mono); font-size: 0.7rem;
-  letter-spacing: 0.2em; text-transform: uppercase;
-  color: rgba(35, 35, 34, 0.66);
-  opacity: clamp(0, calc(1 - var(--intro, 0) * 12), 1);
-}
-
-/* Pendant l'intro, le contenu du haut de page attend : il apparaît quand on
-   a passé la fenêtre. Le voile sombre, lui, ne revient qu'à la fin — à
-   travers la vitre, le dehors doit paraître lumineux. */
-.hero--intro .hero__contenu,
-.hero--intro .cartouche {
-  opacity: clamp(0, calc((var(--intro, 0) - 0.86) * 7.2), 1);
-  transform: translateY(calc((1 - clamp(0, calc((var(--intro, 0) - 0.86) * 7.2), 1)) * 24px));
-}
-.hero--intro .hero__voile { opacity: clamp(0, calc((var(--intro, 0) - 0.7) * 3.4), 1); }
-.hero--intro .hero__filer { display: none; }
 
 /* Cartouche de plan : la « fiche technique » du hero. */
 .cartouche {
@@ -458,99 +394,6 @@ a { color: inherit; }
 .oeuvre__titre { font-family: var(--font-display); font-weight: 700; color: #fff; font-size: 1.02rem; }
 .oeuvre__meta { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.72); }
 .oeuvre.est-masquee { display: none; }
-
-/* =========================================================================
-   VISUALISEUR 3D
-   ========================================================================= */
-
-.viseur { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; align-items: center; }
-
-.viseur__scene {
-  position: relative; aspect-ratio: 1 / 1;
-  border: 1px solid var(--ligne-encre); border-radius: var(--rayon);
-  background:
-    radial-gradient(ellipse 70% 55% at 50% 42%, rgba(243, 146, 0, 0.12), transparent 70%),
-    var(--encre-2);
-  overflow: hidden; touch-action: none; cursor: grab;
-}
-.viseur__scene:active { cursor: grabbing; }
-.viseur__scene canvas { width: 100%; height: 100%; display: block; }
-
-.viseur__aide {
-  position: absolute; left: 14px; bottom: 12px;
-  font-family: var(--font-mono); font-size: 0.66rem;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: rgba(237, 237, 234, 0.45); pointer-events: none;
-  transition: opacity var(--transition);
-}
-.viseur__scene.est-manipulee .viseur__aide { opacity: 0; }
-
-/* Repli sans WebGL : un volume en CSS 3D, qui tourne quand même. */
-.viseur__repli {
-  position: absolute; inset: 0; display: none;
-  place-items: center; perspective: 900px;
-}
-.viseur__scene.sans-webgl .viseur__repli { display: grid; }
-.cube {
-  position: relative; width: 150px; height: 150px;
-  transform-style: preserve-3d; animation: tourne 18s linear infinite;
-}
-.cube > div {
-  position: absolute; inset: 0;
-  border: 1px solid rgba(243, 146, 0, 0.5);
-  background: linear-gradient(140deg, rgba(243, 146, 0, 0.46), rgba(168, 82, 0, 0.24));
-}
-.cube .f1 { transform: translateZ(75px); }
-.cube .f2 { transform: rotateY(180deg) translateZ(75px); }
-.cube .f3 { transform: rotateY(90deg)  translateZ(75px); }
-.cube .f4 { transform: rotateY(-90deg) translateZ(75px); }
-.cube .f5 { transform: rotateX(90deg)  translateZ(75px); }
-.cube .f6 { transform: rotateX(-90deg) translateZ(75px); }
-@keyframes tourne {
-  from { transform: rotateX(-18deg) rotateY(0deg); }
-  to   { transform: rotateX(-18deg) rotateY(360deg); }
-}
-
-.matieres { display: flex; flex-wrap: wrap; gap: 10px; margin: 26px 0 8px; }
-.matiere {
-  display: flex; align-items: center; gap: 10px;
-  padding: 9px 15px 9px 9px; border-radius: 999px;
-  border: 1px solid var(--ligne-encre); background: transparent;
-  color: var(--texte-doux-sur-encre); cursor: pointer;
-  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em;
-  transition: all var(--transition);
-}
-.matiere__pastille { width: 22px; height: 22px; border-radius: 50%; flex: none; border: 1px solid rgba(255,255,255,0.18); }
-.matiere:hover { border-color: var(--bois-sur-encre); color: var(--papier); }
-.matiere[aria-pressed="true"] { border-color: var(--bois-sur-encre); background: var(--orange-voile); color: var(--papier); }
-
-/* Positions d'ouverture du vantail principal. Teinte « plan » plutôt que
-   « bois » : on parle de mécanisme, pas de matière. */
-.ouvertures { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 16px 0 4px; }
-.ouvertures__titre {
-  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--plan-sur-encre); margin-right: 6px;
-}
-.ouverture {
-  padding: 8px 14px; border-radius: 999px; cursor: pointer;
-  border: 1px solid var(--ligne-encre); background: transparent;
-  color: var(--texte-doux-sur-encre);
-  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em;
-  transition: all var(--transition);
-}
-.ouverture:hover { border-color: var(--plan-sur-encre); color: var(--papier); }
-.ouverture[aria-pressed="true"] {
-  border-color: var(--plan-sur-encre); background: var(--orange-voile); color: var(--papier);
-}
-
-.viseur__fiche {
-  margin-top: 22px; border-top: 1px solid var(--ligne-encre); padding-top: 18px;
-  font-family: var(--font-mono); font-size: 0.74rem; line-height: 2;
-  color: var(--texte-doux-sur-encre);
-}
-.viseur__fiche dl { display: grid; grid-template-columns: 130px 1fr; gap: 0 16px; margin: 0; }
-.viseur__fiche dt { color: rgba(162, 156, 146, 0.75); }
-.viseur__fiche dd { margin: 0; color: var(--papier); }
 
 /* =========================================================================
    PROCESSUS
@@ -769,7 +612,6 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
    ========================================================================= */
 
 @media (max-width: 1080px) {
-  .viseur { grid-template-columns: 1fr; gap: 34px; }
   .devis { grid-template-columns: 1fr; gap: 38px; }
   .devis__aparte { border-left: 0; border-top: 1px solid var(--ligne-encre); padding: 26px 0 0; }
   .etapes { grid-template-columns: repeat(2, 1fr); row-gap: 34px; }
@@ -791,7 +633,6 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
   .menu-mobile { display: flex; }
 
   .hero__cadre { min-height: 92svh; padding: 118px 0 120px; }
-  .hero--intro { height: 300svh; }
   .hero__texte { max-width: none; }
   .cartouche { display: none; }
   .hero__filer { display: none; }
@@ -827,9 +668,8 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
 .entete.est-pose .marque__logo { height: 52px; }
 .hero .annot { color: var(--plan-sur-encre); }
 .cartouche { min-width: 320px; }
-.cartouche dd { white-space: nowrap; }
+.cartouche dt, .cartouche dd { white-space: nowrap; }
 .entete:not(.est-pose) .marque { color: #fff; }
-.entete.sur-clair:not(.est-pose) .marque { color: var(--encre); }
 .entete.est-pose { background: rgba(255, 255, 255, 0.95); border-bottom: 3px solid var(--bois); }
 .entete__tel {
   font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.06em; font-weight: 600;
@@ -839,7 +679,6 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
 .entete__tel::before { content: "☎ "; color: var(--bois-texte); }
 .entete:not(.est-pose) .entete__tel { color: #fff; }
 .entete:not(.est-pose) .entete__tel::before { color: var(--bois); }
-.entete.sur-clair:not(.est-pose) .entete__tel { color: var(--encre); }
 .nav-liens a:hover { color: var(--bois-texte); }
 .entete:not(.est-pose) .nav-liens a:hover { color: var(--bois); }
 
@@ -931,5 +770,4 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
   .apparait { opacity: 1; transform: none; }
   .hero__couche { transform: none !important; }
   .metier { transform: none !important; }
-  .cube { animation: none; transform: rotateX(-18deg) rotateY(-32deg); }
 }

@@ -123,49 +123,6 @@
     ],
     "mention": "Illustrations d'exemple, pas des chantiers réels. À remplacer par les photos des réalisations de TDS Fermetures depuis l'espace client."
   },
-  "materiaux": {
-    "titre": "Comparez avant de choisir",
-    "texte": "PVC, aluminium, bois, mixte : le choix se joue sur l'entretien, la finesse des profilés et le budget. Faites tourner la fenêtre, ouvrez-la, changez de matériau.",
-    "liste": [
-      {
-        "nom": "PVC",
-        "couleur": "#eceae4",
-        "texture": "assets/images/materiau-pvc.svg",
-        "entretien": "Aucun, un coup d'éponge",
-        "isolation": "Très bonne",
-        "duree": "30 à 40 ans",
-        "budget": "Le plus accessible"
-      },
-      {
-        "nom": "Aluminium",
-        "couleur": "#70757a",
-        "texture": "assets/images/materiau-alu.svg",
-        "entretien": "Aucun",
-        "isolation": "Bonne avec rupture de pont thermique",
-        "duree": "40 ans et plus",
-        "budget": "Intermédiaire à élevé"
-      },
-      {
-        "nom": "Bois",
-        "couleur": "#b1834c",
-        "texture": "assets/images/materiau-bois.svg",
-        "entretien": "Lasure tous les 5 à 10 ans",
-        "isolation": "Excellente",
-        "duree": "50 ans si entretenu",
-        "budget": "Intermédiaire"
-      },
-      {
-        "nom": "Mixte bois-alu",
-        "couleur": "#9c7a52",
-        "texture": "assets/images/materiau-mixte.svg",
-        "entretien": "Aucun côté extérieur",
-        "isolation": "Excellente",
-        "duree": "50 ans et plus",
-        "budget": "Le plus élevé"
-      }
-    ],
-    "mention": "Ordres de grandeur indicatifs, à confirmer selon la gamme posée et l'exposition. Le mixte bois-alu a l'aluminium dehors et le bois dedans : aucun entretien côté rue, chaleur du bois côté pièce."
-  },
   "aides": {
     "titre": "Changer ses fenêtres peut être aidé",
     "texte": "Remplacer du simple vitrage ouvre droit à plusieurs dispositifs, cumulables entre eux. Tous exigent une pose par une entreprise qualifiée RGE.",

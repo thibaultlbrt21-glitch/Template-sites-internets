@@ -28,23 +28,7 @@ place — jamais d'image cassée.
 | `real-garage.jpg` | Porte de garage | portrait 4:5 |
 | `real-portail.jpg` | Portail et clôture (visiophone si possible) | portrait 4:5 |
 | `real-pergola.jpg` | Pergola | portrait 4:5 |
-| `materiau-pvc.jpg` | Profilé PVC, à plat | carré, ≥ 800 px |
-| `materiau-alu.jpg` | Profilé aluminium | carré |
-| `materiau-bois.jpg` | Profilé bois lasuré | carré |
-| `materiau-mixte.jpg` | Profilé mixte bois-aluminium | carré |
 
-Exception : `intro-fenetre.webp`, `intro-poignee.webp` et `intro-dehors.webp`
-viennent d'une **photo** (fenêtre bois dans une embrasure en pierre), fournie
-comme libre de droits et retravaillée pour l'intro animée — voir « L'intro »
-dans le README principal, où noter le lien de la licence. C'est une photo
-d'ambiance, pas une réalisation de l'entreprise.
-
-Les deux plans du jardin de la chambre dessinée en 3D (l'autre intro,
-utilisée sans photo), `jardin-ciel.svg` et `jardin-haie.svg`, sont générés.
-
-Les quatre textures de matériaux servent aussi au **visualiseur 3D** :
-photographiez un morceau de profilé bien à plat, bien éclairé, sans reflet.
-C'est ce qui donne un rendu crédible une fois plaqué sur la fenêtre.
 
 ## Droits d'usage
 

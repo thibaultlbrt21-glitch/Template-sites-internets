@@ -58,7 +58,6 @@
     <ul class="nav-liens">
       <li><a href="#prestations">Prestations</a></li>
       <li><a href="#chantiers">Réalisations</a></li>
-      <li><a href="#materiaux">Fenêtres 3D</a></li>
       <li><a href="#aides">Aides</a></li>
       <li><a href="#infos">Contact</a></li>
     </ul>
@@ -78,7 +77,6 @@
   <ul>
     <li><a href="#prestations">Prestations</a></li>
     <li><a href="#chantiers">Réalisations</a></li>
-    <li><a href="#materiaux">Fenêtres 3D</a></li>
     <li><a href="#aides">Aides</a></li>
     <li><a href="#devis">Devis</a></li>
     <li><a href="#infos">Contact</a></li>
@@ -90,10 +88,6 @@
 <main id="principal">
 
   <!-- ===================== HERO ===================== -->
-  <!-- Avec WebGL et sans « mouvement réduit », main.js ajoute la classe
-       hero--intro : la section s'allonge et le cadre devient collant pendant
-       que la fenêtre s'ouvre au défilement. Sinon, c'est un haut de page
-       classique, entièrement lisible. -->
   <section class="hero" id="accueil">
     <div class="hero__cadre">
       <div class="hero__couches" aria-hidden="true">
@@ -132,10 +126,6 @@
 
       <div class="hero__filer" aria-hidden="true"><i></i><span>Défiler</span></div>
 
-      <div class="intro" aria-hidden="true" data-photo="assets/images/intro-fenetre.json">
-        <canvas></canvas>
-        <p class="intro__invite">Faites défiler pour entrer</p>
-      </div>
     </div>
   </section>
 
@@ -306,85 +296,6 @@
         Illustrations d'exemple, pas des chantiers réels. À remplacer par les
         photos des réalisations de TDS Fermetures depuis l'espace client.
       </p>
-    </div>
-  </section>
-
-  <!-- ===================== FENÊTRES 3D ===================== -->
-  <section class="section section--encre" id="materiaux">
-    <div class="grille-plan" aria-hidden="true"></div>
-    <div class="wrap">
-      <div class="tete">
-        <span class="annot apparait">Fenêtres en 3D</span>
-        <h2 class="apparait d1" data-cms="materiaux.titre">Comparez avant de choisir</h2>
-        <p class="apparait d1" data-cms="materiaux.texte">
-          PVC, aluminium, bois, mixte : le choix se joue sur l'entretien, la finesse
-          des profilés et le budget. Faites tourner la fenêtre, ouvrez-la,
-          changez de matériau.
-        </p>
-      </div>
-
-      <div class="viseur">
-        <div class="viseur__scene apparait" id="scene3d" tabindex="0"
-             role="img" aria-label="Fenêtre deux vantaux oscillo-battante en trois dimensions, manipulable. Utilisez les flèches du clavier pour la faire tourner.">
-          <canvas></canvas>
-          <!-- Repli si WebGL est indisponible : un volume en CSS 3D. -->
-          <div class="viseur__repli" aria-hidden="true">
-            <div class="cube">
-              <div class="f1"></div><div class="f2"></div><div class="f3"></div>
-              <div class="f4"></div><div class="f5"></div><div class="f6"></div>
-            </div>
-          </div>
-          <span class="viseur__aide">Glissez pour faire tourner</span>
-        </div>
-
-        <div class="apparait d1">
-          <div class="matieres" role="group" aria-label="Choisir un matériau" data-cms-list="materiaux.liste">
-            <button type="button" class="matiere" aria-pressed="true"
-                    data-texture="assets/images/materiau-pvc.svg"
-                    data-entretien="Aucun, un coup d'éponge" data-isolation="Très bonne" data-duree="30 à 40 ans" data-budget="Le plus accessible">
-              <span class="matiere__pastille" style="background:#eceae4"></span>PVC
-            </button>
-            <button type="button" class="matiere" aria-pressed="false"
-                    data-texture="assets/images/materiau-alu.svg"
-                    data-entretien="Aucun" data-isolation="Bonne avec rupture de pont thermique" data-duree="40 ans et plus" data-budget="Intermédiaire à élevé">
-              <span class="matiere__pastille" style="background:#70757a"></span>Aluminium
-            </button>
-            <button type="button" class="matiere" aria-pressed="false"
-                    data-texture="assets/images/materiau-bois.svg"
-                    data-entretien="Lasure tous les 5 à 10 ans" data-isolation="Excellente" data-duree="50 ans si entretenu" data-budget="Intermédiaire">
-              <span class="matiere__pastille" style="background:#b1834c"></span>Bois
-            </button>
-            <button type="button" class="matiere" aria-pressed="false"
-                    data-texture="assets/images/materiau-mixte.svg"
-                    data-entretien="Aucun côté extérieur" data-isolation="Excellente" data-duree="50 ans et plus" data-budget="Le plus élevé">
-              <span class="matiere__pastille" style="background:#9c7a52"></span>Mixte bois-alu
-            </button>
-          </div>
-
-          <div class="ouvertures" role="group" aria-label="Position d'ouverture du vantail principal">
-            <span class="ouvertures__titre">Ouverture</span>
-            <button type="button" class="ouverture" data-ouverture="fermee" aria-pressed="false">Fermée</button>
-            <button type="button" class="ouverture" data-ouverture="oscillo" aria-pressed="true">Oscillo</button>
-            <button type="button" class="ouverture" data-ouverture="battant" aria-pressed="false">À la française</button>
-          </div>
-
-          <div class="viseur__fiche">
-            <dl>
-              <dt>Matériau</dt><dd id="ficheNom">PVC</dd>
-              <dt>Entretien</dt><dd id="ficheEntretien">Aucun, un coup d'éponge</dd>
-              <dt>Isolation</dt><dd id="ficheIsolation">Très bonne</dd>
-              <dt>Durée de vie</dt><dd id="ficheDuree">30 à 40 ans</dd>
-              <dt>Budget</dt><dd id="ficheBudget">Le plus accessible</dd>
-            </dl>
-          </div>
-
-          <p class="note-honnete" data-cms="materiaux.mention" data-cms-optional>
-            Ordres de grandeur indicatifs, à confirmer selon la gamme posée et
-            l'exposition. Le mixte bois-alu a l'aluminium dehors et le bois dedans :
-            aucun entretien côté rue, chaleur du bois côté pièce.
-          </p>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -785,7 +696,6 @@
         <ul>
           <li><a href="#prestations">Prestations</a></li>
           <li><a href="#chantiers">Réalisations</a></li>
-          <li><a href="#materiaux">Fenêtres en 3D</a></li>
           <li><a href="#aides">Aides à la rénovation</a></li>
           <li><a href="#devis">Demander un devis</a></li>
         </ul>
@@ -826,7 +736,6 @@
 </div>
 
 <script src="assets/js/content.js"></script>
-<script src="assets/js/viseur3d.js"></script>
 <script src="assets/js/main.js"></script>
 </body>
 </html>
