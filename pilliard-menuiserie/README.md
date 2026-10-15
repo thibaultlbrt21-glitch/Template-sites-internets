@@ -57,10 +57,15 @@ ni chiffres, ni avis clients, ni adresse.
    une fois sur le bouton pour activer l'envoi.
    Sans connexion ou en cas d'échec, le visiteur voit un bouton qui ouvre sa
    messagerie avec la demande déjà rédigée.
-3. **Mentions légales** (`mentions-legales.html`) : les champs surlignés
+3. **Promesses à confirmer avec le client** : « devis gratuit et sans
+   engagement » (section Votre projet) et « nous vous rappelons rapidement »
+   (message de confirmation). Les projets n° 04 à 08 sont des **projets
+   types** dessinés (ils l'indiquent) : à remplacer par de vrais chantiers
+   au fil des photos.
+4. **Mentions légales** (`mentions-legales.html`) : les champs surlignés
    « à compléter » (forme juridique, SIRET, assurance décennale…) sont
    obligatoires.
-4. **Domaine** : remplacer `votre-domaine-a-renseigner.fr` dans `robots.txt`
+5. **Domaine** : remplacer `votre-domaine-a-renseigner.fr` dans `robots.txt`
    et `sitemap.xml`. Mettre l'adresse complète dans `og:image`
    (`index.html`) pour l'aperçu sur les réseaux sociaux.
 

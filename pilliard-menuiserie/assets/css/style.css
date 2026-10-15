@@ -125,10 +125,16 @@ p { margin: 0; }
   transform: translateX(-102%);
   transition: transform 0.55s var(--ease-out);
 }
-.bouton:hover::before, .bouton:focus-visible::before { transform: none; }
-.bouton:hover, .bouton:focus-visible { color: var(--encre); border-color: #d8b68a; }
+.bouton:focus-visible::before { transform: none; }
+.bouton:focus-visible { color: var(--encre); border-color: #d8b68a; }
 .bouton svg { width: 20px; height: 20px; flex: none; transition: transform 0.45s var(--ease); }
-.bouton:hover svg { transform: translateX(4px); }
+/* Les effets de survol ne s'appliquent qu'aux appareils qui survolent
+   vraiment : sur écran tactile, ils resteraient « collés » après un toucher. */
+@media (hover: hover) {
+  .bouton:hover::before { transform: none; }
+  .bouton:hover { color: var(--encre); border-color: #d8b68a; }
+  .bouton:hover svg { transform: translateX(4px); }
+}
 .bouton--plein { background: var(--encre); color: var(--papier); }
 .bouton--ligne { border-color: var(--ligne-forte); color: var(--encre); }
 .bouton--ligne-clair { border-color: var(--ligne-claire); color: var(--papier); }
@@ -429,13 +435,14 @@ p { margin: 0; }
   content: ""; position: absolute; left: 0; bottom: -1px; height: 1px; width: 100%; background: var(--cuivre);
   transform: scaleX(0); transform-origin: left; transition: transform 0.6s var(--ease-out);
 }
-.ouvrage__ligne:hover::before, .ouvrage__ligne:focus-visible::before, .ouvrage.est-ouvert .ouvrage__ligne::before { transform: scaleX(1); }
+.ouvrage__ligne:focus-visible::before, .ouvrage.est-ouvert .ouvrage__ligne::before { transform: scaleX(1); }
+@media (hover: hover) { .ouvrage__ligne:hover::before { transform: scaleX(1); } }
 .ouvrage__num { font-family: var(--mono); font-size: 0.78rem; color: var(--cuivre); letter-spacing: 0.1em; }
 .ouvrage__nom {
   font-family: var(--serif); font-size: clamp(1.7rem, 3.4vw, 3rem); line-height: 1.05; letter-spacing: -0.02em;
   transition: transform 0.5s var(--ease-out), color 0.4s;
 }
-.ouvrage__ligne:hover .ouvrage__nom { transform: translateX(14px); font-style: italic; }
+@media (hover: hover) { .ouvrage__ligne:hover .ouvrage__nom { transform: translateX(14px); font-style: italic; } }
 .ouvrage__resume { color: var(--texte-doux); font-size: 0.98rem; max-width: 420px; }
 .ouvrage__plus { position: relative; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--ligne-forte); transition: background-color 0.3s, transform 0.5s var(--ease); }
 .ouvrage__plus::before, .ouvrage__plus::after { content: ""; position: absolute; left: 50%; top: 50%; width: 14px; height: 1.5px; margin: -0.75px 0 0 -7px; background: currentColor; }
@@ -526,7 +533,7 @@ p { margin: 0; }
   border: 1px solid var(--ligne-forte); background: transparent; cursor: pointer; transition: background-color 0.3s, color 0.3s;
 }
 .rond svg { width: 20px; height: 20px; }
-.rond:hover { background: var(--encre); color: var(--papier); }
+@media (hover: hover) { .rond:hover { background: var(--encre); color: var(--papier); } }
 .rond:disabled { opacity: 0.35; cursor: default; background: transparent; color: inherit; }
 
 .rail {
@@ -537,6 +544,7 @@ p { margin: 0; }
   scrollbar-width: thin; scrollbar-color: var(--ligne-forte) transparent;
   cursor: grab; align-items: flex-start;
 }
+.rail:focus-visible { outline-offset: -3px; }
 .rail.est-tire { cursor: grabbing; scroll-snap-type: none; }
 .rail.est-tire * { user-select: none; pointer-events: none; }
 .projet { flex: 0 0 min(80vw, 540px); scroll-snap-align: start; }
@@ -568,6 +576,7 @@ p { margin: 0; }
   opacity: 0; transition: opacity 0.6s 0.4s;
 }
 .projet.est-fini .projet__tampon { opacity: 1; }
+.projet__tampon--type { opacity: 1; color: var(--texte-doux); background: rgba(247, 243, 236, 0.9); box-shadow: inset 0 0 0 1px var(--ligne-forte); }
 .projet__infos { display: grid; grid-template-columns: auto 1fr; column-gap: 16px; align-items: start; padding: 20px 2px 0; }
 .projet__num { grid-row: span 2; font-family: var(--mono); font-size: 0.74rem; color: var(--cuivre); letter-spacing: 0.08em; padding-top: 6px; }
 .projet__infos h3 { font-family: var(--serif); font-size: 1.5rem; line-height: 1.15; letter-spacing: -0.01em; }
@@ -683,6 +692,11 @@ p { margin: 0; }
   transition: border-color 0.3s;
 }
 .champ input::placeholder { color: rgba(171, 162, 147, 0.6); }
+/* Remplissage automatique du navigateur : garder le fond sombre et le texte clair */
+.champ input:-webkit-autofill, .champ input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--papier); caret-color: var(--papier);
+  -webkit-box-shadow: 0 0 0 1000px var(--encre-2) inset; box-shadow: 0 0 0 1000px var(--encre-2) inset;
+}
 .champ input:focus, .champ textarea:focus { outline: none; border-color: var(--cuivre-vif); }
 .champ input.est-invalide, .champ textarea.est-invalide { border-color: #e2725b; }
 .champs-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
@@ -752,14 +766,16 @@ a.carte-contact::before {
   content: ""; position: absolute; inset: 0; z-index: -1; background: var(--plaque) center / cover, #d8b68a;
   transform: translateY(101%); transition: transform 0.7s var(--ease-out);
 }
-a.carte-contact:hover::before, a.carte-contact:focus-visible::before { transform: none; }
-a.carte-contact:hover { border-color: transparent; }
+a.carte-contact:focus-visible::before { transform: none; }
+@media (hover: hover) {
+  a.carte-contact:hover::before { transform: none; }
+  a.carte-contact:hover { border-color: transparent; }
+  }
 .carte-contact__type { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--texte-doux); }
 .carte-contact__valeur { font-family: var(--serif); font-size: clamp(1.7rem, 2.6vw, 2.4rem); line-height: 1.1; letter-spacing: -0.015em; }
 .carte-contact__valeur--petit { font-size: clamp(1.25rem, 1.8vw, 1.6rem); word-break: break-word; }
 .carte-contact__action { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 0.92rem; }
 .carte-contact__action svg { width: 20px; height: 20px; transition: transform 0.4s var(--ease); }
-a.carte-contact:hover .carte-contact__action svg { transform: translateX(6px); }
 .carte-contact__note { color: var(--texte-doux); font-size: 0.92rem; }
 .carte-contact--fixe { background: var(--papier-3); }
 

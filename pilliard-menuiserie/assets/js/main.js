@@ -270,8 +270,8 @@
     // laisse l'écran d'ouverture s'afficher avant de calculer le bois
     requestAnimationFrame(function () {
       apres(50, function () {
-        preparer();
-        apres(Math.max(0, 1150 - (Date.now() - debut)), ouvrir);
+        // Quoi qu'il arrive pendant la préparation, la page doit s'ouvrir.
+        try { preparer(); } finally { apres(Math.max(0, 1150 - (Date.now() - debut)), ouvrir); }
       });
     });
     try { sessionStorage.setItem("pma-ouverture", "1"); } catch (e) { /* idem */ }

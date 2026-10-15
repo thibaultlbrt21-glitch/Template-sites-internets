@@ -129,21 +129,23 @@
           <div class="panneau__reflet" aria-hidden="true"></div>
         </div>
       </div>
-      <figcaption class="panneau__legende">
-        <span class="panneau__repere" aria-hidden="true">A</span>
-        <span>Panneau massif — <strong id="panneauEssence">chêne</strong>, monogramme gravé</span>
-      </figcaption>
-      <div class="essais" role="group" aria-label="Changer l'essence du panneau">
-        <span class="essais__titre">Essayez une essence</span>
-        <div class="essais__liste">
-          <button type="button" class="essai est-actif" data-essence="chene" aria-pressed="true"><i></i>Chêne</button>
-          <button type="button" class="essai" data-essence="noyer" aria-pressed="false"><i></i>Noyer</button>
-          <button type="button" class="essai" data-essence="frene" aria-pressed="false"><i></i>Frêne</button>
-          <button type="button" class="essai" data-essence="douglas" aria-pressed="false"><i></i>Douglas</button>
-          <button type="button" class="essai" data-essence="meleze" aria-pressed="false"><i></i>Mélèze</button>
-          <button type="button" class="essai" data-essence="ipe" aria-pressed="false"><i></i>Ipé</button>
+      <figcaption>
+        <p class="panneau__legende">
+          <span class="panneau__repere" aria-hidden="true">A</span>
+          <span>Panneau massif — <strong id="panneauEssence">chêne</strong>, monogramme gravé</span>
+        </p>
+        <div class="essais" role="group" aria-label="Changer l'essence du panneau">
+          <span class="essais__titre">Essayez une essence</span>
+          <div class="essais__liste">
+            <button type="button" class="essai est-actif" data-essence="chene" aria-pressed="true"><i></i>Chêne</button>
+            <button type="button" class="essai" data-essence="noyer" aria-pressed="false"><i></i>Noyer</button>
+            <button type="button" class="essai" data-essence="frene" aria-pressed="false"><i></i>Frêne</button>
+            <button type="button" class="essai" data-essence="douglas" aria-pressed="false"><i></i>Douglas</button>
+            <button type="button" class="essai" data-essence="meleze" aria-pressed="false"><i></i>Mélèze</button>
+            <button type="button" class="essai" data-essence="ipe" aria-pressed="false"><i></i>Ipé</button>
+          </div>
         </div>
-      </div>
+      </figcaption>
     </figure>
 
     <a class="accueil__suite" href="#atelier"><span>Faites défiler</span><i aria-hidden="true"></i></a>
@@ -357,7 +359,7 @@
       </div>
     </div>
 
-    <div class="rail" id="rail" tabindex="0" aria-label="Réalisations, faites défiler horizontalement">
+    <div class="rail" id="rail" tabindex="0" role="region" aria-label="Réalisations, faites défiler horizontalement">
       <article class="projet" data-projet="terrasse" data-essence="ipe">
         <div class="projet__feuille">
           <div class="projet__plan" data-dessin="terrasse"></div>
@@ -366,21 +368,21 @@
         </div>
         <div class="projet__infos">
           <span class="projet__num">N° 01</span>
-          <h3>Terrasse sur plots, marche filante</h3>
-          <p>Bois exotique, lames 21 × 145, vissage inox.</p>
+          <h3>Terrasse avec marche filante</h3>
+          <p>Bois exotique, marche périphérique, nez de marche coupés d'onglet.</p>
           <button type="button" class="bascule" aria-pressed="false" aria-label="Voir le projet fini"><span>Plan</span><span>Fini</span></button>
         </div>
       </article>
       <article class="projet projet--portrait" data-projet="claustra" data-essence="chene">
         <div class="projet__feuille">
           <div class="projet__plan" data-dessin="claustra"></div>
-          <img class="projet__photo" src="assets/images/claustra-entree.jpg" alt="Claustra à lames de bois verticales séparant l'entrée du séjour, posé sur un meuble bas blanc" loading="lazy" draggable="false" width="172" height="288">
+          <img class="projet__photo" src="assets/images/claustra-entree.jpg" alt="Claustra à lames de bois verticales posé sur un meuble bas blanc, ouvert sur le séjour" loading="lazy" draggable="false" width="172" height="288">
           <span class="projet__tampon">Photo de chantier</span>
         </div>
         <div class="projet__infos">
           <span class="projet__num">N° 02</span>
           <h3>Claustra et banc d'entrée</h3>
-          <p>Lames verticales du sol au plafond, meuble bas formant banc.</p>
+          <p>Lames verticales jusqu'au plafond, posées sur un meuble bas formant banc.</p>
           <button type="button" class="bascule" aria-pressed="false" aria-label="Voir le projet fini"><span>Plan</span><span>Fini</span></button>
         </div>
       </article>
@@ -400,6 +402,7 @@
       <article class="projet" data-projet="cuisine" data-essence="frene">
         <div class="projet__feuille">
           <div class="projet__plan" data-dessin="cuisine"></div>
+          <span class="projet__tampon projet__tampon--type">Projet type</span>
         </div>
         <div class="projet__infos">
           <span class="projet__num">N° 04</span>
@@ -411,6 +414,7 @@
       <article class="projet" data-projet="escalier" data-essence="chene">
         <div class="projet__feuille">
           <div class="projet__plan" data-dessin="escalier"></div>
+          <span class="projet__tampon projet__tampon--type">Projet type</span>
         </div>
         <div class="projet__infos">
           <span class="projet__num">N° 05</span>
@@ -422,6 +426,7 @@
       <article class="projet" data-projet="dressing" data-essence="chene">
         <div class="projet__feuille">
           <div class="projet__plan" data-dessin="dressing"></div>
+          <span class="projet__tampon projet__tampon--type">Projet type</span>
         </div>
         <div class="projet__infos">
           <span class="projet__num">N° 06</span>
@@ -433,6 +438,7 @@
       <article class="projet" data-projet="bibliotheque" data-essence="noyer">
         <div class="projet__feuille">
           <div class="projet__plan" data-dessin="bibliotheque"></div>
+          <span class="projet__tampon projet__tampon--type">Projet type</span>
         </div>
         <div class="projet__infos">
           <span class="projet__num">N° 07</span>
@@ -444,6 +450,7 @@
       <article class="projet" data-projet="comptoir" data-essence="douglas">
         <div class="projet__feuille">
           <div class="projet__plan" data-dessin="comptoir"></div>
+          <span class="projet__tampon projet__tampon--type">Projet type</span>
         </div>
         <div class="projet__infos">
           <span class="projet__num">N° 08</span>
@@ -467,7 +474,7 @@
       </div>
 
       <div class="echantillons" id="echantillons">
-        <!-- Rempli par main.js à partir de ESSENCES_FICHES (texte de secours ci-dessous) -->
+        <!-- Rempli par main.js à partir du tableau FICHES (texte de secours ci-dessous) -->
       </div>
       <noscript><p class="essences__secours">Chêne, noyer, frêne, douglas, mélèze, ipé — et panneaux plaqués, stratifiés ou laqués.</p></noscript>
     </div>
@@ -619,7 +626,7 @@
 <footer class="pied">
   <div class="conteneur">
     <div class="pied__haut">
-      <svg class="pied__pma" viewBox="0 0 272 120" role="img" aria-label="PMA"><use href="#pma"/></svg>
+      <svg class="pied__pma" viewBox="0 0 272 120" role="img" aria-label="Monogramme PMA, Pilliard Menuiserie Agencement"><use href="#pma"/></svg>
       <div class="pied__texte">
         <p class="pied__nom">Pilliard Menuiserie Agencement</p>
         <p>Conception, fabrication et pose de menuiseries et d'agencements sur mesure.</p>
