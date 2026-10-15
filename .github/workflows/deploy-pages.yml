@@ -8,6 +8,7 @@ name: Deploy sites to GitHub Pages
 #   /webly-template-restaurant-mini/    -> webly-template-restaurant-mini/
 #   /webly-template-restaurant-premium/ -> webly-template-restaurant-premium/
 #   /tds-fermetures/                    -> tds-fermetures/ (TDS Fermetures)
+#   /pilliard-menuiserie/               -> pilliard-menuiserie/ (Pilliard Menuiserie Agencement)
 #   /webly-template-menuisier/          -> redirection vers /tds-fermetures/
 #
 # To add another site later: add one more `cp -r` line in "Assemble
@@ -24,6 +25,7 @@ on:
       - "webly-template-restaurant-mini/**"
       - "webly-template-restaurant-premium/**"
       - "tds-fermetures/**"
+      - "pilliard-menuiserie/**"
       - ".github/workflows/deploy-pages.yml"
   workflow_dispatch: {}
 
@@ -62,6 +64,8 @@ jobs:
           cp -r webly-template-restaurant-premium/. _site/webly-template-restaurant-premium/
           mkdir -p _site/tds-fermetures
           cp -r tds-fermetures/. _site/tds-fermetures/
+          mkdir -p _site/pilliard-menuiserie
+          cp -r pilliard-menuiserie/. _site/pilliard-menuiserie/
           # L'ancienne adresse du site (avant qu'il devienne TDS Fermetures)
           # renvoie vers la nouvelle, pour les liens déjà partagés.
           mkdir -p _site/webly-template-menuisier
