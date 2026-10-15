@@ -88,7 +88,9 @@
     }
   };
 
-  var cache = {};
+  // Cache des textures déjà calculées (les plus anciennes sont oubliées au-delà
+  // de 40, pour ne pas accumuler de la mémoire si la fenêtre change de taille).
+  var cache = {}, ordre = [];
 
   function peindre(ctx, w, h, ess, o) {
     var e = ESSENCES[ess] || ESSENCES.chene;
@@ -164,6 +166,8 @@
     c.width = w; c.height = h;
     peindre(c.getContext("2d"), w, h, ess, o);
     cache[cle] = c;
+    ordre.push(cle);
+    if (ordre.length > 40) delete cache[ordre.shift()];
     return c;
   }
 

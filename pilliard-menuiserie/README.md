@@ -16,7 +16,7 @@ hébergeur statique.
 | L'atelier | Le texte d'intention s'écrit au fil de la lecture. |
 | Prestations | Au survol d'une ligne, le **plan d'atelier** correspondant se dessine sous la souris. Sur mobile, un toucher ouvre le plan. |
 | Méthode | Une **queue d'aronde** s'assemble pendant que l'on fait défiler les 4 étapes (relevé, plan, atelier, pose), jusqu'à un petit nuage de sciure. |
-| Réalisations | Chaque projet se dessine trait par trait, puis prend son bois. Le projet terrasse affiche la vraie photo de chantier. |
+| Réalisations | Chaque projet se dessine trait par trait, puis prend son bois. Les trois premiers (terrasse, claustra, tête de lit) basculent sur leur vraie photo de chantier. |
 | Essences | Six échantillons de bois qui s'ouvrent en fiche technique : teinte, densité, dureté, usage. |
 | Votre projet | Un formulaire en 4 questions qui remplit en direct un **bon d'atelier**, tamponné « Reçu » à l'envoi. |
 
@@ -30,8 +30,13 @@ Aucune de ces textures n'est une photo : `assets/js/bois.js` les calcule
   du monogramme. Le P porte la branche de feuillage, le A la lame de scie. La
   photo reçue était recadrée et petite (224 px) : si le client a le fichier
   d'origine, mieux vaut le comparer et ajuster.
-- **Photo** : la terrasse en bois exotique (`assets/images/terrasse-bois.jpg`),
-  projet n° 01 des réalisations.
+- **Photos de chantier** (réalisations n° 01 à 03) : la terrasse en bois
+  exotique (`terrasse-bois.jpg`), le claustra à lames verticales sur banc
+  d'entrée (`claustra-entree.jpg`) et la tête de lit rétroéclairée
+  (`tete-de-lit-led.jpg`), dans `assets/images/`. Leurs métadonnées (EXIF) ont
+  été retirées. Elles sont très petites (224 × 160 et 172 × 288 px) : les
+  originaux en pleine définition rendront nettement mieux, il suffit de les
+  déposer sous le même nom.
 
 Tout le reste (textes, plans, fiches d'essences) est rédigé pour le site et
 reste générique. **Rien n'est inventé sur l'entreprise** : ni date de création,
@@ -71,7 +76,9 @@ la terrasse : ajouter dans `.projet__feuille`
 <span class="projet__tampon">Photo de chantier</span>
 ```
 
-Format conseillé : paysage 4:3, 1600 px de large, JPEG qualité 80.
+Format conseillé : paysage 4:3, 1600 px de large, JPEG qualité 80. Pour une
+photo verticale, ajouter la classe `projet--portrait` à l'`<article>` (format
+3:4) et choisir un plan vertical (`claustra`, `tetedelit`).
 On peut aussi modifier le titre, la description et l'essence
 (`data-essence="chene"`, `noyer`, `frene`, `douglas`, `meleze` ou `ipe`)
 de chaque projet.
@@ -84,11 +91,11 @@ mentions-legales.html    mentions légales, données personnelles, cookies
 assets/css/style.css     toute la mise en forme
 assets/js/config.js      coordonnées et réception des devis  ← à modifier
 assets/js/bois.js        générateur de textures de bois
-assets/js/dessins.js     les six plans d'atelier (SVG)
+assets/js/dessins.js     les huit plans d'atelier (SVG)
 assets/js/main.js        interactions
 assets/logo/pma.svg      monogramme vectoriel
 assets/favicon.svg       icône d'onglet
-assets/images/           photo de la terrasse, image de partage (réseaux sociaux)
+assets/images/           photos de chantier, image de partage (réseaux sociaux)
 tools/generer-dessins.py régénère dessins.js (python3 tools/generer-dessins.py)
 ```
 

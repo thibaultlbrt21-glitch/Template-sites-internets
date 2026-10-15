@@ -199,9 +199,56 @@ d.coteH(60, 340, 286, '2 800', attache=266)
 d.coteV(142, 262, 388, '1 100', attache=346)
 dessins['comptoir'] = dict(titre='Agencement de commerce', svg=d.svg())
 
+# ---------------- CLAUSTRA + BANC D'ENTRÉE (portrait 300 × 400) ----------------
+d = D()
+d.line(10, 24, 290, 24, 't')
+for i in range(20): d.line(14 + i * 14, 24, 22 + i * 14, 16, 'f')
+d.line(24, 24, 24, 372, 't')
+d.line(10, 372, 290, 372, 't')
+for i in range(20): d.line(14 + i * 14, 380, 22 + i * 14, 372, 'f')
+d.rect(40, 24, 196, 8)                        # lisse haute, fixée au plafond
+for i in range(8):
+    d.rect(48 + i * 24, 32, 10, 260)          # lames verticales
+d.rect(36, 292, 204, 8)                       # dessus du banc
+d.rect(40, 300, 196, 66)                      # meuble bas
+d.line(138, 300, 138, 366, 'f')
+d.line(126, 326, 126, 340, 't'); d.line(150, 326, 150, 340, 't')
+d.rect(44, 366, 188, 6, 'f')
+# plante derrière le claustra
+d.path('M248 372 L244 340 L270 340 L266 372 Z', 'f')
+d.path('M257 340 Q246 302 238 290 M257 340 Q259 298 257 274 M257 340 Q270 306 278 298', 'f')
+d.path('M238 290 q8 -2 10 8 M257 274 q6 4 2 12 M278 298 q-8 0 -8 10', 'f')
+d.coteH(40, 236, 392, '1 400', attache=376)
+d.coteV(24, 372, 290, '2 500')
+dessins['claustra'] = dict(titre="Claustra et banc d'entrée", svg=d.svg(), vb='0 0 300 400')
+
+# ---------------- TÊTE DE LIT RÉTROÉCLAIRÉE (portrait 300 × 400) ----------------
+d = D()
+d.line(6, 372, 294, 372, 't')
+for i in range(21): d.line(10 + i * 14, 380, 18 + i * 14, 372, 'f')
+d.rect(30, 140, 240, 86)                      # panneau de tête de lit
+for x in range(46, 270, 16): d.line(x, 140, x, 226, 'f')
+d.rect(23, 133, 254, 100, 'f')                # halo du ruban LED
+for x in range(38, 270, 18): d.line(x, 129, x, 121, 'f')
+d.line(19, 150, 11, 150, 'f'); d.line(19, 182, 11, 182, 'f'); d.line(281, 150, 289, 150, 'f'); d.line(281, 182, 289, 182, 'f')
+d.rect(6, 232, 44, 8); d.rect(250, 232, 44, 8)   # chevets suspendus
+d.rect(14, 222, 20, 10, 'f'); d.rect(262, 216, 10, 16, 'f'); d.circle(281, 226, 6)
+# lit : dessus du matelas en perspective, face avant, sommier, pieds
+d.poly([(86, 236), (214, 236), (230, 262), (70, 262)])
+d.path('M98 244 Q120 236 142 244 Q120 252 98 244 Z M158 244 Q180 236 202 244 Q180 252 158 244 Z', 'f')
+d.rect(70, 262, 160, 56)
+for x in range(90, 250, 20):
+    d.line(x - 20, 262, x, 318, 'f'); d.line(x, 262, x - 20, 318, 'f')
+d.rect(66, 318, 168, 34)
+d.rect(72, 352, 8, 20); d.rect(220, 352, 8, 20)
+d.text(150, 98, 'ruban LED périphérique', 'middle')
+d.line(150, 102, 150, 120, 'c')
+d.coteH(30, 270, 62, '2 400', attache=118)
+dessins['tetedelit'] = dict(titre='Tête de lit rétroéclairée', svg=d.svg(), vb='0 0 300 400')
+
 out = ['/* =========================================================================',
        '   PILLIARD MENUISERIE AGENCEMENT — plans d\'atelier',
-       '   Dessins en élévation (SVG, 400 × 300), cotes en millimètres.',
+       '   Dessins en élévation (SVG, 400 × 300 ; 300 × 400 si « vb » est donné), cotes en mm.',
        '   Classes : p = panneau (peut être « habillé » de bois), t = trait,',
        '   f = détail fin, c = ligne de cote, x = texte de cote.',
        '   Insertion : <div data-dessin="cuisine"></div> (voir main.js).',
@@ -209,7 +256,8 @@ out = ['/* =====================================================================
        'window.DESSINS = {']
 items = []
 for k, v in dessins.items():
-    items.append(f'  {k}: {{\n    titre: {json.dumps(v["titre"], ensure_ascii=False)},\n    svg: {json.dumps(v["svg"], ensure_ascii=False)}\n  }}')
+    vb = f'\n    vb: {json.dumps(v["vb"])},' if v.get("vb") else ''
+    items.append(f'  {k}: {{\n    titre: {json.dumps(v["titre"], ensure_ascii=False)},{vb}\n    svg: {json.dumps(v["svg"], ensure_ascii=False)}\n  }}')
 out.append(',\n'.join(items))
 out.append('};\n')
 open(__import__('os').path.join(__import__('os').path.dirname(__file__), '..', 'assets', 'js', 'dessins.js'), 'w', encoding='utf-8').write('\n'.join(out))

@@ -160,7 +160,7 @@
   <!-- ============ L'ATELIER ============ -->
   <section class="section atelier" id="atelier">
     <div class="conteneur atelier__grille">
-      <p class="surtitre"><span class="numero">01</span>L'atelier</p>
+      <h2 class="surtitre"><span class="numero">01</span>L'atelier</h2>
       <p class="manifeste" data-manifeste>Un bel ouvrage ne se remarque pas tout de suite. Il se ressent&nbsp;: un tiroir qui glisse sans bruit, une marche qui ne craque pas, un angle parfaitement d'équerre. C'est ce soin, invisible et durable, que nous mettons dans chaque projet.</p>
       <ul class="atelier__points">
         <li class="revele">
@@ -222,8 +222,8 @@
         <li class="ouvrage" data-dessin-apercu="bibliotheque">
           <button type="button" class="ouvrage__ligne" aria-expanded="false">
             <span class="ouvrage__num">04</span>
-            <span class="ouvrage__nom">Bibliothèques &amp; rangements</span>
-            <span class="ouvrage__resume">Murs de rangement, meubles TV, banquettes&nbsp;: l'agencement qui structure une pièce.</span>
+            <span class="ouvrage__nom">Agencement intérieur</span>
+            <span class="ouvrage__resume">Claustras, bibliothèques, meubles TV, têtes de lit&nbsp;: l'agencement qui structure une pièce.</span>
             <span class="ouvrage__plus" aria-hidden="true"></span>
           </button>
           <div class="ouvrage__detail"><div class="ouvrage__plan" data-dessin="bibliotheque"></div></div>
@@ -350,7 +350,7 @@
           <p>Chaque projet commence sur la planche à dessin. Faites défiler&nbsp;: les plans prennent corps sous vos yeux.</p>
           <div class="rail__commandes">
             <button type="button" class="rond" id="railPrec" aria-label="Projet précédent"><svg aria-hidden="true" style="transform:scaleX(-1)"><use href="#fleche"/></svg></button>
-            <span class="rail__compteur" id="railCompteur">01 / 06</span>
+            <span class="rail__compteur" id="railCompteur">01 / 08</span>
             <button type="button" class="rond" id="railSuiv" aria-label="Projet suivant"><svg aria-hidden="true"><use href="#fleche"/></svg></button>
           </div>
         </div>
@@ -358,62 +358,98 @@
     </div>
 
     <div class="rail" id="rail" tabindex="0" aria-label="Réalisations, faites défiler horizontalement">
-      <article class="projet" data-projet="terrasse" data-essence="ipe" data-photo="assets/images/terrasse-bois.jpg">
+      <article class="projet" data-projet="terrasse" data-essence="ipe">
         <div class="projet__feuille">
           <div class="projet__plan" data-dessin="terrasse"></div>
-          <img class="projet__photo" src="assets/images/terrasse-bois.jpg" alt="Terrasse en bois exotique avec marche périphérique, réalisée par Pilliard Menuiserie Agencement" loading="lazy" width="224" height="160">
+          <img class="projet__photo" src="assets/images/terrasse-bois.jpg" alt="Terrasse en bois exotique avec marche périphérique, réalisée par Pilliard Menuiserie Agencement" loading="lazy" draggable="false" width="224" height="160">
           <span class="projet__tampon">Photo de chantier</span>
         </div>
         <div class="projet__infos">
           <span class="projet__num">N° 01</span>
           <h3>Terrasse sur plots, marche filante</h3>
           <p>Bois exotique, lames 21 × 145, vissage inox.</p>
-          <button type="button" class="bascule" aria-pressed="false"><span>Plan</span><span>Fini</span></button>
+          <button type="button" class="bascule" aria-pressed="false" aria-label="Voir le projet fini"><span>Plan</span><span>Fini</span></button>
+        </div>
+      </article>
+      <article class="projet projet--portrait" data-projet="claustra" data-essence="chene">
+        <div class="projet__feuille">
+          <div class="projet__plan" data-dessin="claustra"></div>
+          <img class="projet__photo" src="assets/images/claustra-entree.jpg" alt="Claustra à lames de bois verticales séparant l'entrée du séjour, posé sur un meuble bas blanc" loading="lazy" draggable="false" width="172" height="288">
+          <span class="projet__tampon">Photo de chantier</span>
+        </div>
+        <div class="projet__infos">
+          <span class="projet__num">N° 02</span>
+          <h3>Claustra et banc d'entrée</h3>
+          <p>Lames verticales du sol au plafond, meuble bas formant banc.</p>
+          <button type="button" class="bascule" aria-pressed="false" aria-label="Voir le projet fini"><span>Plan</span><span>Fini</span></button>
+        </div>
+      </article>
+      <article class="projet projet--portrait" data-projet="tetedelit" data-essence="chene">
+        <div class="projet__feuille">
+          <div class="projet__plan" data-dessin="tetedelit"></div>
+          <img class="projet__photo" src="assets/images/tete-de-lit-led.jpg" alt="Tête de lit en bois éclairée par un ruban LED, avec chevets suspendus intégrés" loading="lazy" draggable="false" width="172" height="288">
+          <span class="projet__tampon">Photo de chantier</span>
+        </div>
+        <div class="projet__infos">
+          <span class="projet__num">N° 03</span>
+          <h3>Tête de lit rétroéclairée</h3>
+          <p>Panneau bois pleine largeur, ruban LED, chevets suspendus.</p>
+          <button type="button" class="bascule" aria-pressed="false" aria-label="Voir le projet fini"><span>Plan</span><span>Fini</span></button>
         </div>
       </article>
       <article class="projet" data-projet="cuisine" data-essence="frene">
-        <div class="projet__feuille"><div class="projet__plan" data-dessin="cuisine"></div></div>
+        <div class="projet__feuille">
+          <div class="projet__plan" data-dessin="cuisine"></div>
+        </div>
         <div class="projet__infos">
-          <span class="projet__num">N° 02</span>
+          <span class="projet__num">N° 04</span>
           <h3>Cuisine linéaire, étagères ouvertes</h3>
           <p>Façades en frêne, plan de travail massif, poignées intégrées.</p>
-          <button type="button" class="bascule" aria-pressed="false"><span>Plan</span><span>Fini</span></button>
+          <button type="button" class="bascule" aria-pressed="false" aria-label="Voir le projet fini"><span>Plan</span><span>Fini</span></button>
         </div>
       </article>
       <article class="projet" data-projet="escalier" data-essence="chene">
-        <div class="projet__feuille"><div class="projet__plan" data-dessin="escalier"></div></div>
+        <div class="projet__feuille">
+          <div class="projet__plan" data-dessin="escalier"></div>
+        </div>
         <div class="projet__infos">
-          <span class="projet__num">N° 03</span>
+          <span class="projet__num">N° 05</span>
           <h3>Escalier droit à crémaillère</h3>
           <p>Chêne massif, marches de 50, rampe et balustres assortis.</p>
-          <button type="button" class="bascule" aria-pressed="false"><span>Plan</span><span>Fini</span></button>
+          <button type="button" class="bascule" aria-pressed="false" aria-label="Voir le projet fini"><span>Plan</span><span>Fini</span></button>
         </div>
       </article>
       <article class="projet" data-projet="dressing" data-essence="chene">
-        <div class="projet__feuille"><div class="projet__plan" data-dessin="dressing"></div></div>
+        <div class="projet__feuille">
+          <div class="projet__plan" data-dessin="dressing"></div>
+        </div>
         <div class="projet__infos">
-          <span class="projet__num">N° 04</span>
+          <span class="projet__num">N° 06</span>
           <h3>Dressing trois travées</h3>
           <p>Penderies, étagères réglables, tiroirs à fermeture amortie.</p>
-          <button type="button" class="bascule" aria-pressed="false"><span>Plan</span><span>Fini</span></button>
+          <button type="button" class="bascule" aria-pressed="false" aria-label="Voir le projet fini"><span>Plan</span><span>Fini</span></button>
         </div>
       </article>
       <article class="projet" data-projet="bibliotheque" data-essence="noyer">
-        <div class="projet__feuille"><div class="projet__plan" data-dessin="bibliotheque"></div></div>
+        <div class="projet__feuille">
+          <div class="projet__plan" data-dessin="bibliotheque"></div>
+        </div>
         <div class="projet__infos">
-          <span class="projet__num">N° 05</span>
+          <span class="projet__num">N° 07</span>
           <h3>Bibliothèque murale</h3>
           <p>Noyer, montants affleurants, rangements fermés en partie basse.</p>
-          <button type="button" class="bascule" aria-pressed="false"><span>Plan</span><span>Fini</span></button>
+          <button type="button" class="bascule" aria-pressed="false" aria-label="Voir le projet fini"><span>Plan</span><span>Fini</span></button>
         </div>
       </article>
       <article class="projet" data-projet="comptoir" data-essence="douglas">
-        <div class="projet__feuille"><div class="projet__plan" data-dessin="comptoir"></div></div>
+        <div class="projet__feuille">
+          <div class="projet__plan" data-dessin="comptoir"></div>
+        </div>
         <div class="projet__infos">
-          <span class="projet__num">N° 06</span>
+          <span class="projet__num">N° 08</span>
           <h3>Comptoir d'accueil à tasseaux</h3>
           <p>Tasseaux verticaux, tablette haute, éclairage suspendu.</p>
-          <button type="button" class="bascule" aria-pressed="false"><span>Plan</span><span>Fini</span></button>
+          <button type="button" class="bascule" aria-pressed="false" aria-label="Voir le projet fini"><span>Plan</span><span>Fini</span></button>
         </div>
       </article>
     </div>
@@ -499,7 +535,7 @@
             <legend>Comment vous joindre&nbsp;?</legend>
             <div class="champs-duo">
               <label class="champ"><span>Nom et prénom</span><input type="text" name="nom" required autocomplete="name"></label>
-              <label class="champ"><span>Téléphone</span><input type="tel" name="telephone" required autocomplete="tel" inputmode="tel" pattern="[0-9+ .()\-]{10,}"></label>
+              <label class="champ"><span>Téléphone</span><input type="tel" name="telephone" required autocomplete="tel" inputmode="tel" pattern="[0-9 +.\(\)\-]{10,}"></label>
             </div>
             <label class="champ"><span>E-mail</span><input type="email" name="email" required autocomplete="email"></label>
             <label class="champ"><span>Quelques mots sur votre projet <em>(facultatif)</em></span><textarea name="message" rows="3"></textarea></label>

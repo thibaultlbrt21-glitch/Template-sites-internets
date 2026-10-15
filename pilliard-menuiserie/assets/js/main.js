@@ -254,10 +254,10 @@
     requestAnimationFrame(pret);
   } else {
     document.body.classList.add("en-ouverture");
-    var debut = Date.now(), fini = false;
+    var debut = Date.now(), ouverte = false;
     var ouvrir = function () {
-      if (fini) return;
-      fini = true;
+      if (ouverte) return;
+      ouverte = true;
       ouverture.classList.add("est-coupe");
       apres(480, function () {
         ouverture.classList.add("est-ouvert");
@@ -298,17 +298,25 @@
       entete.classList.remove("est-cache");
     });
     $$("a", nav).forEach(function (a) { a.addEventListener("click", fermerMenu); });
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape") fermerMenu(); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && nav.classList.contains("est-ouverte")) { fermerMenu(); burger.focus(); }
+    });
   }
 
+  // L'en-tête se replie au premier défilement, se cache quand on descend et
+  // revient dès qu'on remonte. Le seuil de 6 px évite qu'il clignote quand
+  // on fait défiler lentement.
   function majEntete() {
-    var y = window.scrollY;
+    var y = window.scrollY, ecart = y - dernierY;
     entete.classList.toggle("est-replie", y > 30);
     var menuOuvert = nav && nav.classList.contains("est-ouverte");
-    if (!menuOuvert) entete.classList.toggle("est-cache", y > 500 && y > dernierY + 4);
-    if (y < dernierY - 4) entete.classList.remove("est-cache");
-    dernierY = y;
+    if (y <= 500 || menuOuvert) entete.classList.remove("est-cache");
+    else if (ecart > 6) entete.classList.add("est-cache");
+    else if (ecart < -6) entete.classList.remove("est-cache");
+    if (Math.abs(ecart) > 6 || y <= 500) dernierY = y;
   }
+  // Un lien de l'en-tête qui reçoit le focus clavier doit être visible.
+  if (entete) entete.addEventListener("focusin", function () { entete.classList.remove("est-cache"); });
 
   if ("IntersectionObserver" in window) {
     var liens = $$(".nav ul a");
@@ -341,6 +349,7 @@
   function majManifeste() {
     if (!mots.length) return;
     var r = manifeste.getBoundingClientRect(), vh = window.innerHeight;
+    if (r.bottom < -vh || r.top > vh * 2) return;
     var p = borne((vh * 0.88 - r.top) / (r.height + vh * 0.3), 0, 1);
     var n = Math.round(p * mots.length);
     for (var i = 0; i < mots.length; i++) mots[i].classList.toggle("est-lu", i < n);
@@ -367,7 +376,7 @@
     var d = DESSINS[cle];
     if (!d) return null;
     el.classList.add("plan");
-    el.innerHTML = '<svg viewBox="0 0 400 300" role="img" aria-label="Plan : ' + d.titre + '">' + d.svg + "</svg>";
+    el.innerHTML = '<svg viewBox="' + (d.vb || "0 0 400 300") + '" role="img" aria-label="Plan : ' + d.titre + '">' + d.svg + "</svg>";
     return el;
   }
 
@@ -395,16 +404,17 @@
     if (!svg || !Bois || el.getAttribute("data-habille")) return;
     el.setAttribute("data-habille", "1");
     var ns = "http://www.w3.org/2000/svg", id = "bois-motif-" + (++numMotif);
+    var vb = (svg.getAttribute("viewBox") || "0 0 400 300").split(/\s+/), lw = +vb[2], lh = +vb[3];
     var defs = document.createElementNS(ns, "defs");
     var motif = document.createElementNS(ns, "pattern");
     motif.setAttribute("id", id);
     motif.setAttribute("patternUnits", "userSpaceOnUse");
-    motif.setAttribute("width", "400");
-    motif.setAttribute("height", "300");
+    motif.setAttribute("width", lw);
+    motif.setAttribute("height", lh);
     var image = document.createElementNS(ns, "image");
-    image.setAttribute("href", Bois.url(ess, 560, 420, { graine: numMotif * 13 + 2 }));
-    image.setAttribute("width", "400");
-    image.setAttribute("height", "300");
+    image.setAttribute("href", Bois.url(ess, Math.round(lw * 1.4), Math.round(lh * 1.4), { graine: numMotif * 13 + 2 }));
+    image.setAttribute("width", lw);
+    image.setAttribute("height", lh);
     image.setAttribute("preserveAspectRatio", "none");
     motif.appendChild(image);
     defs.appendChild(motif);
@@ -420,8 +430,9 @@
   /* =======================================================================
      9. Prestations : accordéon + aperçu qui suit le curseur
      ======================================================================= */
-  $$(".ouvrage").forEach(function (li) {
-    var bouton = $(".ouvrage__ligne", li), plan = $(".ouvrage__plan", li);
+  $$(".ouvrage").forEach(function (li, i) {
+    var bouton = $(".ouvrage__ligne", li), plan = $(".ouvrage__plan", li), detail = $(".ouvrage__detail", li);
+    if (detail) { detail.id = "ouvrage-detail-" + (i + 1); bouton.setAttribute("aria-controls", detail.id); }
     bouton.addEventListener("click", function () {
       var ouvert = !li.classList.contains("est-ouvert");
       li.classList.toggle("est-ouvert", ouvert);
@@ -522,7 +533,8 @@
 
   function majMethode() {
     if (!methode || !etapes.length) return;
-    var vh = window.innerHeight, actif = 0;
+    var vh = window.innerHeight, actif = 0, zone = methode.getBoundingClientRect();
+    if (zone.bottom < -vh || zone.top > vh * 2) return;
     etapes.forEach(function (e, i) { if (e.getBoundingClientRect().top < vh * 0.6) actif = i; });
     etapes.forEach(function (e, i) { e.classList.toggle("est-active", i === actif); });
     methode.setAttribute("data-etape", actif);
@@ -563,40 +575,68 @@
 
   projets.forEach(function (projet, i) {
     var plan = $(".projet__plan", projet);
+    var choixVisiteur = false;
     $(".bascule", projet).addEventListener("click", function () {
+      choixVisiteur = true;
       var fini = !projet.classList.contains("est-fini");
       if (!fini) trace(plan);
       montreFini(projet, fini);
     });
     bientotVisible(projet, function () {
+      if (choixVisiteur) return;
       trace(plan);
-      apres(reduit ? 0 : 1500 + i * 60, function () { auRepos(function () { montreFini(projet, true); }); });
+      apres(reduit ? 0 : 1500 + i * 60, function () {
+        auRepos(function () { if (!choixVisiteur) montreFini(projet, true); });
+      });
     }, "0px -10% 0px 0px");
   });
 
   if (rail) {
     var prec = $("#railPrec"), suiv = $("#railSuiv"), cpt = $("#railCompteur");
-    var pas = function () {
-      var p = projets[0], p2 = projets[1];
-      return p2 ? p2.offsetLeft - p.offsetLeft : rail.clientWidth;
+    var deux = function (n) { return ("0" + n).slice(-2); };
+    // Position de défilement qui aligne chaque projet sur le bord gauche
+    // (les cartes n'ont pas toutes la même largeur : paysage ou portrait).
+    var positions = function () {
+      var r = rail.getBoundingClientRect().left, marge = parseFloat(getComputedStyle(rail).paddingLeft) || 0;
+      return projets.map(function (p) { return p.getBoundingClientRect().left - r + rail.scrollLeft - marge; });
+    };
+    var maxRail = function () { return rail.scrollWidth - rail.clientWidth; };
+    var indexCourant = function () {
+      var pos = positions(), x = rail.scrollLeft, meilleur = 0;
+      if (x >= maxRail() - 2) return projets.length - 1;
+      pos.forEach(function (v, i) { if (Math.abs(v - x) < Math.abs(pos[meilleur] - x)) meilleur = i; });
+      return meilleur;
+    };
+    var allerA = function (i) {
+      i = borne(i, 0, projets.length - 1);
+      rail.scrollTo({ left: Math.min(positions()[i], maxRail()), behavior: reduit ? "auto" : "smooth" });
     };
     var majRail = function () {
-      var i = Math.round(rail.scrollLeft / pas());
-      var max = rail.scrollWidth - rail.clientWidth - 2;
-      if (rail.scrollLeft >= max) i = projets.length - 1;
-      i = borne(i, 0, projets.length - 1);
-      cpt.textContent = ("0" + (i + 1)).slice(-2) + " / " + ("0" + projets.length).slice(-2);
+      cpt.textContent = deux(indexCourant() + 1) + " / " + deux(projets.length);
       prec.disabled = rail.scrollLeft <= 2;
-      suiv.disabled = rail.scrollLeft >= max;
+      suiv.disabled = rail.scrollLeft >= maxRail() - 2;
     };
-    prec.addEventListener("click", function () { rail.scrollBy({ left: -pas(), behavior: reduit ? "auto" : "smooth" }); });
-    suiv.addEventListener("click", function () { rail.scrollBy({ left: pas(), behavior: reduit ? "auto" : "smooth" }); });
-    rail.addEventListener("scroll", function () { requestAnimationFrame(majRail); }, { passive: true });
+    // Précédent / suivant : le premier projet dont le bord est avant / après
+    // la position actuelle (fonctionne aussi en butée de fin de rail).
+    prec.addEventListener("click", function () {
+      var pos = positions(), x = rail.scrollLeft, cible = 0;
+      pos.forEach(function (v, i) { if (v < x - 4) cible = i; });
+      allerA(cible);
+    });
+    suiv.addEventListener("click", function () {
+      var pos = positions(), x = rail.scrollLeft;
+      for (var i = 0; i < pos.length; i++) if (pos[i] > x + 4) { allerA(i); return; }
+    });
+    var rafRail = 0;
+    rail.addEventListener("scroll", function () {
+      if (!rafRail) rafRail = requestAnimationFrame(function () { rafRail = 0; majRail(); });
+    }, { passive: true });
     window.addEventListener("resize", majRail);
     majRail();
 
-    // Glisser à la souris
+    // Glisser à la souris (sans le « fantôme » de glisser-déposer des images)
     var tire = null;
+    rail.addEventListener("dragstart", function (e) { e.preventDefault(); });
     rail.addEventListener("pointerdown", function (e) {
       if (e.pointerType !== "mouse" || e.button !== 0) return;
       tire = { x: e.clientX, gauche: rail.scrollLeft, bouge: false };
@@ -607,16 +647,17 @@
       if (!tire.bouge && Math.abs(dx) > 6) { tire.bouge = true; rail.classList.add("est-tire"); }
       if (tire.bouge) rail.scrollLeft = tire.gauche - dx;
     });
-    window.addEventListener("pointerup", function () {
+    var finTire = function () {
       if (!tire) return;
       var bouge = tire.bouge;
       tire = null;
       if (bouge) {
-        var i = Math.round(rail.scrollLeft / pas());
         rail.classList.remove("est-tire");
-        rail.scrollTo({ left: i * pas(), behavior: reduit ? "auto" : "smooth" });
+        allerA(indexCourant());
       }
-    });
+    };
+    window.addEventListener("pointerup", finTire);
+    window.addEventListener("pointercancel", finTire);
   }
 
   /* =======================================================================
@@ -750,6 +791,7 @@
       puces.forEach(function (p, k) {
         p.classList.toggle("est-actif", k === i);
         p.classList.toggle("est-fait", k < i);
+        if (k === i) p.setAttribute("aria-current", "step"); else p.removeAttribute("aria-current");
       });
       btnPrec.hidden = i === 0;
       btnSuiv.hidden = i === volets.length - 1;
@@ -772,9 +814,11 @@
     });
     btnPrec.addEventListener("click", function () { montre(courant - 1, true); });
 
-    // Choisir une réponse fait avancer tout seul sur les étapes à un seul choix
-    $$('input[type="radio"]', volets[0]).forEach(function (r) {
-      r.addEventListener("change", function () { apres(260, function () { if (courant === 0) montre(1, true); }); });
+    // Un clic (souris ou doigt) sur un ouvrage passe à l'étape suivante.
+    // Au clavier (flèches, espace : detail = 0), on laisse parcourir les choix.
+    volets[0].addEventListener("click", function (e) {
+      if (!e.detail || !e.target.closest("label")) return;
+      apres(260, function () { if (courant === 0 && valeur("ouvrage")) montre(1, true); });
     });
 
     function demande() {
@@ -871,8 +915,9 @@
      14. Règle graduée
      ======================================================================= */
   var regle = $(".regle"), mesure = $(".regle__mesure");
+  var regleActive = window.matchMedia("(min-width: 1180px) and (hover: hover)");
   function majRegle() {
-    if (!regle || regle.offsetParent === null && getComputedStyle(regle).display === "none") return;
+    if (!regle || !regleActive.matches) return;
     var max = Math.max(1, doc.scrollHeight - window.innerHeight), y = window.scrollY;
     regle.style.setProperty("--regle", ((y / max) * (window.innerHeight - 2)).toFixed(1) + "px");
     regle.classList.toggle("en-bas", y / max > 0.5);
