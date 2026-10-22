@@ -296,7 +296,10 @@
 
   function rendHoraires(liste) {
     var table = conteneur("infos.horaires");
-    if (!table || !Array.isArray(liste) || !liste.length) return;
+    if (!table) return;
+    // Pas d'horaires renseignés : rien d'affiché, plutôt qu'un « à renseigner ».
+    if (!Array.isArray(liste) || !liste.length) { table.textContent = ""; table.hidden = true; return; }
+    table.hidden = false;
     var corps = table.tBodies[0] || table;
     corps.textContent = "";
     liste.forEach(function (h) {
@@ -323,9 +326,12 @@
     cible.hidden = false;
     liste.forEach(function (r) {
       var li = document.createElement("li");
+      // Sans adresse de profil, le nom s'affiche en texte : jamais de lien mort.
+      if (!rempli(r.url)) { li.appendChild(el("span", null, r.nom || "")); cible.appendChild(li); return; }
       var a = el("a", null, r.nom || "");
-      a.setAttribute("href", rempli(r.url) ? r.url : "#");
-      if (rempli(r.url)) { a.setAttribute("rel", "noopener"); a.setAttribute("target", "_blank"); }
+      a.setAttribute("href", r.url);
+      a.setAttribute("rel", "noopener");
+      a.setAttribute("target", "_blank");
       li.appendChild(a);
       cible.appendChild(li);
     });

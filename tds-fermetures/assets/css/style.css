@@ -206,7 +206,7 @@ a { color: inherit; }
   letter-spacing: 0.2em; text-transform: uppercase; color: var(--texte-doux);
 }
 
-.nav-liens { display: flex; gap: 30px; list-style: none; margin: 0; padding: 0; }
+.nav-liens { display: flex; gap: 30px; list-style: none; margin: 0; padding: 0; white-space: nowrap; }
 .nav-liens a {
   font-family: var(--font-mono); font-size: 0.75rem;
   letter-spacing: 0.1em; text-transform: uppercase;
@@ -327,11 +327,11 @@ a { color: inherit; }
 }
 .hero__jauge { display: flex; gap: 6px; }
 .hero__jauge button {
-  width: 34px; height: 18px; padding: 0; border: 0; background: none; cursor: pointer;
+  width: 34px; height: 28px; padding: 0; border: 0; background: none; cursor: pointer;
   position: relative;
 }
 .hero__jauge button::before {
-  content: ""; position: absolute; left: 0; right: 0; top: 8px; height: 2px;
+  content: ""; position: absolute; left: 0; right: 0; top: 13px; height: 2px;
   background: var(--ligne-encre); transition: background var(--transition);
 }
 .hero__jauge button[aria-current="true"]::before { background: var(--bois-sur-encre); }
@@ -601,6 +601,7 @@ a { color: inherit; }
 }
 .pied ul { list-style: none; margin: 0; padding: 0; }
 .pied li { margin-bottom: 8px; }
+.pied__reseaux { margin-top: 8px !important; }
 .pied a { color: var(--texte-doux-sur-encre); text-decoration: none; transition: color var(--transition); }
 .pied a:hover { color: var(--bois-sur-encre); }
 .pied__bas {
@@ -608,7 +609,9 @@ a { color: inherit; }
   padding-top: 26px; border-top: 1px solid var(--ligne-encre);
   font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em;
 }
-.pied__legal { display: flex; gap: 22px; }
+.pied__legal { display: flex; flex-wrap: wrap; gap: 4px 22px; }
+/* Liens du pied : au moins 24 px de haut, pour le doigt. */
+.pied__legal a, .pied__bas a { display: inline-block; padding: 4px 0; }
 
 /* =========================================================================
    VISIONNEUSE (lightbox)
@@ -681,10 +684,7 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
   :root { --gouttiere: 18px; }
   body { font-size: 16px; }
 
-  .nav-liens { display: none; }
-  .burger { display: block; }
   .nav-actions .btn { display: none; }
-  .menu-mobile { display: flex; }
 
   .hero__cadre { min-height: 92svh; padding: 118px 0 64px; }
   .hero__texte { max-width: none; }
@@ -826,6 +826,13 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
 
 @media (max-width: 1080px) {
   .entete__tel { display: none; }
+}
+/* Tablettes : le menu complet ne tient pas sur une ligne, il passe dans le
+   menu déroulant ; le bouton « Demander un devis » reste visible. */
+@media (max-width: 1100px) {
+  .nav-liens { display: none; }
+  .burger { display: block; }
+  .menu-mobile { display: flex; }
 }
 /* Sous 960 px, la photo passe en plein fond, sous un voile anthracite. */
 @media (max-width: 960px) {

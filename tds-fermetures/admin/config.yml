@@ -191,7 +191,7 @@ collections:
                     hint: "Affiché dans la visionneuse. Obligatoire pour une photo de fabricant (ex. Photo FenêtréA)."
               - { label: "Mention sous la galerie", name: "mention", widget: "text", required: false }
 
-          - label: "Aides à la rénovation"
+          - label: "TVA réduite et aides"
             name: "aides"
             widget: "object"
             fields:
@@ -214,8 +214,9 @@ collections:
                 name: "qualification"
                 widget: "text"
                 hint: >-
-                  Organisme, numéro et date de validité. Afficher une qualification que
-                  l'on ne détient pas est un faux, et prive le client de ses aides.
+                  Aujourd'hui : pas de RGE. Si vous l'obtenez, indiquez l'organisme, le
+                  numéro et la date de validité, et prévenez Thibault pour adapter la
+                  section. Afficher une qualification que l'on ne détient pas est un faux.
               - { label: "Mention sous la section", name: "mention", widget: "text", required: false }
 
           - label: "L'entreprise"
@@ -308,6 +309,8 @@ collections:
                 widget: "list"
                 label_singular: "Ligne d'horaires"
                 summary: "{{fields.jours}} — {{fields.horaire}}"
+                required: false
+                hint: "Laissez la liste vide pour ne pas afficher d'horaires."
                 fields:
                   - { label: "Jours", name: "jours", widget: "string" }
                   - { label: "Horaires", name: "horaire", widget: "string" }
@@ -331,4 +334,8 @@ collections:
                 summary: "{{fields.nom}}"
                 fields:
                   - { label: "Nom affiché", name: "nom", widget: "string" }
-                  - { label: "Adresse du profil", name: "url", widget: "string", required: false }
+                  - label: "Adresse du profil"
+                    name: "url"
+                    widget: "string"
+                    required: false
+                    hint: "Le lien complet (https://www.facebook.com/...). Sans lien, le nom s'affiche sans être cliquable."

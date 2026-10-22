@@ -54,7 +54,8 @@ Git (commit « l'intro ouvre une vraie photo de fenêtre »).
 
 ## Le reste des fonctionnalités
 
-- **Section « Aides à la rénovation »** : MaPrimeRénov', CEE, TVA 5,5 %,
+- **Section « TVA réduite »** (l'entreprise n'est pas RGE) : TVA 10 % et 5,5 %,
+  primes réservées aux entreprises RGE ; anciennement MaPrimeRénov', CEE, TVA 5,5 %,
   éco-PTZ, avec les critères techniques opposables (Uw ≤ 1,3 W/m²·K, Sw ≥ 0,3,
   RGE obligatoire) et **aucun montant promis** — voir plus bas
 - **Devis en quatre étapes** : projet (9 choix, SAV compris), quantité ou
@@ -149,22 +150,36 @@ Toutes ces aides exigent une entreprise **qualifiée RGE** : le champ prévu doi
 recevoir l'organisme, le numéro et la date de validité. Afficher une
 qualification non détenue est un faux, et prive le client de ses aides.
 
-## ⚠️ À compléter avant la mise en ligne définitive
+## Informations reçues de l'entreprise (réponse du 21 octobre 2026)
 
-Ce que la carte de visite ne dit pas — marqué « à renseigner » sur le site :
+| Sujet | Réponse / document | Sur le site |
+|---|---|---|
+| Zone d'intervention | « Côte-d'Or » | Contact, texte d'accueil, titre de page, données structurées |
+| Raison sociale, forme, capital | Kbis : TDS FERMETURES, SARL à associé unique, 5 000 € | Mentions légales, pied de page |
+| Siège | Kbis : 24 rue Lavoisier, 21000 Dijon | Contact (« Siège »), mentions, confidentialité |
+| RCS, SIRET, APE | RCS Dijon 108 023 805 ; SIRET 108 023 805 00014 ; 4332A | Mentions légales, pied de page |
+| TVA intracommunautaire | FR 53 108 023 805 | Mentions légales, données structurées |
+| Gérant | Tiago Tomé Dos Santos (Kbis) | Directeur de la publication |
+| Décennale | ACM IARD SA, contrat Acajou Décennale I7 1001920, France métropolitaine, **du 01/09/2026 au 01/01/2027** | Mentions légales (avec les activités couvertes) |
+| RGE | « Pas de certificat » | Section devenue « TVA réduite » |
+| Photos de chantier | « Déjà envoyé » (photos FenêtréA) | Galerie et accueil, avec crédit |
+| Avis | « Pas d'avis » | Section masquée |
+| Réseaux | « Facebook TDS FERMETURES », sans lien | Pied de page, en texte |
+| Horaires | Non communiqués | Rien d'affiché |
 
-- **Activer FormSubmit** (voir plus haut) et faire une demande de test
-- Adresse, horaires, **zone d'intervention** (l'« 21 » des adresses e-mail
-  laisse penser à la Côte-d'Or, mais ce n'est pas écrit : à confirmer)
-- **Mentions légales** : forme juridique et raison sociale (d'après le Kbis),
-  SIRET, RCS ou Répertoire des métiers, TVA, **garantie décennale**,
-  médiateur de la consommation
-- **Qualification RGE** si elle existe (section Aides) — sinon, adapter le
-  texte de cette section
-- **Confirmer avec Tiago** qu'il distribue bien FenêtréA et peut utiliser
-  leurs photos ; puis ajouter ses photos de chantiers
-- Avis : la section reste **masquée** tant qu'aucun avis réel n'est saisi
-- Nom de domaine dans les balises SEO, `sitemap.xml`, `robots.txt`
+Données du Kbis volontairement **non publiées** : date et lieu de
+naissance, nationalité du gérant.
+
+## ⚠️ Reste à régler avant la mise en ligne définitive
+
+- **Médiateur de la consommation** : obligatoire (L612-1 du code de la
+  consommation), seul champ encore « à renseigner » des mentions légales
+- **Décennale** : l'attestation expire le **01/01/2027** ; elle couvre les
+  menuiseries extérieures **bois et PVC** et la vitrerie, pas l'aluminium,
+  et ne cite ni pergolas, ni portes de garage, ni automatismes
+- **Activer FormSubmit** et faire une demande de test
+- **Nom de domaine** : balises SEO, `sitemap.xml`, `robots.txt`
+- Lien de la page Facebook, horaires, photos de chantiers, avis réels
 
 ## Ce qui a été vérifié
 
@@ -177,7 +192,9 @@ Mesuré dans Chromium, pas estimé.
 | Repli sans `site.json` | page complète et identique |
 | Liste vidée | section masquée, lien de menu masqué, contenu retiré du DOM |
 | Contrastes de la charte orange | anthracite sur orange 7:1, orange foncé sur clair 5:1, orange sur anthracite 6,7:1 |
-| Section Aides | 4 dispositifs, critères techniques, RGE, renvoi France Rénov', **aucune somme en euros** |
+| Section TVA réduite | 3 cartes, critères techniques, pas de RGE dit clairement, renvoi France Rénov', **aucune somme en euros** |
+| Affichage | 360, 390, 768, 1024, 1280, 1440, 1920 px : aucun débordement, aucune erreur JS, menu burger sous 1100 px, cibles tactiles ≥ 24 px |
+| Parcours | menu mobile, devis complet avec envoi simulé à l'adresse de Tiago, liens « Appeler », mentions légales |
 | Devis 4 étapes | cas valides et invalides, retour arrière |
 | Envoi du devis (FormSubmit simulé) | adresse de Tiago, tous les champs, remerciement ; secours si non activé, erreur 500 ou coupure ; robot écarté — 24 contrôles |
 | Liens de contact | tous les « Appeler » en `tel:+33658008226`, e-mails client et fournisseurs, mis à jour depuis l'espace client |

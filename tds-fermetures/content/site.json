@@ -7,7 +7,7 @@
     "surtitre": "Porte · Fenêtre · Volet · Portail · Automatisme · Visiophone",
     "titre_1": "Vos fermetures,",
     "titre_2": "posées avec soin.",
-    "texte": "Fenêtres, volets roulants, portes, portails et clôtures, portes de garage, pergolas, automatismes et visiophones. Un seul interlocuteur, du premier conseil au service après-vente.",
+    "texte": "Fenêtres, volets roulants, portes, portails et clôtures, portes de garage, pergolas, automatismes et visiophones, à Dijon et dans toute la Côte-d'Or. Un seul interlocuteur, du premier conseil au service après-vente.",
     "photos": [
       {
         "image": "assets/images/fenetre-facade-grise.jpg",
@@ -197,32 +197,27 @@
     "mention": "Photos : FenêtréA, fabricant. Modèles présentés à titre d'exemple — les photos des chantiers de TDS Fermetures viendront compléter cette galerie."
   },
   "aides": {
-    "titre": "Changer ses fenêtres peut être aidé",
-    "texte": "Remplacer du simple vitrage ouvre droit à plusieurs dispositifs, cumulables entre eux. Tous exigent une pose par une entreprise qualifiée RGE.",
+    "titre": "Une TVA réduite sur vos travaux",
+    "texte": "Dans un logement achevé depuis plus de deux ans, la fourniture et la pose peuvent être facturées à 10 % ou à 5,5 % au lieu de 20 %. Le taux retenu pour votre chantier figure sur le devis.",
     "dispositifs": [
       {
-        "sigle": "MaPrimeRénov'",
-        "titre": "Prime de l'État",
-        "texte": "Logement de plus de 15 ans, résidence principale, remplacement de simple vitrage. Montant selon les revenus du foyer."
-      },
-      {
-        "sigle": "CEE",
-        "titre": "Prime énergie",
-        "texte": "Versée par les fournisseurs d'énergie, cumulable avec MaPrimeRénov'. À demander avant la signature du devis."
+        "sigle": "TVA 10 %",
+        "titre": "Amélioration et entretien",
+        "texte": "Remplacement ou pose dans un logement achevé depuis plus de deux ans, produits fournis et posés par l'entreprise."
       },
       {
         "sigle": "TVA 5,5 %",
-        "titre": "Taux réduit",
-        "texte": "Au lieu de 10 % ou 20 %. Logement achevé depuis plus de 2 ans, matériel et pose facturés par l'entreprise."
+        "titre": "Rénovation énergétique",
+        "texte": "Même logement, avec des produits qui atteignent les performances thermiques exigées (voir ci-dessous)."
       },
       {
-        "sigle": "Éco-PTZ",
-        "titre": "Prêt à taux zéro",
-        "texte": "Pour financer le reste à charge sans intérêts. Cumulable avec les aides précédentes."
+        "sigle": "Primes et éco-PTZ",
+        "titre": "Réservés aux entreprises RGE",
+        "texte": "MaPrimeRénov', primes CEE et éco-PTZ exigent une entreprise qualifiée RGE, ce que TDS Fermetures n'est pas à ce jour."
       }
     ],
-    "qualification": "Qualification RGE à renseigner (organisme, numéro, date de validité). Sans cette qualification, aucune des aides ci-dessus n'est versée — c'est la première chose à vérifier chez n'importe quel artisan.",
-    "mention": "Montants, plafonds et conditions évoluent chaque année et dépendent de votre situation. Aucun montant n'est promis par avance : le service public France Rénov' vous renseigne gratuitement (france-renov.gouv.fr, 0 808 800 700)."
+    "qualification": "TDS Fermetures n'est pas qualifiée RGE. Les taux de TVA réduits ne l'exigent pas : ils dépendent de l'âge du logement et des produits posés.",
+    "mention": "Taux et conditions fixés par la loi, susceptibles d'évoluer : le devis précise le taux applicable après vérification. Pour les aides à la rénovation, le service public France Rénov' vous renseigne gratuitement (france-renov.gouv.fr, 0 808 800 700)."
   },
   "entreprise": {
     "titre": "Un seul interlocuteur",
@@ -282,20 +277,20 @@
     "telephone": "06 58 00 82 26",
     "email": "tiagotdsfermetures.21@hotmail.com",
     "email_fournisseurs": "sarltdsfermetures.21@hotmail.com",
-    "adresse_1": "Adresse à renseigner",
-    "adresse_2": "Code postal et ville à renseigner",
-    "horaires": [
-      {
-        "jours": "Lundi — Vendredi",
-        "horaire": "Horaires à renseigner"
-      }
-    ],
+    "adresse_1": "24 rue Lavoisier",
+    "adresse_2": "21000 Dijon",
+    "horaires": [],
     "zones": [
-      "Communes à renseigner"
+      "Côte-d'Or (21)"
     ]
   },
   "pied": {
     "texte": "Porte, fenêtre, volet, portail, automatisme, visiophone. Accompagnement, qualité, pose soignée, SAV réactif.",
-    "reseaux": []
+    "reseaux": [
+      {
+        "nom": "Facebook : TDS Fermetures",
+        "url": ""
+      }
+    ]
   }
 }
