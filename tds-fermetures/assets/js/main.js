@@ -17,28 +17,14 @@
     // Mettre "" pour revenir à l'ouverture de la messagerie du visiteur.
     serviceEnvoi: "https://formsubmit.co/ajax/",
 
-    // Passez à true une fois vos vraies photos déposées dans assets/images/
-    // (hero-fond.jpg, real-portail.jpg...). Voir assets/images/README.md.
-    // Si une photo manque, le visuel d'origine reprend sa place.
-    usePhotos: false
+    // Durée d'affichage de chaque photo de l'accueil, en millisecondes.
+    dureePhoto: 6500
   };
 
   function boot() {
 
   var reduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var pointeurFin = window.matchMedia("(pointer: fine)").matches;
-
-  /* ---------- Bascule vers les vraies photos ---------- */
-  if (SITE_CONFIG.usePhotos) {
-    document.querySelectorAll("img[data-photo]").forEach(function (img) {
-      var origine = img.getAttribute("src");
-      img.addEventListener("error", function reprise() {
-        img.removeEventListener("error", reprise);
-        img.src = origine;
-      });
-      img.src = img.getAttribute("data-photo");
-    });
-  }
 
   var entete = document.getElementById("entete");
   var hero = document.querySelector(".hero");
@@ -137,6 +123,72 @@
     window.addEventListener("scroll", demande, { passive: true });
   }
 
+  /* ---------- Photos de l'accueil : fondu enchaîné ---------- */
+  // Une jauge par photo (cliquable), la légende et le crédit de la photo
+  // affichée, et un bouton Pause : un contenu qui change tout seul doit
+  // pouvoir être arrêté. En mouvement réduit, rien ne défile.
+  var photos = Array.prototype.slice.call(document.querySelectorAll(".hero__photo"));
+  var repere = document.getElementById("repereAccueil");
+  if (hero && !photos.length) hero.classList.add("hero--sans-photo");
+  if (repere && !photos.length) repere.hidden = true;
+  if (repere && photos.length) {
+    var jaugePhotos = repere.querySelector(".hero__jauge");
+    var numPhoto = repere.querySelector(".hero__legende-num");
+    var textePhoto = repere.querySelector(".hero__legende-texte");
+    var creditPhoto = repere.querySelector(".hero__legende-credit");
+    var pause = repere.querySelector(".hero__pause");
+    var photoCourante = 0;
+    var minuteur = null;
+    var enPause = reduit;
+    var deux = function (n) { return String(n).padStart(2, "0"); };
+
+    var traits = photos.map(function (photo, i) {
+      var trait = document.createElement("button");
+      trait.type = "button";
+      trait.setAttribute("aria-label", "Photo " + (i + 1) + " : " + (photo.getAttribute("data-legende") || ""));
+      trait.addEventListener("click", function () { montrePhoto(i); relance(); });
+      jaugePhotos.appendChild(trait);
+      return trait;
+    });
+
+    var montrePhoto = function (i) {
+      photoCourante = (i + photos.length) % photos.length;
+      photos.forEach(function (p, j) { p.classList.toggle("est-active", j === photoCourante); });
+      traits.forEach(function (t, j) { t.setAttribute("aria-current", String(j === photoCourante)); });
+      var photo = photos[photoCourante];
+      // La photo suivante se charge pendant que celle-ci s'affiche.
+      var suivante = photos[(photoCourante + 1) % photos.length].querySelector("img");
+      if (suivante) suivante.removeAttribute("loading");
+      numPhoto.textContent = deux(photoCourante + 1) + " / " + deux(photos.length);
+      textePhoto.textContent = photo.getAttribute("data-legende") || "";
+      creditPhoto.textContent = photo.getAttribute("data-credit") || "";
+      creditPhoto.hidden = !creditPhoto.textContent;
+    };
+    var relance = function () {
+      window.clearInterval(minuteur);
+      if (!enPause && photos.length > 1) {
+        minuteur = window.setInterval(function () { montrePhoto(photoCourante + 1); }, SITE_CONFIG.dureePhoto);
+      }
+    };
+
+    repere.classList.toggle("est-fixe", photos.length < 2);
+    pause.setAttribute("aria-pressed", String(enPause));
+    pause.textContent = enPause ? "Lecture" : "Pause";
+    pause.addEventListener("click", function () {
+      enPause = !enPause;
+      pause.setAttribute("aria-pressed", String(enPause));
+      pause.textContent = enPause ? "Lecture" : "Pause";
+      relance();
+    });
+    // Onglet en arrière-plan : on arrête, on reprend au retour.
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) window.clearInterval(minuteur); else relance();
+    });
+
+    montrePhoto(0);
+    relance();
+  }
+
   /* ---------- Cartes en relief ---------- */
   // Le basculement suit le curseur : c'est ce qui donne l'impression que la
   // carte est un objet posé, pas une image. Désactivé au doigt et en
@@ -163,11 +215,22 @@
   }
 
   /* =========================================================
-     RÉALISATIONS — filtres et visionneuse
+     EN IMAGES — mosaïque, filtres et visionneuse
      ========================================================= */
   var galerie = document.getElementById("galerie");
   var oeuvres = galerie ? Array.prototype.slice.call(galerie.querySelectorAll(".oeuvre")) : [];
   var filtres = Array.prototype.slice.call(document.querySelectorAll(".filtre"));
+
+  // Une photo en largeur occupe deux colonnes de la mosaïque : le format est
+  // lu sur l'image elle-même, le client n'a rien à régler.
+  oeuvres.forEach(function (o) {
+    var img = o.querySelector("img");
+    if (!img) return;
+    var classe = function () {
+      if (img.naturalWidth) o.classList.toggle("oeuvre--paysage", img.naturalWidth > img.naturalHeight * 1.15);
+    };
+    if (img.complete) classe(); else img.addEventListener("load", classe);
+  });
 
   function oeuvresVisibles() {
     return oeuvres.filter(function (o) { return !o.classList.contains("est-masquee"); });
@@ -200,7 +263,7 @@
     var meta = oeuvre.querySelector(".oeuvre__meta");
     vueImage.src = img.getAttribute("src");
     vueImage.alt = img.getAttribute("alt") || "";
-    vueLegende.textContent = [titre && titre.textContent, meta && meta.textContent]
+    vueLegende.textContent = [titre && titre.textContent, meta && meta.textContent, oeuvre.getAttribute("data-credit")]
       .filter(Boolean).join(" · ");
   }
 

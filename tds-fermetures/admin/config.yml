@@ -72,6 +72,28 @@ collections:
               - { label: "Titre — première ligne", name: "titre_1", widget: "string", hint: "S'affiche en blanc, en gras." }
               - { label: "Titre — seconde ligne", name: "titre_2", widget: "string", hint: "S'affiche en orange, plus fin." }
               - { label: "Texte d'introduction", name: "texte", widget: "text" }
+              - label: "Photos (à droite du titre)"
+                name: "photos"
+                widget: "list"
+                label_singular: "Photo"
+                summary: "{{fields.legende}}"
+                hint: >-
+                  Elles défilent en fondu, dans cet ordre ; la première s'affiche dès
+                  l'ouverture du site. Format en hauteur conseillé (4:5), au moins
+                  800 px de large. Deux à quatre photos suffisent.
+                fields:
+                  - { label: "Photo", name: "image", widget: "image" }
+                  - label: "Description pour les lecteurs d'écran"
+                    name: "alt"
+                    widget: "string"
+                    required: false
+                    hint: "Ce que montre la photo, en quelques mots."
+                  - { label: "Légende", name: "legende", widget: "string", required: false, hint: "Affichée sous les boutons, par exemple : Baie coulissante." }
+                  - label: "Crédit photo"
+                    name: "credit"
+                    widget: "string"
+                    required: false
+                    hint: "Obligatoire pour une photo de fabricant (ex. Photo FenêtréA). Laissez vide pour vos propres photos."
 
           - label: "Encadré (coin de l'accueil)"
             name: "cartouche"
@@ -97,11 +119,8 @@ collections:
             name: "images"
             widget: "object"
             collapsed: true
-            hint: >-
-              Formats conseillés : paysage et 2000 px de large pour l'accueil.
-              N'utilisez que des photos de vos propres chantiers.
+            hint: "Les photos de l'accueil se règlent dans « Bandeau d'accueil »."
             fields:
-              - { label: "Accueil — arrière-plan", name: "hero_fond", widget: "image", required: false }
               - label: "L'entreprise"
                 name: "entreprise"
                 widget: "image"
@@ -127,21 +146,22 @@ collections:
                   - { label: "Intitulé", name: "titre", widget: "string" }
                   - { label: "Description", name: "texte", widget: "text", required: false }
 
-          - label: "Réalisations"
+          - label: "En images (galerie)"
             name: "chantiers"
             widget: "object"
             fields:
               - { label: "Titre de la section", name: "titre", widget: "string" }
               - { label: "Texte sous le titre", name: "texte", widget: "text", required: false }
-              - label: "Réalisations"
+              - label: "Photos"
                 name: "ouvrages"
                 widget: "list"
-                label_singular: "Chantier"
+                label_singular: "Photo"
                 summary: "{{fields.titre}} — {{fields.meta}}"
                 hint: >-
-                  Le premier chantier de la liste s'affiche en grand. Ne montrez que
-                  des chantiers que vous avez réellement réalisés — et privilégiez les
-                  avant/après, c'est ce qui convainc en rénovation.
+                  Une photo en largeur occupe automatiquement deux cases. Vos photos de
+                  chantier se présentent comme telles ; une photo de fabricant porte
+                  toujours son crédit, et n'est jamais présentée comme un chantier.
+                  Les avant/après sont ce qui convainc le plus en rénovation.
                 fields:
                   - { label: "Titre", name: "titre", widget: "string" }
                   - label: "Sous-titre"
@@ -154,6 +174,7 @@ collections:
                     widget: "select"
                     options:
                       - { label: "Fenêtres & volets", value: "fermetures" }
+                      - { label: "Baies coulissantes", value: "coulissants" }
                       - { label: "Portes & garages", value: "portes" }
                       - { label: "Portails & pergolas", value: "exterieur" }
                     hint: "Sert aux boutons de filtre. Un filtre sans chantier disparaît tout seul."
@@ -163,6 +184,11 @@ collections:
                     widget: "string"
                     required: false
                     hint: "Ce que montre la photo, en quelques mots. Sert aux personnes malvoyantes et au référencement."
+                  - label: "Crédit photo"
+                    name: "credit"
+                    widget: "string"
+                    required: false
+                    hint: "Affiché dans la visionneuse. Obligatoire pour une photo de fabricant (ex. Photo FenêtréA)."
               - { label: "Mention sous la galerie", name: "mention", widget: "text", required: false }
 
           - label: "Aides à la rénovation"

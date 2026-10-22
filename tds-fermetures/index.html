@@ -57,7 +57,7 @@
 
     <ul class="nav-liens">
       <li><a href="#prestations">Prestations</a></li>
-      <li><a href="#chantiers">Réalisations</a></li>
+      <li><a href="#chantiers">En images</a></li>
       <li><a href="#aides">Aides</a></li>
       <li><a href="#infos">Contact</a></li>
     </ul>
@@ -76,7 +76,7 @@
   <button class="menu-mobile__fermer" id="fermerMenu">Fermer</button>
   <ul>
     <li><a href="#prestations">Prestations</a></li>
-    <li><a href="#chantiers">Réalisations</a></li>
+    <li><a href="#chantiers">En images</a></li>
     <li><a href="#aides">Aides</a></li>
     <li><a href="#devis">Devis</a></li>
     <li><a href="#infos">Contact</a></li>
@@ -90,12 +90,22 @@
   <!-- ===================== HERO ===================== -->
   <section class="hero" id="accueil">
     <div class="hero__cadre">
-      <div class="hero__couches" aria-hidden="true">
-        <div class="hero__couche hero__couche--fond" data-profondeur="0.16">
-          <img src="assets/images/hero-fond.svg" data-photo="assets/images/hero-fond.jpg"
-               data-cms-image="images.hero_fond" alt="" fetchpriority="high" decoding="async">
+      <div class="grille-plan" aria-hidden="true"></div>
+
+      <!-- Photos de l'accueil, en fondu enchaîné. Modifiables depuis l'espace
+           client (Bandeau d'accueil → Photos). -->
+      <div class="hero__visuel">
+        <div class="hero__photos" data-profondeur="0.08" data-cms-list="hero.photos">
+          <figure class="hero__photo est-active" data-legende="Fenêtres et volets battants" data-credit="Photo FenêtréA">
+            <img src="assets/images/fenetre-facade-grise.jpg" alt="Façade grise, fenêtres blanches et volets battants anthracite" fetchpriority="high" decoding="async">
+          </figure>
+          <figure class="hero__photo" data-legende="Baie coulissante" data-credit="Photo FenêtréA">
+            <img src="assets/images/baie-coulissante-terrasse.jpg" alt="Grande baie coulissante ouverte sur une terrasse" loading="lazy" decoding="async">
+          </figure>
+          <figure class="hero__photo" data-legende="Porte d'entrée" data-credit="Photo FenêtréA">
+            <img src="assets/images/porte-grise-vitrage.jpg" alt="Porte d'entrée grise à vitrage décoratif, vue depuis l'intérieur" loading="lazy" decoding="async">
+          </figure>
         </div>
-        <div class="hero__voile"></div>
       </div>
 
       <div class="wrap-large hero__contenu">
@@ -113,6 +123,17 @@
           <a href="#devis" class="btn btn--plein">Demander un devis</a>
           <a href="tel:+33658008226" class="btn btn--clair">Appeler le <span data-cms="infos.telephone">06 58 00 82 26</span></a>
         </div>
+
+        <!-- Repère du diaporama : une jauge par photo, comme celle du devis. -->
+        <div class="hero__repere apparait d3" id="repereAccueil">
+          <div class="hero__jauge" role="group" aria-label="Choisir la photo affichée"></div>
+          <p class="hero__legende" aria-live="polite">
+            <span class="hero__legende-num">01 / 03</span>
+            <span class="hero__legende-texte">Fenêtres et volets battants</span>
+            <span class="hero__legende-credit">Photo FenêtréA</span>
+          </p>
+          <button type="button" class="hero__pause" aria-pressed="false">Pause</button>
+        </div>
       </div>
 
       <aside class="cartouche" aria-label="Fiche de l'entreprise">
@@ -123,8 +144,6 @@
           <dt>Après la pose</dt><dd data-cms="cartouche.sav">SAV réactif</dd>
         </dl>
       </aside>
-
-      <div class="hero__filer" aria-hidden="true"><i></i><span>Défiler</span></div>
 
     </div>
   </section>
@@ -228,73 +247,121 @@
     </div>
   </section>
 
-  <!-- ===================== RÉALISATIONS ===================== -->
+  <!-- ===================== EN IMAGES ===================== -->
+  <!-- Photos du fabricant FenêtréA, fournies par TDS Fermetures. Ce ne sont
+       pas des chantiers de l'entreprise : la mention sous la galerie le dit.
+       Les photos de chantiers viendront s'ajouter depuis l'espace client. -->
   <section class="section section--papier2" id="chantiers">
     <div class="wrap">
-      <div class="tete">
-        <span class="annot apparait">Réalisations</span>
-        <h2 class="apparait d1" data-cms="chantiers.titre">En images</h2>
+      <div class="tete tete--large">
+        <div>
+          <span class="annot apparait">En images</span>
+          <h2 class="apparait d1" data-cms="chantiers.titre">Fenêtres, baies et portes d'entrée</h2>
+        </div>
         <p class="apparait d1" data-cms="chantiers.texte">
-          Fenêtres, volets, portes, portails, garages et pergolas : un aperçu des
-          ouvrages que nous posons.
+          Un aperçu des produits : formes, coloris, vitrages et poignées. Le modèle,
+          les dimensions et les options se choisissent ensemble, au moment du devis.
         </p>
       </div>
 
-      <div class="filtres apparait d1" role="group" aria-label="Filtrer les réalisations">
+      <div class="filtres apparait d1" role="group" aria-label="Filtrer les photos">
         <button type="button" class="filtre" data-filtre="tout" aria-pressed="true">Tout</button>
         <button type="button" class="filtre" data-filtre="fermetures" aria-pressed="false">Fenêtres &amp; volets</button>
+        <button type="button" class="filtre" data-filtre="coulissants" aria-pressed="false">Baies coulissantes</button>
         <button type="button" class="filtre" data-filtre="portes" aria-pressed="false">Portes &amp; garages</button>
-        <button type="button" class="filtre" data-filtre="exterieur" aria-pressed="false">Portails &amp; pergolas</button>
+        <button type="button" class="filtre" data-filtre="exterieur" aria-pressed="false" hidden>Portails &amp; pergolas</button>
       </div>
 
       <div class="galerie apparait d2" id="galerie" data-cms-list="chantiers.ouvrages">
-        <button type="button" class="oeuvre oeuvre--grande" data-categorie="fermetures" data-index="0">
-          <img src="assets/images/real-fenetres.svg" data-photo="assets/images/real-fenetres.jpg" alt="Illustration : fenêtres posées en rénovation" loading="lazy" decoding="async">
+        <button type="button" class="oeuvre" data-categorie="fermetures" data-index="0" data-credit="Photo FenêtréA">
+          <img src="assets/images/fenetre-facade-grise.jpg" alt="Façade grise, fenêtres blanches et volets battants anthracite" loading="lazy" decoding="async">
           <span class="oeuvre__voile">
-            <span class="oeuvre__titre">Fenêtres</span>
-            <span class="oeuvre__meta">Rénovation</span>
+            <span class="oeuvre__titre">Fenêtres et volets battants</span>
+            <span class="oeuvre__meta">Façade</span>
           </span>
         </button>
-        <button type="button" class="oeuvre" data-categorie="fermetures" data-index="1">
-          <img src="assets/images/real-volets.svg" data-photo="assets/images/real-volets.jpg" alt="Illustration : volets roulants motorisés" loading="lazy" decoding="async">
+        <button type="button" class="oeuvre" data-categorie="coulissants" data-index="1" data-credit="Photo FenêtréA">
+          <img src="assets/images/baie-coulissante-terrasse.jpg" alt="Grande baie coulissante ouverte sur une terrasse fleurie" loading="lazy" decoding="async">
           <span class="oeuvre__voile">
-            <span class="oeuvre__titre">Volets roulants</span>
-            <span class="oeuvre__meta">Motorisés</span>
+            <span class="oeuvre__titre">Baie coulissante</span>
+            <span class="oeuvre__meta">Ouverture sur terrasse</span>
           </span>
         </button>
-        <button type="button" class="oeuvre" data-categorie="portes" data-index="2">
-          <img src="assets/images/real-porte.svg" data-photo="assets/images/real-porte.jpg" alt="Illustration : porte d'entrée" loading="lazy" decoding="async">
+        <button type="button" class="oeuvre" data-categorie="fermetures" data-index="2" data-credit="Photo FenêtréA">
+          <img src="assets/images/fenetre-chambre.jpg" alt="Fenêtre à cadre noir dans une chambre sous combles" loading="lazy" decoding="async">
           <span class="oeuvre__voile">
-            <span class="oeuvre__titre">Porte d'entrée</span>
-            <span class="oeuvre__meta">Pose et réglages</span>
+            <span class="oeuvre__titre">Fenêtre</span>
+            <span class="oeuvre__meta">Chambre sous combles</span>
           </span>
         </button>
-        <button type="button" class="oeuvre" data-categorie="portes" data-index="3">
-          <img src="assets/images/real-garage.svg" data-photo="assets/images/real-garage.jpg" alt="Illustration : porte de garage sectionnelle" loading="lazy" decoding="async">
+        <button type="button" class="oeuvre" data-categorie="portes" data-index="3" data-credit="Photo FenêtréA">
+          <img src="assets/images/porte-rouge.jpg" alt="Porte d&#39;entrée rouge avec vitrage décoratif, vue depuis l&#39;intérieur" loading="lazy" decoding="async">
           <span class="oeuvre__voile">
-            <span class="oeuvre__titre">Porte de garage</span>
-            <span class="oeuvre__meta">Sectionnelle motorisée</span>
+            <span class="oeuvre__titre">Porte d&#39;entrée</span>
+            <span class="oeuvre__meta">Rouge · vitrage décoratif</span>
           </span>
         </button>
-        <button type="button" class="oeuvre" data-categorie="exterieur" data-index="4">
-          <img src="assets/images/real-portail.svg" data-photo="assets/images/real-portail.jpg" alt="Illustration : portail coulissant et clôture" loading="lazy" decoding="async">
+        <button type="button" class="oeuvre" data-categorie="fermetures" data-index="4" data-credit="Photo FenêtréA">
+          <img src="assets/images/fenetre-cuisine.jpg" alt="Fenêtre à cadre noir au-dessus d&#39;un îlot de cuisine" loading="lazy" decoding="async">
           <span class="oeuvre__voile">
-            <span class="oeuvre__titre">Portail &amp; clôture</span>
-            <span class="oeuvre__meta">Motorisé · Visiophone</span>
+            <span class="oeuvre__titre">Fenêtre</span>
+            <span class="oeuvre__meta">Cuisine</span>
           </span>
         </button>
-        <button type="button" class="oeuvre" data-categorie="exterieur" data-index="5">
-          <img src="assets/images/real-pergola.svg" data-photo="assets/images/real-pergola.jpg" alt="Illustration : pergola sur terrasse" loading="lazy" decoding="async">
+        <button type="button" class="oeuvre" data-categorie="portes" data-index="5" data-credit="Photo FenêtréA">
+          <img src="assets/images/porte-grise-inox.jpg" alt="Porte d&#39;entrée grise avec longue poignée inox, entrée de maison contemporaine" loading="lazy" decoding="async">
           <span class="oeuvre__voile">
-            <span class="oeuvre__titre">Pergola</span>
-            <span class="oeuvre__meta">Terrasse</span>
+            <span class="oeuvre__titre">Porte d&#39;entrée</span>
+            <span class="oeuvre__meta">Grise · poignée inox</span>
+          </span>
+        </button>
+        <button type="button" class="oeuvre" data-categorie="coulissants" data-index="6" data-credit="Photo FenêtréA">
+          <img src="assets/images/baie-coulissante-sejour.jpg" alt="Baie coulissante blanche entre un séjour lumineux et le jardin" loading="lazy" decoding="async">
+          <span class="oeuvre__voile">
+            <span class="oeuvre__titre">Baie coulissante</span>
+            <span class="oeuvre__meta">Séjour lumineux</span>
+          </span>
+        </button>
+        <button type="button" class="oeuvre" data-categorie="portes" data-index="7" data-credit="Photo FenêtréA">
+          <img src="assets/images/porte-bleue.jpg" alt="Porte d&#39;entrée bleue à petits inserts vitrés, façade en pierre" loading="lazy" decoding="async">
+          <span class="oeuvre__voile">
+            <span class="oeuvre__titre">Porte d&#39;entrée</span>
+            <span class="oeuvre__meta">Bleue · inserts vitrés</span>
+          </span>
+        </button>
+        <button type="button" class="oeuvre" data-categorie="fermetures" data-index="8" data-credit="Photo FenêtréA">
+          <img src="assets/images/fenetre-facade-volets.jpg" alt="Fenêtre blanche encadrée de volets battants verts sur une façade claire" loading="lazy" decoding="async">
+          <span class="oeuvre__voile">
+            <span class="oeuvre__titre">Fenêtre</span>
+            <span class="oeuvre__meta">Volets battants</span>
+          </span>
+        </button>
+        <button type="button" class="oeuvre" data-categorie="portes" data-index="9" data-credit="Photo FenêtréA">
+          <img src="assets/images/porte-grise-vitrage.jpg" alt="Porte d&#39;entrée grise à vitrage ondulé, vue depuis l&#39;entrée" loading="lazy" decoding="async">
+          <span class="oeuvre__voile">
+            <span class="oeuvre__titre">Porte d&#39;entrée</span>
+            <span class="oeuvre__meta">Grise · vitrage ondulé</span>
+          </span>
+        </button>
+        <button type="button" class="oeuvre" data-categorie="coulissants" data-index="10" data-credit="Photo FenêtréA">
+          <img src="assets/images/baie-coulissante-poignee.jpg" alt="Gros plan sur la poignée blanche d&#39;une baie coulissante" loading="lazy" decoding="async">
+          <span class="oeuvre__voile">
+            <span class="oeuvre__titre">Baie coulissante</span>
+            <span class="oeuvre__meta">Détail de la poignée</span>
+          </span>
+        </button>
+        <button type="button" class="oeuvre" data-categorie="portes" data-index="11" data-credit="Photo FenêtréA">
+          <img src="assets/images/porte-anthracite-bois.jpg" alt="Porte d&#39;entrée anthracite entre deux pans de bardage bois" loading="lazy" decoding="async">
+          <span class="oeuvre__voile">
+            <span class="oeuvre__titre">Porte d&#39;entrée</span>
+            <span class="oeuvre__meta">Anthracite · bardage bois</span>
           </span>
         </button>
       </div>
 
       <p class="note-honnete apparait" data-cms="chantiers.mention" data-cms-optional>
-        Illustrations d'exemple, pas des chantiers réels. À remplacer par les
-        photos des réalisations de TDS Fermetures depuis l'espace client.
+        Photos : FenêtréA, fabricant. Modèles présentés à titre d'exemple — les
+        photos des chantiers de TDS Fermetures viendront compléter cette galerie.
       </p>
     </div>
   </section>
@@ -342,7 +409,11 @@
         </article>
       </div>
 
-      <div class="apparait d2" style="margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:34px;" data-split>
+      <div class="aides__detail apparait d2">
+        <figure class="aides__produit">
+          <img src="assets/images/fenetre-deux-vantaux.jpg" alt="Fenêtre deux vantaux à cadre noir, vue de l'extérieur" loading="lazy" decoding="async">
+          <figcaption>Photo FenêtréA</figcaption>
+        </figure>
         <div>
           <span class="bloc-info__label">Les critères techniques</span>
           <p>
@@ -695,7 +766,7 @@
         <h4>Navigation</h4>
         <ul>
           <li><a href="#prestations">Prestations</a></li>
-          <li><a href="#chantiers">Réalisations</a></li>
+          <li><a href="#chantiers">En images</a></li>
           <li><a href="#aides">Aides à la rénovation</a></li>
           <li><a href="#devis">Demander un devis</a></li>
         </ul>
@@ -720,10 +791,10 @@
 </footer>
 
 <!-- ===================== VISIONNEUSE ===================== -->
-<div class="visionneuse" id="visionneuse" role="dialog" aria-modal="true" aria-label="Réalisation en grand">
+<div class="visionneuse" id="visionneuse" role="dialog" aria-modal="true" aria-label="Photo en grand">
   <button type="button" class="visionneuse__fermer" data-fermer-visionneuse>Fermer</button>
-  <button type="button" class="visionneuse__nav visionneuse__nav--prec" data-visionneuse-prec aria-label="Réalisation précédente">←</button>
-  <button type="button" class="visionneuse__nav visionneuse__nav--suiv" data-visionneuse-suiv aria-label="Réalisation suivante">→</button>
+  <button type="button" class="visionneuse__nav visionneuse__nav--prec" data-visionneuse-prec aria-label="Photo précédente">←</button>
+  <button type="button" class="visionneuse__nav visionneuse__nav--suiv" data-visionneuse-suiv aria-label="Photo suivante">→</button>
   <figure>
     <img id="visionneuseImage" src="" alt="">
     <figcaption id="visionneuseLegende"></figcaption>

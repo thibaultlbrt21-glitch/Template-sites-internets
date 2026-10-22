@@ -143,8 +143,9 @@
     cible.textContent = "";
     var categories = {};
     liste.forEach(function (o, i) {
-      var bouton = el("button", "oeuvre" + (i === 0 ? " oeuvre--grande" : ""));
+      var bouton = el("button", "oeuvre");
       bouton.type = "button";
+      if (rempli(o.credit)) bouton.setAttribute("data-credit", o.credit);
       bouton.setAttribute("data-categorie", o.categorie || "tout");
       bouton.setAttribute("data-index", String(i));
       if (rempli(o.categorie)) categories[o.categorie] = true;
@@ -168,6 +169,35 @@
     document.querySelectorAll(".filtre").forEach(function (f) {
       var cle = f.getAttribute("data-filtre");
       f.hidden = cle !== "tout" && !categories[cle];
+    });
+  }
+
+  // Les photos de l'accueil. main.js construit ensuite la jauge et la
+  // légende d'après les attributs data-legende et data-credit.
+  function rendPhotosAccueil(liste) {
+    var cible = conteneur("hero.photos");
+    if (!cible) return;
+    if (!Array.isArray(liste)) return;
+    liste = liste.filter(function (p) { return p && rempli(p.image); });
+    if (!liste.length) {
+      var visuel = cible.closest(".hero__visuel");
+      videEtMasque(cible, null);
+      if (visuel) { visuel.textContent = ""; visuel.hidden = true; }
+      return;
+    }
+
+    cible.textContent = "";
+    liste.forEach(function (p, i) {
+      var figure = el("figure", "hero__photo" + (i === 0 ? " est-active" : ""));
+      if (rempli(p.legende)) figure.setAttribute("data-legende", p.legende);
+      if (rempli(p.credit)) figure.setAttribute("data-credit", p.credit);
+      var img = document.createElement("img");
+      img.setAttribute("src", p.image);
+      img.setAttribute("alt", rempli(p.alt) ? p.alt : "");
+      img.setAttribute("decoding", "async");
+      if (i === 0) img.setAttribute("fetchpriority", "high"); else img.setAttribute("loading", "lazy");
+      figure.appendChild(img);
+      cible.appendChild(figure);
     });
   }
 
@@ -308,6 +338,7 @@
     hydrateTextes(data);
     hydrateImages(data);
     hydrateTelephones(data);
+    rendPhotosAccueil(get(data, "hero.photos"));
     rendEngagements(data.engagements);
     rendPrestations(get(data, "prestations.liste"));
     rendChantiers(get(data, "chantiers.ouvrages"));

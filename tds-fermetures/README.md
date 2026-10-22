@@ -39,12 +39,18 @@ marque sur anthracite 6,7:1.
 
 ## Haut de page
 
-Pour l'instant, un haut de page classique : titre, texte, boutons « Demander
-un devis » et « Appeler », encadré avec le dirigeant et le téléphone, fond en
-légère parallaxe. L'animation d'ouverture de fenêtre et la fenêtre 3D ont été
-retirées à la demande du client, en attendant autre chose ; elles restent dans
-l'historique Git (commit « l'intro ouvre une vraie photo de fenêtre ») si on
-veut les reprendre.
+Texte sur anthracite à gauche (titre, boutons « Demander un devis » et
+« Appeler »), **photos en fondu enchaîné à droite**, séparées par un filet
+orange, avec l'encadré du dirigeant posé dessus. Sous les boutons, un repère
+dans le style du formulaire de devis : une jauge par photo (cliquable), la
+légende et le crédit de la photo affichée, et un bouton **Pause** (un
+contenu qui défile seul doit pouvoir être arrêté). Sous 960 px, la photo
+passe en plein fond sous un voile anthracite.
+
+Les photos se changent depuis l'espace client (*Bandeau d'accueil → Photos*).
+Liste vide : l'accueil redevient un bandeau de texte seul, sans trou.
+L'ancienne fenêtre 3D et l'animation d'ouverture restent dans l'historique
+Git (commit « l'intro ouvre une vraie photo de fenêtre »).
 
 ## Le reste des fonctionnalités
 
@@ -58,8 +64,10 @@ veut les reprendre.
   d'écran — et **envoi direct par e-mail** (voir plus bas)
 - **Bandeau orange des engagements** : les quatre mots de la carte de visite
 - **Boutons « Appeler »** partout (en-tête, accueil, contact, barre mobile)
-- **Galerie de réalisations filtrable** par catégorie + **visionneuse** au clavier
-  (`←` `→` `Échap`, piège de focus). La navigation suit le filtre actif
+- **Galerie « En images » en mosaïque**, filtrable par catégorie : une photo
+  en largeur prend deux cases, le format est lu sur l'image elle-même.
+  **Visionneuse** au clavier (`←` `→` `Échap`, piège de focus), avec le
+  crédit de la photo. La navigation suit le filtre actif
 - **Cartes en relief** qui suivent le curseur — désactivées au doigt, où
   l'effet n'apporte rien
 - **Espace client** : voir `ADMIN.md`
@@ -67,11 +75,16 @@ veut les reprendre.
 
 ## Les images
 
-Les visuels de la galerie « Réalisations » sont des **illustrations
-générées** (fenêtres, volets, porte, porte de garage, portail, pergola) : ils
-ne représentent aucun chantier réel et la page le dit. 👉 **À remplacer par
-les photos des chantiers de TDS Fermetures**, depuis l'espace client ou en
-suivant `assets/images/README.md`.
+Les photos en place sont des **photos du fabricant FenêtréA**, transmises par
+TDS Fermetures : fenêtres, baies coulissantes et portes d'entrée. Ce ne sont
+**pas des chantiers de l'entreprise**, et le site ne les présente jamais
+comme tels : crédit « Photo FenêtréA » dans la légende de l'accueil et dans
+la visionneuse, mention sous la galerie et sous la fenêtre de la section
+Aides. Métadonnées retirées, détail dans `assets/images/README.md`.
+
+👉 **Dès que les photos de chantiers arrivent**, les ajouter en tête de
+galerie et de l'accueil depuis l'espace client, et adapter la mention sous la
+galerie.
 
 ## Le formulaire de devis — il arrive dans la boîte mail de Tiago
 
@@ -148,7 +161,8 @@ Ce que la carte de visite ne dit pas — marqué « à renseigner » sur le site
   médiateur de la consommation
 - **Qualification RGE** si elle existe (section Aides) — sinon, adapter le
   texte de cette section
-- Photos réelles des chantiers à la place des illustrations
+- **Confirmer avec Tiago** qu'il distribue bien FenêtréA et peut utiliser
+  leurs photos ; puis ajouter ses photos de chantiers
 - Avis : la section reste **masquée** tant qu'aucun avis réel n'est saisi
 - Nom de domaine dans les balises SEO, `sitemap.xml`, `robots.txt`
 
@@ -167,7 +181,8 @@ Mesuré dans Chromium, pas estimé.
 | Devis 4 étapes | cas valides et invalides, retour arrière |
 | Envoi du devis (FormSubmit simulé) | adresse de Tiago, tous les champs, remerciement ; secours si non activé, erreur 500 ou coupure ; robot écarté — 24 contrôles |
 | Liens de contact | tous les « Appeler » en `tel:+33658008226`, e-mails client et fournisseurs, mis à jour depuis l'espace client |
-| Galerie | filtres + visionneuse clavier |
+| Galerie | 12 photos, 4 en largeur détectées, filtres (catégorie vide masquée), crédit dans la visionneuse |
+| Accueil | défilement, pause, choix par la jauge, arrêt en mouvement réduit, liste vide → texte seul |
 | Largeurs | 390 px et 1440 px, sans scroll horizontal |
 | Erreurs JavaScript | aucune |
 
@@ -202,7 +217,7 @@ tds-fermetures/
     ├── css/style.css             Charte orange TDS
     ├── js/content.js             Injecte site.json dans la page
     ├── js/main.js                Navigation, filtres, visionneuse, devis (envoi e-mail)
-    └── images/                   Illustrations + README
+    └── images/                   Photos FenêtréA + README
 ```
 
 ## Aperçu local

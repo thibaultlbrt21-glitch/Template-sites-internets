@@ -7,7 +7,27 @@
     "surtitre": "Porte · Fenêtre · Volet · Portail · Automatisme · Visiophone",
     "titre_1": "Vos fermetures,",
     "titre_2": "posées avec soin.",
-    "texte": "Fenêtres, volets roulants, portes, portails et clôtures, portes de garage, pergolas, automatismes et visiophones. Un seul interlocuteur, du premier conseil au service après-vente."
+    "texte": "Fenêtres, volets roulants, portes, portails et clôtures, portes de garage, pergolas, automatismes et visiophones. Un seul interlocuteur, du premier conseil au service après-vente.",
+    "photos": [
+      {
+        "image": "assets/images/fenetre-facade-grise.jpg",
+        "alt": "Façade grise, fenêtres blanches et volets battants anthracite",
+        "legende": "Fenêtres et volets battants",
+        "credit": "Photo FenêtréA"
+      },
+      {
+        "image": "assets/images/baie-coulissante-terrasse.jpg",
+        "alt": "Grande baie coulissante ouverte sur une terrasse",
+        "legende": "Baie coulissante",
+        "credit": "Photo FenêtréA"
+      },
+      {
+        "image": "assets/images/porte-grise-vitrage.jpg",
+        "alt": "Porte d'entrée grise à vitrage décoratif, vue depuis l'intérieur",
+        "legende": "Porte d'entrée",
+        "credit": "Photo FenêtréA"
+      }
+    ]
   },
   "cartouche": {
     "dirigeant": "Tiago Dos Santos",
@@ -15,7 +35,6 @@
     "sav": "SAV réactif"
   },
   "images": {
-    "hero_fond": "assets/images/hero-fond.svg",
     "entreprise": "assets/logo/tds-fermetures.svg"
   },
   "engagements": [
@@ -75,53 +94,107 @@
     ]
   },
   "chantiers": {
-    "titre": "En images",
-    "texte": "Fenêtres, volets, portes, portails, garages et pergolas : un aperçu des ouvrages que nous posons.",
+    "titre": "Fenêtres, baies et portes d'entrée",
+    "texte": "Un aperçu des produits : formes, coloris, vitrages et poignées. Le modèle, les dimensions et les options se choisissent ensemble, au moment du devis.",
     "ouvrages": [
       {
-        "titre": "Fenêtres",
-        "meta": "Rénovation",
+        "titre": "Fenêtres et volets battants",
+        "meta": "Façade",
         "categorie": "fermetures",
-        "image": "assets/images/real-fenetres.svg",
-        "alt": "Illustration : fenêtres posées en rénovation"
+        "image": "assets/images/fenetre-facade-grise.jpg",
+        "alt": "Façade grise, fenêtres blanches et volets battants anthracite",
+        "credit": "Photo FenêtréA"
       },
       {
-        "titre": "Volets roulants",
-        "meta": "Motorisés",
+        "titre": "Baie coulissante",
+        "meta": "Ouverture sur terrasse",
+        "categorie": "coulissants",
+        "image": "assets/images/baie-coulissante-terrasse.jpg",
+        "alt": "Grande baie coulissante ouverte sur une terrasse fleurie",
+        "credit": "Photo FenêtréA"
+      },
+      {
+        "titre": "Fenêtre",
+        "meta": "Chambre sous combles",
         "categorie": "fermetures",
-        "image": "assets/images/real-volets.svg",
-        "alt": "Illustration : volets roulants motorisés"
+        "image": "assets/images/fenetre-chambre.jpg",
+        "alt": "Fenêtre à cadre noir dans une chambre sous combles",
+        "credit": "Photo FenêtréA"
       },
       {
         "titre": "Porte d'entrée",
-        "meta": "Pose et réglages",
+        "meta": "Rouge · vitrage décoratif",
         "categorie": "portes",
-        "image": "assets/images/real-porte.svg",
-        "alt": "Illustration : porte d'entrée"
+        "image": "assets/images/porte-rouge.jpg",
+        "alt": "Porte d'entrée rouge avec vitrage décoratif, vue depuis l'intérieur",
+        "credit": "Photo FenêtréA"
       },
       {
-        "titre": "Porte de garage",
-        "meta": "Sectionnelle motorisée",
+        "titre": "Fenêtre",
+        "meta": "Cuisine",
+        "categorie": "fermetures",
+        "image": "assets/images/fenetre-cuisine.jpg",
+        "alt": "Fenêtre à cadre noir au-dessus d'un îlot de cuisine",
+        "credit": "Photo FenêtréA"
+      },
+      {
+        "titre": "Porte d'entrée",
+        "meta": "Grise · poignée inox",
         "categorie": "portes",
-        "image": "assets/images/real-garage.svg",
-        "alt": "Illustration : porte de garage sectionnelle"
+        "image": "assets/images/porte-grise-inox.jpg",
+        "alt": "Porte d'entrée grise avec longue poignée inox, entrée de maison contemporaine",
+        "credit": "Photo FenêtréA"
       },
       {
-        "titre": "Portail & clôture",
-        "meta": "Motorisé · Visiophone",
-        "categorie": "exterieur",
-        "image": "assets/images/real-portail.svg",
-        "alt": "Illustration : portail coulissant et clôture"
+        "titre": "Baie coulissante",
+        "meta": "Séjour lumineux",
+        "categorie": "coulissants",
+        "image": "assets/images/baie-coulissante-sejour.jpg",
+        "alt": "Baie coulissante blanche entre un séjour lumineux et le jardin",
+        "credit": "Photo FenêtréA"
       },
       {
-        "titre": "Pergola",
-        "meta": "Terrasse",
-        "categorie": "exterieur",
-        "image": "assets/images/real-pergola.svg",
-        "alt": "Illustration : pergola sur terrasse"
+        "titre": "Porte d'entrée",
+        "meta": "Bleue · inserts vitrés",
+        "categorie": "portes",
+        "image": "assets/images/porte-bleue.jpg",
+        "alt": "Porte d'entrée bleue à petits inserts vitrés, façade en pierre",
+        "credit": "Photo FenêtréA"
+      },
+      {
+        "titre": "Fenêtre",
+        "meta": "Volets battants",
+        "categorie": "fermetures",
+        "image": "assets/images/fenetre-facade-volets.jpg",
+        "alt": "Fenêtre blanche encadrée de volets battants verts sur une façade claire",
+        "credit": "Photo FenêtréA"
+      },
+      {
+        "titre": "Porte d'entrée",
+        "meta": "Grise · vitrage ondulé",
+        "categorie": "portes",
+        "image": "assets/images/porte-grise-vitrage.jpg",
+        "alt": "Porte d'entrée grise à vitrage ondulé, vue depuis l'entrée",
+        "credit": "Photo FenêtréA"
+      },
+      {
+        "titre": "Baie coulissante",
+        "meta": "Détail de la poignée",
+        "categorie": "coulissants",
+        "image": "assets/images/baie-coulissante-poignee.jpg",
+        "alt": "Gros plan sur la poignée blanche d'une baie coulissante",
+        "credit": "Photo FenêtréA"
+      },
+      {
+        "titre": "Porte d'entrée",
+        "meta": "Anthracite · bardage bois",
+        "categorie": "portes",
+        "image": "assets/images/porte-anthracite-bois.jpg",
+        "alt": "Porte d'entrée anthracite entre deux pans de bardage bois",
+        "credit": "Photo FenêtréA"
       }
     ],
-    "mention": "Illustrations d'exemple, pas des chantiers réels. À remplacer par les photos des réalisations de TDS Fermetures depuis l'espace client."
+    "mention": "Photos : FenêtréA, fabricant. Modèles présentés à titre d'exemple — les photos des chantiers de TDS Fermetures viendront compléter cette galerie."
   },
   "aides": {
     "titre": "Changer ses fenêtres peut être aidé",

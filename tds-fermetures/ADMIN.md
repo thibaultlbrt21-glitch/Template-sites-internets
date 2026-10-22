@@ -1,7 +1,7 @@
 # Espace client — guide d'activation
 
 Ce template embarque un **espace d'administration** : TDS Fermetures se connecte
-sur `votre-site.fr/admin/`, modifie ses chantiers, ses matériaux, ses
+sur `votre-site.fr/admin/`, modifie ses photos, ses prestations, ses
 horaires et ses coordonnées — et le site se met à jour tout seul, sans passer
 par vous.
 
@@ -144,11 +144,13 @@ Tout est en français, avec une aide sous chaque champ.
 
 - **Nom et signature** de l'entreprise
 - **Bandeau d'accueil** : titre en deux lignes, texte, encadré technique
-- **Photos principales** : accueil (fond), section « L'entreprise » (le logo par défaut)
+- **Photos de l'accueil** (dans « Bandeau d'accueil ») : celles qui défilent à
+  droite du titre, avec leur légende et leur crédit
+- **Photo de la section « L'entreprise »** (le logo par défaut)
 - **Prestations** : ajouter, supprimer, réordonner — la numérotation se refait
   toute seule
-- **Réalisations** : titre, sous-titre, catégorie, photo, texte alternatif.
-  Le premier de la liste s'affiche en grand ; un filtre qui n'a plus aucun
+- **En images (galerie)** : titre, sous-titre, catégorie, photo, texte
+  alternatif, crédit. Une photo en largeur prend deux cases ; un filtre qui n'a plus aucun
   chantier disparaît tout seul
 - **Aides à la rénovation** : dispositifs, conditions, et la **qualification
   RGE** de l'entreprise
@@ -162,7 +164,7 @@ Tout est en français, avec une aide sous chaque champ.
 
 C'est volontaire. Si l'entreprise supprime tous les avis, la section disparaît
 entièrement — plutôt que d'afficher des emplacements vides à ses propres
-clients. Même chose pour les chantiers, les matériaux et les prestations :
+clients. Même chose pour la galerie et les prestations :
 la section et son lien de menu disparaissent ensemble, et le contenu d'exemple
 est **retiré du code source**, pas seulement masqué.
 

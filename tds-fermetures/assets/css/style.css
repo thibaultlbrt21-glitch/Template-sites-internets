@@ -45,7 +45,7 @@
   --gouttiere: 24px;
   --largeur: 1180px;
   --largeur-large: 1440px;
-  --rayon: 4px;               /* presque droit : c'est de la menuiserie */
+  --rayon: 4px;               /* presque droit, comme un dormant */
 
   --transition: 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
@@ -69,7 +69,7 @@ body {
   overflow-x: hidden;
 }
 
-img, svg, canvas { max-width: 100%; display: block; }
+img, svg { max-width: 100%; display: block; }
 
 h1, h2, h3, h4 {
   font-family: var(--font-display);
@@ -257,46 +257,103 @@ a { color: inherit; }
 }
 
 /* =========================================================================
-   HERO — profondeur par couches parallaxes
+   HERO — texte sur anthracite, photos en fondu enchaîné à droite
    ========================================================================= */
 
 .hero {
   position: relative;
   background: var(--encre);
   color: var(--papier);
+  --visuel: 46%;              /* part de la largeur occupée par les photos */
 }
-/* Le cadre porte la mise en page et le recadrage de l'accueil. */
 .hero__cadre {
   position: relative; min-height: 100svh;
   display: flex; align-items: center;
-  padding: 140px 0 90px;
+  padding: 140px 0 110px;
   overflow: hidden;
 }
-/* Un voile en haut du cadre : l'en-tête reste lisible quelle que soit la
-   photo d'accueil que le client dépose. */
+/* Un voile en haut du cadre : l'en-tête reste lisible sur les photos. */
 .hero__cadre::before {
   content: ""; position: absolute; left: 0; right: 0; top: 0; height: 180px; z-index: 4;
-  background: linear-gradient(to bottom, rgba(35, 35, 34, 0.62), rgba(35, 35, 34, 0));
+  background: linear-gradient(to bottom, rgba(35, 35, 34, 0.7), rgba(35, 35, 34, 0));
   pointer-events: none;
 }
-.hero__couches { position: absolute; inset: 0; }
-.hero__couche { position: absolute; inset: -6%; will-change: transform; }
-.hero__couche img { width: 100%; height: 100%; object-fit: cover; }
-.hero__couche--fond { z-index: 1; }
-.hero__couche--avant { z-index: 3; }
-.hero__voile {
-  position: absolute; inset: 0; z-index: 2;
-  background:
-    linear-gradient(105deg, rgba(35, 35, 34, 0.94) 0%, rgba(35, 35, 34, 0.72) 42%, rgba(35, 35, 34, 0.34) 100%);
-}
-.hero__contenu { position: relative; z-index: 5; width: 100%; }
+.hero .grille-plan { right: var(--visuel); opacity: 0.5; }
 
-.hero h1 { color: var(--papier); margin-bottom: 26px; }
+.hero__visuel {
+  position: absolute; top: 0; right: 0; bottom: 0; width: var(--visuel);
+  overflow: hidden; z-index: 1;
+}
+/* Le filet orange s'arrête sous l'en-tête, pour ne pas barrer le menu. */
+.hero__visuel::before {
+  content: ""; position: absolute; left: 0; top: 112px; bottom: 0; width: 6px; z-index: 2;
+  background: var(--bois);
+}
+/* Fondu vers l'anthracite côté texte : la photo s'ouvre, elle ne coupe pas. */
+.hero__visuel::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(to right, rgba(35, 35, 34, 0.38), rgba(35, 35, 34, 0) 30%),
+    linear-gradient(to top, rgba(35, 35, 34, 0.55), rgba(35, 35, 34, 0) 32%);
+}
+.hero__photos { position: absolute; left: 0; right: 0; top: -6%; bottom: -6%; will-change: transform; }
+.hero__photo {
+  position: absolute; inset: 0; margin: 0;
+  opacity: 0; transition: opacity 1.4s ease;
+}
+.hero__photo.est-active { opacity: 1; }
+.hero__photo img {
+  width: 100%; height: 100%; object-fit: cover;
+  transform: scale(1.06); transition: transform 7s ease-out;
+}
+.hero__photo.est-active img { transform: scale(1); }
+
+.hero__contenu { position: relative; z-index: 5; width: 100%; }
+.hero__contenu > * { max-width: calc(100% - var(--visuel) - 24px); }
+
+.hero h1 { color: var(--papier); margin-bottom: 26px; font-size: clamp(2.6rem, 5.6vw, 5.4rem); }
 .hero h1 .fin { font-weight: 300; color: var(--bois-sur-encre); display: block; }
 .hero__texte {
   max-width: 470px; color: rgba(237, 237, 234, 0.82); font-size: 1.08rem; margin-bottom: 34px;
 }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 14px; }
+
+/* Repère du diaporama : jauge, légende, pause. */
+.hero__repere {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 10px 18px;
+  margin-top: 54px; padding-top: 18px;
+  border-top: 1px solid var(--ligne-encre);
+  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em;
+}
+.hero__jauge { display: flex; gap: 6px; }
+.hero__jauge button {
+  width: 34px; height: 18px; padding: 0; border: 0; background: none; cursor: pointer;
+  position: relative;
+}
+.hero__jauge button::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 8px; height: 2px;
+  background: var(--ligne-encre); transition: background var(--transition);
+}
+.hero__jauge button[aria-current="true"]::before { background: var(--bois-sur-encre); }
+.hero__jauge button:hover::before { background: var(--texte-doux-sur-encre); }
+.hero__legende { margin: 0; display: flex; gap: 12px; flex-wrap: wrap; text-transform: uppercase; }
+.hero__legende-num { color: var(--plan-sur-encre); }
+.hero__legende-texte { color: var(--papier); }
+.hero__legende-credit { color: var(--texte-doux-sur-encre); text-transform: none; letter-spacing: 0.04em; }
+.hero__pause {
+  margin-left: auto; background: none; cursor: pointer;
+  border: 1px solid var(--ligne-encre); border-radius: var(--rayon);
+  color: var(--texte-doux-sur-encre); font: inherit; letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 6px 11px; transition: border-color var(--transition), color var(--transition);
+}
+.hero__pause:hover { border-color: var(--bois-sur-encre); color: var(--papier); }
+/* Une seule photo : rien à faire défiler. */
+.hero__repere.est-fixe .hero__jauge,
+.hero__repere.est-fixe .hero__legende-num,
+.hero__repere.est-fixe .hero__pause { display: none; }
+/* Aucune photo : le texte reprend toute la largeur. */
+.hero--sans-photo .hero__contenu > * { max-width: none; }
+.hero--sans-photo .grille-plan { right: 0; }
 
 /* Cartouche de plan : la « fiche technique » du hero. */
 .cartouche {
@@ -312,21 +369,6 @@ a { color: inherit; }
 .cartouche dl { display: grid; grid-template-columns: auto 1fr; gap: 2px 14px; margin: 0; }
 .cartouche dt { color: rgba(247, 165, 52, 0.85); }
 .cartouche dd { margin: 0; color: var(--papier); text-align: right; }
-
-.hero__filer {
-  position: absolute; left: var(--gouttiere); bottom: 34px; z-index: 5;
-  font-family: var(--font-mono); font-size: 0.66rem;
-  letter-spacing: 0.2em; text-transform: uppercase; color: rgba(237, 237, 234, 0.5);
-  display: flex; align-items: center; gap: 12px;
-}
-.hero__filer i {
-  display: block; width: 1px; height: 34px; background: currentColor;
-  transform-origin: top; animation: filer 2.4s ease-in-out infinite;
-}
-@keyframes filer {
-  0%, 100% { transform: scaleY(0.25); opacity: 0.35; }
-  50%      { transform: scaleY(1); opacity: 1; }
-}
 
 /* =========================================================================
    SAVOIR-FAIRE — cartes en relief 3D
@@ -373,17 +415,29 @@ a { color: inherit; }
 .filtre:hover { border-color: var(--encre); color: var(--encre); }
 .filtre[aria-pressed="true"] { background: var(--encre); border-color: var(--encre); color: var(--papier); }
 
-.galerie { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+/* Mosaïque : une photo en hauteur prend une colonne, une photo en largeur
+   en prend deux (classe posée par main.js d'après le format réel). */
+.galerie {
+  --colonnes: 4;
+  display: grid; grid-template-columns: repeat(var(--colonnes), 1fr); gap: 16px; grid-auto-flow: dense;
+  /* Hauteur de rangée = largeur d'une colonne × 5/4 : chaque photo en
+     hauteur tombe juste en 4:5, chaque photo en largeur en 8:5 environ. */
+  grid-auto-rows: calc((min(100vw, var(--largeur)) - 2 * var(--gouttiere) - (var(--colonnes) - 1) * 16px) / var(--colonnes) * 1.25);
+}
 
 .oeuvre {
   position: relative; border: 0; padding: 0; margin: 0;
   background: var(--papier-3); border-radius: var(--rayon);
   overflow: hidden; cursor: zoom-in; text-align: left;
-  aspect-ratio: 4 / 5;
   transition: opacity 0.4s, transform 0.4s;
 }
-.oeuvre--grande { grid-row: span 2; aspect-ratio: 4 / 10.25; }
-.oeuvre img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1); }
+.oeuvre--paysage { grid-column: span 2; }
+.oeuvre::after {
+  content: ""; position: absolute; left: 0; bottom: 0; height: 3px; width: 0;
+  background: var(--bois); transition: width 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.oeuvre:hover::after, .oeuvre:focus-visible::after { width: 100%; }
+.oeuvre img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1); }
 .oeuvre:hover img { transform: scale(1.06); }
 .oeuvre__voile {
   position: absolute; inset: 0;
@@ -619,7 +673,7 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
 
 @media (max-width: 860px) {
   .metiers, .metiers--quatre, .galerie, .avis-grille, .infos-grille { grid-template-columns: repeat(2, 1fr); }
-  .oeuvre--grande { grid-row: span 1; aspect-ratio: 4 / 5; }
+  .galerie { --colonnes: 2; }
   .pied__cols { grid-template-columns: 1fr 1fr; }
 }
 
@@ -632,10 +686,19 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
   .nav-actions .btn { display: none; }
   .menu-mobile { display: flex; }
 
-  .hero__cadre { min-height: 92svh; padding: 118px 0 120px; }
+  .hero__cadre { min-height: 92svh; padding: 118px 0 64px; }
   .hero__texte { max-width: none; }
   .cartouche { display: none; }
-  .hero__filer { display: none; }
+  /* Sur la photo, le repère garde un fond sombre : lisible même sur les
+     zones claires de l'image. */
+  .hero__repere {
+    margin-top: 32px; padding: 12px 14px; border: 0; border-radius: var(--rayon);
+    background: rgba(35, 35, 34, 0.86); backdrop-filter: blur(6px);
+  }
+  .hero__legende { order: 3; flex-basis: 100%; gap: 4px 12px; }
+  .galerie { grid-auto-rows: auto; }
+  .oeuvre { aspect-ratio: 4 / 5; }
+  .oeuvre--paysage { grid-column: auto; aspect-ratio: 4 / 3; }
 
   .metiers, .metiers--quatre, .galerie, .avis-grille, .infos-grille, .etapes, .choix, .duo {
     grid-template-columns: 1fr;
@@ -717,6 +780,26 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
 }
 .entreprise__logo img { width: min(100%, 360px); margin: 0 auto; }
 
+/* Aides : la fenêtre en photo produit, à côté des critères. */
+.aides__detail {
+  margin-top: 44px; display: grid; grid-template-columns: minmax(180px, 0.7fr) 1fr 1fr;
+  gap: 34px; align-items: center;
+}
+.aides__produit {
+  margin: 0; background: #fff; border: 1px solid var(--ligne); border-top: 3px solid var(--bois);
+  border-radius: var(--rayon); padding: 18px 18px 10px;
+}
+.aides__produit img { width: 100%; max-width: 240px; margin: 0 auto; }
+.aides__produit figcaption {
+  margin-top: 8px; text-align: right;
+  font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.06em; color: var(--texte-doux);
+}
+
+/* En-tête de section sur deux colonnes : titre à gauche, texte à droite. */
+.tete--large { max-width: none; display: grid; grid-template-columns: 1fr 1fr; gap: 18px 54px; align-items: end; }
+.tete--large h2 { margin-bottom: 0; }
+.tete--large p { margin: 0; }
+
 /* Formulaire : piège à robots, secours et remerciement. */
 .piege { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .devis__note a { color: var(--bois-sur-encre); }
@@ -744,8 +827,21 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
 @media (max-width: 1080px) {
   .entete__tel { display: none; }
 }
+/* Sous 960 px, la photo passe en plein fond, sous un voile anthracite. */
+@media (max-width: 960px) {
+  .hero { --visuel: 100%; }
+  .hero__visuel::before { top: auto; left: 0; right: 0; bottom: 0; width: auto; height: 6px; }
+  .hero__visuel::after {
+    background: linear-gradient(to bottom, rgba(35, 35, 34, 0.9) 0%, rgba(35, 35, 34, 0.8) 55%, rgba(35, 35, 34, 0.42) 100%);
+  }
+  .hero__contenu > * { max-width: 620px; }
+  .hero .grille-plan { display: none; }
+}
 @media (max-width: 860px) {
   .engagements { grid-template-columns: repeat(2, 1fr); }
+  .aides__detail { grid-template-columns: 1fr 1fr; }
+  .aides__produit { grid-column: 1 / -1; max-width: 280px; }
+  .tete--large { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
   .marque__logo { height: 48px; }
@@ -753,6 +849,7 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
   [data-split] { grid-template-columns: 1fr !important; gap: 28px !important; }
   .appel-mobile .btn { padding: 14px 10px; letter-spacing: 0.06em; font-size: 0.72rem; white-space: nowrap; }
   .engagements { grid-template-columns: 1fr; gap: 22px; }
+  .aides__detail { grid-template-columns: 1fr; gap: 26px; }
   .menu-mobile .btn--clair { margin-top: 10px; }
 }
 
@@ -768,6 +865,7 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
     transition-duration: 0.001ms !important;
   }
   .apparait { opacity: 1; transform: none; }
-  .hero__couche { transform: none !important; }
+  .hero__photos { transform: none !important; }
+  .hero__photo img { transform: none !important; }
   .metier { transform: none !important; }
 }
