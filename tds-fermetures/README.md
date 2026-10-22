@@ -41,7 +41,7 @@ marque sur anthracite 6,7:1.
 
 Texte sur anthracite à gauche (titre, boutons « Demander un devis » et
 « Appeler »), **photos en fondu enchaîné à droite**, séparées par un filet
-orange, avec l'encadré du dirigeant posé dessus. Sous les boutons, un repère
+orange, avec l'encadré du dirigeant posé dessus. Pas de parallaxe : la photo défile avec la page, pour rester fluide à 120 Hz. Sous les boutons, un repère
 dans le style du formulaire de devis : une jauge par photo (cliquable), la
 légende et le crédit de la photo affichée, et un bouton **Pause** (un
 contenu qui défile seul doit pouvoir être arrêté). Sous 960 px, la photo
@@ -193,7 +193,7 @@ Mesuré dans Chromium, pas estimé.
 | Liste vidée | section masquée, lien de menu masqué, contenu retiré du DOM |
 | Contrastes de la charte orange | anthracite sur orange 7:1, orange foncé sur clair 5:1, orange sur anthracite 6,7:1 |
 | Section TVA réduite | 3 cartes, critères techniques, pas de RGE dit clairement, renvoi France Rénov', **aucune somme en euros** |
-| Fluidité (60 / 120 / 144 Hz) | en plein défilement : 1 recalcul de mise en page au lieu de 72 à 135 ; parallaxe calculée par le navigateur (CSS `animation-timeline`), en-tête de taille fixe, aucun flou d'arrière-plan, diaporama en pause hors écran |
+| Fluidité (60 / 120 / 144 Hz) | en plein défilement : 1 recalcul de mise en page au lieu de 72 à 135 ; aucune parallaxe, aucun zoom continu, une seule passe de composition par image (au lieu de 4), en-tête de taille fixe, aucun flou d'arrière-plan, diaporama en pause hors écran |
 | Affichage | 360, 390, 768, 1024, 1280, 1440, 1920 px : aucun débordement, aucune erreur JS, menu burger sous 1100 px, cibles tactiles ≥ 24 px |
 | Parcours | menu mobile, devis complet avec envoi simulé à l'adresse de Tiago, liens « Appeler », mentions légales |
 | Devis 4 étapes | cas valides et invalides, retour arrière |

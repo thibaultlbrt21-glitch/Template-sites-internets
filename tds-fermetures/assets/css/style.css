@@ -298,31 +298,22 @@ a { color: inherit; }
     linear-gradient(to right, rgba(35, 35, 34, 0.38), rgba(35, 35, 34, 0) 30%),
     linear-gradient(to top, rgba(35, 35, 34, 0.55), rgba(35, 35, 34, 0) 32%);
 }
-.hero__photos { position: absolute; left: 0; right: 0; top: -6%; bottom: -6%; }
-/* Parallaxe calculée par le navigateur lui-même, au rythme de l'écran
-   (60, 120 ou 144 Hz) : plus de JavaScript à chaque image, donc plus de
-   décalage entre le défilement et la photo. Navigateurs sans cette
-   fonction : la photo reste simplement fixe. */
-@supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .hero__photos {
-      animation: parallaxe linear both;
-      animation-timeline: scroll(root block);
-      animation-range: 0 100vh;
-    }
-  }
-}
-@keyframes parallaxe { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(0, 8vh, 0); } }
+/* Pas de parallaxe : sur un écran 120 Hz, certains navigateurs (Safari
+   notamment) la calculent à 60 images/s pendant que la page défile à 120,
+   et la photo avance par à-coups. La photo défile donc avec la page, au
+   rythme natif de l'écran. */
+.hero__photos { position: absolute; inset: 0; }
+/* Une photo cachée est aussi retirée de l'affichage une fois le fondu
+   terminé : la carte graphique n'a qu'une image à composer, pas trois. */
 .hero__photo {
   position: absolute; inset: 0; margin: 0;
-  opacity: 0; transition: opacity 1.4s ease;
+  opacity: 0; visibility: hidden;
+  transition: opacity 1.4s ease, visibility 0s linear 1.4s;
 }
-.hero__photo.est-active { opacity: 1; }
+.hero__photo.est-active { opacity: 1; visibility: visible; transition: opacity 1.4s ease, visibility 0s; }
 .hero__photo img {
   width: 100%; height: 100%; object-fit: cover;
-  transform: scale(1.06); transition: transform 7s ease-out;
 }
-.hero__photo.est-active img { transform: scale(1); }
 
 .hero__contenu { position: relative; z-index: 5; width: 100%; }
 .hero__contenu > * { max-width: calc(100% - var(--visuel) - 24px); }
@@ -399,7 +390,6 @@ a { color: inherit; }
   background: var(--papier);
   border: 1px solid var(--ligne);
   border-radius: var(--rayon);
-  transform-style: preserve-3d;
   transition: transform 0.25s ease-out, box-shadow var(--transition), border-color var(--transition);
 }
 .metier:hover {
@@ -412,7 +402,6 @@ a { color: inherit; }
 }
 .metier h3 { margin-bottom: 10px; }
 .metier p { color: var(--texte-doux); font-size: 0.95rem; margin: 0; }
-.metier__profondeur { transform: translateZ(28px); }
 
 /* =========================================================================
    RÉALISATIONS
@@ -886,7 +875,6 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
     transition-duration: 0.001ms !important;
   }
   .apparait { opacity: 1; transform: none; }
-  .hero__photos { transform: none !important; }
   .hero__photo img { transform: none !important; }
   .metier { transform: none !important; }
 }

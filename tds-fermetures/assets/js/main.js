@@ -191,6 +191,7 @@
   // Le basculement suit le curseur : c'est ce qui donne l'impression que la
   // carte est un objet posé, pas une image. Désactivé au doigt et en
   // mouvement réduit, où l'effet n'apporte rien.
+  // La carte n'est promue sur la carte graphique que pendant le survol.
   if (pointeurFin && !reduit) {
     document.querySelectorAll("[data-tilt]").forEach(function (carte) {
       var cadre = null;
