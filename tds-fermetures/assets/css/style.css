@@ -106,7 +106,7 @@ a { color: inherit; }
 .section { padding: clamp(72px, 11vh, 132px) 0; position: relative; }
 /* L'en-tête est fixe : sans cette marge, un lien d'ancre amènerait le titre
    de section juste dessous, à moitié caché. */
-.section[id], .hero[id] { scroll-margin-top: 84px; }
+.section[id], .hero[id] { scroll-margin-top: 96px; }
 .section--encre { background: var(--encre); color: var(--texte-sur-encre); }
 .section--encre h1, .section--encre h2, .section--encre h3 { color: var(--papier); }
 .section--encre p { color: var(--texte-doux-sur-encre); }
@@ -174,18 +174,20 @@ a { color: inherit; }
    EN-TÊTE
    ========================================================================= */
 
+/* Fluidité : l'en-tête garde la même taille quand il se pose. Seuls la
+   couleur de fond, le filet (ombre portée) et l'échelle du logo changent :
+   aucune de ces propriétés ne refait la mise en page de la page, et
+   l'échelle est animée par la carte graphique. Pas de flou d'arrière-plan
+   non plus : il serait recalculé à chaque image du défilement. */
 .entete {
   position: fixed; top: 0; left: 0; right: 0; z-index: 90;
-  transition: background var(--transition), border-color var(--transition), padding var(--transition);
-  border-bottom: 1px solid transparent;
+  transition: background-color var(--transition), box-shadow var(--transition);
 }
-.entete .nav { display: flex; align-items: center; gap: 28px; padding-block: 22px; }
+.entete .nav { display: flex; align-items: center; gap: 28px; padding-block: 16px; }
 .entete.est-pose {
-  background: rgba(247, 247, 245, 0.93);
-  backdrop-filter: blur(14px) saturate(1.2);
-  border-bottom-color: var(--ligne);
+  background: #fff;
+  box-shadow: 0 3px 0 var(--bois);
 }
-.entete.est-pose .nav { padding-block: 14px; }
 
 /* Tant que l'en-tête survole le haut de page sombre, texte clair. Il ne
    reprend l'encre qu'une fois posé sur fond papier. */
@@ -296,7 +298,21 @@ a { color: inherit; }
     linear-gradient(to right, rgba(35, 35, 34, 0.38), rgba(35, 35, 34, 0) 30%),
     linear-gradient(to top, rgba(35, 35, 34, 0.55), rgba(35, 35, 34, 0) 32%);
 }
-.hero__photos { position: absolute; left: 0; right: 0; top: -6%; bottom: -6%; will-change: transform; }
+.hero__photos { position: absolute; left: 0; right: 0; top: -6%; bottom: -6%; }
+/* Parallaxe calculée par le navigateur lui-même, au rythme de l'écran
+   (60, 120 ou 144 Hz) : plus de JavaScript à chaque image, donc plus de
+   décalage entre le défilement et la photo. Navigateurs sans cette
+   fonction : la photo reste simplement fixe. */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__photos {
+      animation: parallaxe linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 100vh;
+    }
+  }
+}
+@keyframes parallaxe { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(0, 8vh, 0); } }
 .hero__photo {
   position: absolute; inset: 0; margin: 0;
   opacity: 0; transition: opacity 1.4s ease;
@@ -359,8 +375,7 @@ a { color: inherit; }
 .cartouche {
   position: absolute; right: var(--gouttiere); bottom: 40px; z-index: 5;
   border: 1px solid rgba(243, 146, 0, 0.45);
-  background: rgba(35, 35, 34, 0.7);
-  backdrop-filter: blur(6px);
+  background: rgba(35, 35, 34, 0.86);
   padding: 16px 20px; border-radius: var(--rayon);
   font-family: var(--font-mono); font-size: 0.7rem; line-height: 1.9;
   color: var(--plan-sur-encre); letter-spacing: 0.06em;
@@ -386,7 +401,6 @@ a { color: inherit; }
   border-radius: var(--rayon);
   transform-style: preserve-3d;
   transition: transform 0.25s ease-out, box-shadow var(--transition), border-color var(--transition);
-  will-change: transform;
 }
 .metier:hover {
   border-color: var(--bois);
@@ -693,7 +707,7 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
      zones claires de l'image. */
   .hero__repere {
     margin-top: 32px; padding: 12px 14px; border: 0; border-radius: var(--rayon);
-    background: rgba(35, 35, 34, 0.86); backdrop-filter: blur(6px);
+    background: rgba(35, 35, 34, 0.9);
   }
   .hero__legende { order: 3; flex-basis: 100%; gap: 4px 12px; }
   .galerie { grid-auto-rows: auto; }
@@ -727,13 +741,13 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
 
 /* En-tête : le logo, et un filet orange une fois posé. */
 .marque { color: var(--encre); }
-.marque__logo { height: 66px; width: auto; transition: height var(--transition); }
-.entete.est-pose .marque__logo { height: 52px; }
+.marque__logo { height: 60px; width: auto; transform-origin: left center; transition: transform var(--transition); }
+.entete.est-pose .marque__logo { transform: scale(0.84); }
 .hero .annot { color: var(--plan-sur-encre); }
 .cartouche { min-width: 320px; }
 .cartouche dt, .cartouche dd { white-space: nowrap; }
 .entete:not(.est-pose) .marque { color: #fff; }
-.entete.est-pose { background: rgba(255, 255, 255, 0.95); border-bottom: 3px solid var(--bois); }
+.entete.est-pose { background: #fff; }
 .entete__tel {
   font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.06em; font-weight: 600;
   text-decoration: none; color: var(--encre); white-space: nowrap;

@@ -30,14 +30,25 @@
   var hero = document.querySelector(".hero");
 
   /* ---------- En-tête ---------- */
+  // Au plus une mise à jour par image affichée, et seulement quand l'état
+  // change. La hauteur de l'accueil est lue une fois (et au redimensionnement),
+  // jamais pendant le défilement : la lire forcerait un recalcul de la page.
+  var hauteurHero = 0;
+  var pose = null, descendu = null, defilementPrevu = false;
+  function mesure() { hauteurHero = hero ? hero.offsetHeight : window.innerHeight; }
   function auDefilement() {
+    defilementPrevu = false;
     var y = window.scrollY;
-    if (entete) entete.classList.toggle("est-pose", y > 40);
-    var hauteurHero = hero ? hero.offsetHeight : window.innerHeight;
-    document.body.classList.toggle("est-descendu", y > hauteurHero * 0.6);
+    var p = y > 40, d = y > hauteurHero * 0.6;
+    if (entete && p !== pose) { pose = p; entete.classList.toggle("est-pose", p); }
+    if (d !== descendu) { descendu = d; document.body.classList.toggle("est-descendu", d); }
   }
+  mesure();
   auDefilement();
-  window.addEventListener("scroll", auDefilement, { passive: true });
+  window.addEventListener("scroll", function () {
+    if (!defilementPrevu) { defilementPrevu = true; window.requestAnimationFrame(auDefilement); }
+  }, { passive: true });
+  window.addEventListener("resize", function () { mesure(); auDefilement(); }, { passive: true });
 
   /* ---------- Menu mobile ---------- */
   var burger = document.getElementById("burger");
@@ -104,25 +115,6 @@
     etapes.forEach(function (el) { el.classList.add("est-vue"); });
   }
 
-  /* ---------- Parallaxe du hero ---------- */
-  var couches = Array.prototype.slice.call(document.querySelectorAll("[data-profondeur]"));
-  if (couches.length && !reduit) {
-    var enAttente = false;
-    var applique = function () {
-      var y = window.scrollY;
-      couches.forEach(function (el) {
-        var p = parseFloat(el.getAttribute("data-profondeur")) || 0;
-        el.style.transform = "translate3d(0," + (y * p).toFixed(1) + "px,0)";
-      });
-      enAttente = false;
-    };
-    var demande = function () {
-      if (!enAttente) { enAttente = true; window.requestAnimationFrame(applique); }
-    };
-    applique();
-    window.addEventListener("scroll", demande, { passive: true });
-  }
-
   /* ---------- Photos de l'accueil : fondu enchaîné ---------- */
   // Une jauge par photo (cliquable), la légende et le crédit de la photo
   // affichée, et un bouton Pause : un contenu qui change tout seul doit
@@ -164,9 +156,10 @@
       creditPhoto.textContent = photo.getAttribute("data-credit") || "";
       creditPhoto.hidden = !creditPhoto.textContent;
     };
+    var aLEcran = true;
     var relance = function () {
       window.clearInterval(minuteur);
-      if (!enPause && photos.length > 1) {
+      if (!enPause && aLEcran && !document.hidden && photos.length > 1) {
         minuteur = window.setInterval(function () { montrePhoto(photoCourante + 1); }, SITE_CONFIG.dureePhoto);
       }
     };
@@ -180,10 +173,15 @@
       pause.textContent = enPause ? "Lecture" : "Pause";
       relance();
     });
-    // Onglet en arrière-plan : on arrête, on reprend au retour.
-    document.addEventListener("visibilitychange", function () {
-      if (document.hidden) window.clearInterval(minuteur); else relance();
-    });
+    // Onglet en arrière-plan ou accueil sorti de l'écran : le fondu s'arrête,
+    // pour laisser toute la puissance au défilement ; il reprend au retour.
+    document.addEventListener("visibilitychange", relance);
+    if ("IntersectionObserver" in window && hero) {
+      new IntersectionObserver(function (entrees) {
+        aLEcran = entrees[0].isIntersecting;
+        relance();
+      }).observe(hero);
+    }
 
     montrePhoto(0);
     relance();

@@ -193,6 +193,7 @@ Mesuré dans Chromium, pas estimé.
 | Liste vidée | section masquée, lien de menu masqué, contenu retiré du DOM |
 | Contrastes de la charte orange | anthracite sur orange 7:1, orange foncé sur clair 5:1, orange sur anthracite 6,7:1 |
 | Section TVA réduite | 3 cartes, critères techniques, pas de RGE dit clairement, renvoi France Rénov', **aucune somme en euros** |
+| Fluidité (60 / 120 / 144 Hz) | en plein défilement : 1 recalcul de mise en page au lieu de 72 à 135 ; parallaxe calculée par le navigateur (CSS `animation-timeline`), en-tête de taille fixe, aucun flou d'arrière-plan, diaporama en pause hors écran |
 | Affichage | 360, 390, 768, 1024, 1280, 1440, 1920 px : aucun débordement, aucune erreur JS, menu burger sous 1100 px, cibles tactiles ≥ 24 px |
 | Parcours | menu mobile, devis complet avec envoi simulé à l'adresse de Tiago, liens « Appeler », mentions légales |
 | Devis 4 étapes | cas valides et invalides, retour arrière |
