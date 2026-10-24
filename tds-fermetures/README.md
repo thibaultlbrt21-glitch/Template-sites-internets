@@ -170,16 +170,35 @@ qualification non détenue est un faux, et prive le client de ses aides.
 Données du Kbis volontairement **non publiées** : date et lieu de
 naissance, nationalité du gérant.
 
-## ⚠️ Reste à régler avant la mise en ligne définitive
+## ⚠️ Suivi (mis à jour le 24 octobre 2026)
+
+**À obtenir de Tiago** (Thibault s'en charge) :
 
 - **Médiateur de la consommation** : obligatoire (L612-1 du code de la
   consommation), seul champ encore « à renseigner » des mentions légales
 - **Décennale** : l'attestation expire le **01/01/2027** ; elle couvre les
   menuiseries extérieures **bois et PVC** et la vitrerie, pas l'aluminium,
-  et ne cite ni pergolas, ni portes de garage, ni automatismes
-- **Activer FormSubmit** et faire une demande de test
-- **Nom de domaine** : balises SEO, `sitemap.xml`, `robots.txt`
-- Lien de la page Facebook, horaires, photos de chantiers, avis réels
+  et ne cite ni pergolas, ni portes de garage, ni automatismes. Décision
+  de Thibault : **ne rien changer au site** tant qu'ils n'ont pas regardé
+  l'assurance ensemble
+- Validation des 4 promesses (visite sur place, devis détaillé, même
+  numéro après la pose, chantier laissé net)
+- Relecture TVA réduite (comptable) et durées de conservation
+- Lien Facebook, horaires, photos de chantiers, photo de Tiago, fiche
+  Google Business, logo original, stores et vérandas
+
+**À voir ensemble avec Thibault dans quelques jours** (reporté à sa demande) :
+
+- Activation de FormSubmit et demande de test
+- Espace client : branche `main` sans le site, connexion GitHub à configurer
+- Nom de domaine (balises SEO, `sitemap.xml`, `robots.txt`) et adresse
+  e-mail professionnelle
+- Hébergement : rester sur GitHub Pages ou changer
+- Intégration des photos de chantiers
+- Validation manuelle des déploiements : la garder ou non
+
+**Réglé** : droits des photos FenêtréA (confirmés par Thibault), photos
+brutes supprimées de `main`, saccades à 120 Hz.
 
 ## Ce qui a été vérifié
 
