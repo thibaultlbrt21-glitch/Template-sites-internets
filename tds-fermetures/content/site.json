@@ -10,6 +10,13 @@
     "texte": "Fenêtres, volets roulants, portes, portails et clôtures, portes de garage, pergolas, automatismes et visiophones, à Dijon et dans toute la Côte-d'Or. Un seul interlocuteur, du premier conseil au service après-vente.",
     "photos": [
       {
+        "image": "assets/images/realisation-portail-coulissant.jpg",
+        "alt": "Portail coulissant anthracite à lames verticales posé par TDS Fermetures devant une maison contemporaine",
+        "legende": "Portail coulissant — réalisation TDS Fermetures",
+        "credit": "",
+        "cadrage": "66% 50%"
+      },
+      {
         "image": "assets/images/fenetre-facade-grise.jpg",
         "alt": "Façade grise, fenêtres blanches et volets battants anthracite",
         "legende": "Fenêtres et volets battants",
@@ -97,6 +104,15 @@
     "titre": "Fenêtres, baies et portes d'entrée",
     "texte": "Un aperçu des produits : formes, coloris, vitrages et poignées. Le modèle, les dimensions et les options se choisissent ensemble, au moment du devis.",
     "ouvrages": [
+      {
+        "titre": "Portail coulissant",
+        "meta": "Réalisation TDS Fermetures",
+        "categorie": "exterieur",
+        "image": "assets/images/realisation-portail-coulissant-960.jpg",
+        "alt": "Portail coulissant anthracite à lames verticales posé par TDS Fermetures",
+        "credit": "Réalisation TDS Fermetures",
+        "cadrage": "66% 50%"
+      },
       {
         "titre": "Fenêtres et volets battants",
         "meta": "Façade",
@@ -194,7 +210,7 @@
         "credit": "Photo FenêtréA"
       }
     ],
-    "mention": "Photos : FenêtréA, fabricant. Modèles présentés à titre d'exemple — les photos des chantiers de TDS Fermetures viendront compléter cette galerie."
+    "mention": "Portail coulissant : réalisation TDS Fermetures. Autres photos : FenêtréA, fabricant — modèles présentés à titre d'exemple."
   },
   "aides": {
     "titre": "Une TVA réduite sur vos travaux",
@@ -292,5 +308,14 @@
         "url": ""
       }
     ]
+  },
+  "realisation": {
+    "titre": "Un portail coulissant, posé par Tiago",
+    "texte": "Lames verticales pleines, teinte anthracite, coulissement le long du mur : un portail sobre qui ferme la propriété sans alourdir la façade.",
+    "image": "assets/images/realisation-portail-coulissant.jpg",
+    "alt": "Portail coulissant anthracite à lames verticales posé par TDS Fermetures devant une maison contemporaine",
+    "legende": "Portail coulissant anthracite",
+    "etiquette": "Réalisation TDS Fermetures",
+    "cadre": "52.5 45.9 27.3 21.1"
   }
 }

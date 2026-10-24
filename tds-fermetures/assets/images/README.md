@@ -25,6 +25,12 @@ métadonnées retirées** (appareil, auteur, logiciel, dates). Les fichiers
 d'origine font 1000 px au plus : ils ne sont pas agrandis, ce qui suffit pour
 la galerie et le panneau photo de l'accueil.
 
+## Réalisation de l'entreprise
+
+| Fichier | Où | Sujet |
+|---|---|---|
+| `realisation-portail-coulissant.jpg` (1672 px) et `-960.jpg` | Section Réalisation, accueil (1), galerie | Portail coulissant posé par TDS Fermetures |
+
 ## Ajouter les photos de chantier
 
 Le plus simple, c'est l'espace client (`/admin/`) :

@@ -52,6 +52,22 @@ Liste vide : l'accueil redevient un bandeau de texte seul, sans trou.
 L'ancienne fenêtre 3D et l'animation d'ouverture restent dans l'historique
 Git (commit « l'intro ouvre une vraie photo de fenêtre »).
 
+## Réalisation mise en avant
+
+Première réalisation de l'entreprise : un **portail coulissant** posé par
+Tiago (photo transmise par Thibault le 24 octobre 2026). Section sombre
+entre les prestations et la galerie : un panneau à lames anthracite
+**coulisse comme un portail** pour dévoiler la photo quand elle arrive à
+l'écran, puis quatre coins orange se resserrent sur le portail avec
+l'étiquette « Réalisation TDS Fermetures ». Animation jouée une seule fois,
+uniquement en `transform` / `opacity` ; sans script ou en mouvement réduit,
+la photo et le cadre s'affichent directement. La même photo ouvre le
+diaporama de l'accueil et la galerie (filtre « Portails & pergolas »).
+
+Modifiable dans l'espace client (*Réalisation mise en avant*) ; la position
+du cadre orange est un champ « gauche haut largeur hauteur » en %, à
+changer avec la photo.
+
 ## Le reste des fonctionnalités
 
 - **Section « TVA réduite »** (l'entreprise n'est pas RGE) : TVA 10 % et 5,5 %,

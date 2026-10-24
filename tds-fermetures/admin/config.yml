@@ -94,6 +94,11 @@ collections:
                     widget: "string"
                     required: false
                     hint: "Obligatoire pour une photo de fabricant (ex. Photo FenêtréA). Laissez vide pour vos propres photos."
+                  - label: "Cadrage"
+                    name: "cadrage"
+                    widget: "string"
+                    required: false
+                    hint: "Partie de la photo à garder visible, en % horizontal puis vertical. Ex. « 66% 50% » pour un sujet un peu à droite. Vide = centre."
 
           - label: "Encadré (coin de l'accueil)"
             name: "cartouche"
@@ -146,6 +151,29 @@ collections:
                   - { label: "Intitulé", name: "titre", widget: "string" }
                   - { label: "Description", name: "texte", widget: "text", required: false }
 
+          - label: "Réalisation mise en avant"
+            name: "realisation"
+            widget: "object"
+            collapsed: true
+            hint: >-
+              La grande photo sur fond sombre, dévoilée par un panneau qui coulisse.
+              N'y mettez qu'un chantier réellement réalisé par l'entreprise.
+            fields:
+              - { label: "Titre", name: "titre", widget: "string" }
+              - { label: "Texte", name: "texte", widget: "text", required: false }
+              - { label: "Photo", name: "image", widget: "image", hint: "Format paysage, 1600 px de large conseillé." }
+              - { label: "Description pour les lecteurs d'écran", name: "alt", widget: "string" }
+              - { label: "Légende sous la photo", name: "legende", widget: "string", required: false }
+              - { label: "Étiquette du cadre orange", name: "etiquette", widget: "string", required: false }
+              - label: "Position du cadre orange"
+                name: "cadre"
+                widget: "string"
+                required: false
+                hint: >-
+                  Quatre nombres en % de la photo : gauche, haut, largeur, hauteur
+                  (ex. « 52.5 45.9 27.3 21.1 »). Changez-les si vous changez de photo,
+                  ou videz le champ pour ne pas afficher de cadre.
+
           - label: "En images (galerie)"
             name: "chantiers"
             widget: "object"
@@ -189,6 +217,11 @@ collections:
                     widget: "string"
                     required: false
                     hint: "Affiché dans la visionneuse. Obligatoire pour une photo de fabricant (ex. Photo FenêtréA)."
+                  - label: "Cadrage"
+                    name: "cadrage"
+                    widget: "string"
+                    required: false
+                    hint: "Ex. « 66% 50% ». Vide = centre de la photo."
               - { label: "Mention sous la galerie", name: "mention", widget: "text", required: false }
 
           - label: "TVA réduite et aides"

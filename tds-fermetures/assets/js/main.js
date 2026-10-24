@@ -115,6 +115,25 @@
     etapes.forEach(function (el) { el.classList.add("est-vue"); });
   }
 
+  /* ---------- Réalisation : le portail s'ouvre ---------- */
+  // Le panneau à lames coulisse une seule fois, quand la photo est bien à
+  // l'écran. Pas de script, pas d'IntersectionObserver ou mouvement réduit :
+  // le panneau n'existe pas et la photo s'affiche directement.
+  var figureRea = document.getElementById("figureRealisation");
+  if (figureRea && !reduit && "IntersectionObserver" in window) {
+    document.documentElement.classList.add("anim-portail");
+    // Ouverture quand 70 % de la photo est visible — ou, si l'écran est
+    // trop bas pour ça, quand elle occupe déjà 60 % de sa hauteur.
+    var ioRea = new IntersectionObserver(function (entrees) {
+      var e = entrees[0];
+      if (!e.isIntersecting) return;
+      if (e.intersectionRatio < 0.7 && e.intersectionRect.height < window.innerHeight * 0.6) return;
+      figureRea.classList.add("est-ouverte");
+      ioRea.disconnect();
+    }, { threshold: [0.25, 0.4, 0.55, 0.7] });
+    ioRea.observe(figureRea);
+  }
+
   /* ---------- Photos de l'accueil : fondu enchaîné ---------- */
   // Une jauge par photo (cliquable), la légende et le crédit de la photo
   // affichée, et un bouton Pause : un contenu qui change tout seul doit

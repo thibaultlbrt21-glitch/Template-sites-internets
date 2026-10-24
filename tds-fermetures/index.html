@@ -105,8 +105,11 @@
            client (Bandeau d'accueil → Photos). -->
       <div class="hero__visuel">
         <div class="hero__photos" data-cms-list="hero.photos">
-          <figure class="hero__photo est-active" data-legende="Fenêtres et volets battants" data-credit="Photo FenêtréA">
-            <img src="assets/images/fenetre-facade-grise.jpg" alt="Façade grise, fenêtres blanches et volets battants anthracite" fetchpriority="high" decoding="async">
+          <figure class="hero__photo est-active" data-legende="Portail coulissant — réalisation TDS Fermetures">
+            <img src="assets/images/realisation-portail-coulissant.jpg" alt="Portail coulissant anthracite à lames verticales posé par TDS Fermetures devant une maison contemporaine" style="object-position: 66% 50%;" fetchpriority="high" decoding="async">
+          </figure>
+          <figure class="hero__photo" data-legende="Fenêtres et volets battants" data-credit="Photo FenêtréA">
+            <img src="assets/images/fenetre-facade-grise.jpg" alt="Façade grise, fenêtres blanches et volets battants anthracite" loading="lazy" decoding="async">
           </figure>
           <figure class="hero__photo" data-legende="Baie coulissante" data-credit="Photo FenêtréA">
             <img src="assets/images/baie-coulissante-terrasse.jpg" alt="Grande baie coulissante ouverte sur une terrasse" loading="lazy" decoding="async">
@@ -137,9 +140,9 @@
         <div class="hero__repere apparait d3" id="repereAccueil">
           <div class="hero__jauge" role="group" aria-label="Choisir la photo affichée"></div>
           <p class="hero__legende" aria-live="polite">
-            <span class="hero__legende-num">01 / 03</span>
-            <span class="hero__legende-texte">Fenêtres et volets battants</span>
-            <span class="hero__legende-credit">Photo FenêtréA</span>
+            <span class="hero__legende-num">01 / 04</span>
+            <span class="hero__legende-texte">Portail coulissant — réalisation TDS Fermetures</span>
+            <span class="hero__legende-credit" hidden></span>
           </p>
           <button type="button" class="hero__pause" aria-pressed="false">Pause</button>
         </div>
@@ -256,6 +259,56 @@
     </div>
   </section>
 
+  <!-- ===================== RÉALISATION ===================== -->
+  <!-- Première réalisation de TDS Fermetures (photo fournie par Thibault,
+       portail posé par Tiago). Le panneau à lames coulisse comme un portail
+       pour dévoiler la photo, puis un cadre orange désigne l'ouvrage.
+       Sans JavaScript ou en mouvement réduit : la photo et le cadre
+       s'affichent directement. -->
+  <section class="section section--encre rea" id="realisation" aria-labelledby="titreRealisation">
+    <div class="grille-plan" aria-hidden="true"></div>
+    <div class="wrap-large">
+      <div class="tete tete--large rea__tete">
+        <div>
+          <span class="annot apparait">Réalisation</span>
+          <h2 class="apparait d1" id="titreRealisation" data-cms="realisation.titre">Un portail coulissant, posé par Tiago</h2>
+        </div>
+        <p class="apparait d1" data-cms="realisation.texte">
+          Lames verticales pleines, teinte anthracite, coulissement le long du
+          mur : un portail sobre qui ferme la propriété sans alourdir la façade.
+        </p>
+      </div>
+
+      <figure class="rea__figure" id="figureRealisation">
+        <div class="rea__photo">
+        <img src="assets/images/realisation-portail-coulissant.jpg"
+             srcset="assets/images/realisation-portail-coulissant-960.jpg 960w, assets/images/realisation-portail-coulissant.jpg 1672w"
+             sizes="(max-width: 1440px) 100vw, 1392px"
+             data-cms-image="realisation.image" data-cms="realisation.alt" data-cms-attr="alt"
+             alt="Portail coulissant anthracite à lames verticales posé par TDS Fermetures devant une maison contemporaine"
+             width="1672" height="941" loading="lazy" decoding="async">
+        <div class="rea__cadre" id="cadreRealisation" style="left:52.5%;top:45.9%;width:27.3%;height:21.1%;" aria-hidden="true">
+          <i></i><i></i><i></i><i></i>
+          <span class="rea__etiquette" data-cms="realisation.etiquette">Réalisation TDS Fermetures</span>
+        </div>
+        <div class="rea__portail" aria-hidden="true">
+          <span class="rea__poignee"></span>
+          <span class="rea__marque">TDS Fermetures</span>
+        </div>
+        </div>
+        <figcaption class="rea__legende">
+          <span data-cms="realisation.legende">Portail coulissant anthracite</span>
+          <span>Réalisation TDS Fermetures</span>
+        </figcaption>
+      </figure>
+
+      <div class="rea__actions apparait">
+        <a href="#devis" class="btn btn--plein"><span class="rea__cta-long">Un projet de portail ?&nbsp;</span>Demander un devis</a>
+        <a href="tel:+33658008226" class="btn btn--clair">Appeler le 06 58 00 82 26</a>
+      </div>
+    </div>
+  </section>
+
   <!-- ===================== EN IMAGES ===================== -->
   <!-- Photos du fabricant FenêtréA, fournies par TDS Fermetures. Ce ne sont
        pas des chantiers de l'entreprise : la mention sous la galerie le dit.
@@ -278,10 +331,17 @@
         <button type="button" class="filtre" data-filtre="fermetures" aria-pressed="false">Fenêtres &amp; volets</button>
         <button type="button" class="filtre" data-filtre="coulissants" aria-pressed="false">Baies coulissantes</button>
         <button type="button" class="filtre" data-filtre="portes" aria-pressed="false">Portes &amp; garages</button>
-        <button type="button" class="filtre" data-filtre="exterieur" aria-pressed="false" hidden>Portails &amp; pergolas</button>
+        <button type="button" class="filtre" data-filtre="exterieur" aria-pressed="false">Portails &amp; pergolas</button>
       </div>
 
       <div class="galerie apparait d2" id="galerie" data-cms-list="chantiers.ouvrages">
+        <button type="button" class="oeuvre" data-categorie="exterieur" data-index="r" data-credit="Réalisation TDS Fermetures">
+          <img src="assets/images/realisation-portail-coulissant-960.jpg" alt="Portail coulissant anthracite à lames verticales posé par TDS Fermetures" style="object-position: 66% 50%;" loading="lazy" decoding="async">
+          <span class="oeuvre__voile">
+            <span class="oeuvre__titre">Portail coulissant</span>
+            <span class="oeuvre__meta">Réalisation TDS Fermetures</span>
+          </span>
+        </button>
         <button type="button" class="oeuvre" data-categorie="fermetures" data-index="0" data-credit="Photo FenêtréA">
           <img src="assets/images/fenetre-facade-grise.jpg" alt="Façade grise, fenêtres blanches et volets battants anthracite" loading="lazy" decoding="async">
           <span class="oeuvre__voile">
@@ -369,8 +429,8 @@
       </div>
 
       <p class="note-honnete apparait" data-cms="chantiers.mention" data-cms-optional>
-        Photos : FenêtréA, fabricant. Modèles présentés à titre d'exemple — les
-        photos des chantiers de TDS Fermetures viendront compléter cette galerie.
+        Portail coulissant : réalisation TDS Fermetures. Autres photos : FenêtréA,
+        fabricant — modèles présentés à titre d'exemple.
       </p>
     </div>
   </section>

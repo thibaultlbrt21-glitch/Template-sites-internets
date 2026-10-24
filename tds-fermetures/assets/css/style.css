@@ -404,6 +404,106 @@ a { color: inherit; }
 .metier p { color: var(--texte-doux); font-size: 0.95rem; margin: 0; }
 
 /* =========================================================================
+   RÉALISATION — le panneau coulisse comme un portail, puis le cadre
+   orange désigne l'ouvrage. Uniquement des transform et des opacity :
+   l'animation tourne sur la carte graphique, une seule fois.
+   ========================================================================= */
+
+.rea { overflow: hidden; }
+.rea .wrap-large { position: relative; }
+.rea__tete { margin-bottom: clamp(30px, 4vw, 46px); }
+
+.rea__figure { position: relative; margin: 0; }
+.rea__photo {
+  position: relative; overflow: hidden;
+  aspect-ratio: 1672 / 941; border-radius: var(--rayon);
+  background: var(--encre-2);
+  box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.7);
+}
+.rea__photo img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+}
+
+/* Le panneau à lames : n'existe que si le script a préparé l'animation
+   (classe posée par main.js). Sans script, la photo s'affiche directement. */
+.rea__portail { display: none; }
+.anim-portail .rea__portail {
+  display: block; position: absolute; inset: 0; z-index: 3;
+  background:
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.18)),
+    repeating-linear-gradient(90deg, #4b4b49 0 calc(100% / 9 - 3px), #2f2f2e calc(100% / 9 - 3px) calc(100% / 9));
+  border-left: 6px solid var(--bois);
+  transform: translate3d(0, 0, 0);
+  transition: transform 1.9s cubic-bezier(0.7, 0, 0.25, 1) 0.2s;
+}
+.rea__poignee {
+  position: absolute; left: 3.5%; top: 50%; width: 6px; height: 16%;
+  transform: translateY(-50%); border-radius: 3px; background: var(--bois);
+}
+.rea__marque {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  font-family: var(--font-mono); font-size: clamp(0.7rem, 1.4vw, 0.95rem);
+  letter-spacing: 0.3em; text-transform: uppercase; color: rgba(247, 247, 245, 0.55);
+  white-space: nowrap;
+}
+.anim-portail .rea__figure.est-ouverte .rea__portail { transform: translate3d(101%, 0, 0); }
+.anim-portail .rea__photo img { transform: scale(1.05); transition: transform 2.6s cubic-bezier(0.22, 0.61, 0.36, 1) 0.2s; }
+.anim-portail .rea__figure.est-ouverte .rea__photo img { transform: scale(1); }
+
+/* Le cadre : quatre coins orange autour du portail de Tiago. */
+.rea__cadre { position: absolute; z-index: 2; pointer-events: none; }
+.rea__cadre i {
+  position: absolute; width: clamp(12px, 2vw, 26px); height: clamp(12px, 2vw, 26px);
+  border: 0 solid var(--bois);
+}
+.rea__cadre i:nth-child(1) { left: -8px; top: -8px; border-width: 3px 0 0 3px; }
+.rea__cadre i:nth-child(2) { right: -8px; top: -8px; border-width: 3px 3px 0 0; }
+.rea__cadre i:nth-child(3) { left: -8px; bottom: -8px; border-width: 0 0 3px 3px; }
+.rea__cadre i:nth-child(4) { right: -8px; bottom: -8px; border-width: 0 3px 3px 0; }
+.rea__etiquette {
+  position: absolute; left: -8px; bottom: calc(100% + 16px);
+  background: var(--bois); color: var(--encre);
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap;
+  padding: 8px 12px; border-radius: var(--rayon);
+}
+.rea__etiquette::after {
+  content: ""; position: absolute; left: 14px; top: 100%;
+  border: 7px solid transparent; border-top-color: var(--bois);
+}
+/* Les coins se resserrent sur l'ouvrage une fois le portail ouvert. */
+.anim-portail .rea__cadre i { opacity: 0; transition: opacity 0.5s ease 1.7s, transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) 1.7s; }
+.anim-portail .rea__cadre i:nth-child(1) { transform: translate(-14px, -14px); }
+.anim-portail .rea__cadre i:nth-child(2) { transform: translate(14px, -14px); }
+.anim-portail .rea__cadre i:nth-child(3) { transform: translate(-14px, 14px); }
+.anim-portail .rea__cadre i:nth-child(4) { transform: translate(14px, 14px); }
+.anim-portail .rea__etiquette { opacity: 0; transform: translateY(8px); transition: opacity 0.5s ease 2.2s, transform 0.5s ease 2.2s; }
+.anim-portail .est-ouverte .rea__cadre i,
+.anim-portail .est-ouverte .rea__etiquette { opacity: 1; transform: none; }
+
+.rea__legende {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 4;
+  border-radius: 0 0 var(--rayon) var(--rayon);
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  padding: 40px 22px 16px;
+  background: linear-gradient(to top, rgba(35, 35, 34, 0.85), rgba(35, 35, 34, 0));
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--papier);
+}
+.rea__legende span:last-child { color: var(--plan-sur-encre); }
+.rea__actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+
+@media (max-width: 720px) {
+  .rea .wrap-large { padding: 0; }
+  .rea__tete, .rea__actions { padding: 0 var(--gouttiere); }
+  .rea__photo { border-radius: 0; }
+  /* Sur téléphone, l'étiquette passe dans la légende, sous la photo. */
+  .rea__etiquette { display: none; }
+  .rea__cta-long { display: none; }
+  .rea__legende { position: static; padding: 12px var(--gouttiere) 0; background: none; font-size: 0.66rem; }
+}
+
+/* =========================================================================
    RÉALISATIONS
    ========================================================================= */
 

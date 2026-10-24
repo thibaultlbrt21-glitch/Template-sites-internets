@@ -92,7 +92,10 @@
     document.querySelectorAll("[data-cms]").forEach(function (noeud) {
       var valeur = get(data, noeud.getAttribute("data-cms"));
       var facultatif = noeud.hasAttribute("data-cms-optional");
-      if (rempli(valeur)) {
+      if (rempli(valeur) && noeud.hasAttribute("data-cms-attr")) {
+        // data-cms-attr="alt" : la valeur va dans cet attribut, pas dans le texte.
+        noeud.setAttribute(noeud.getAttribute("data-cms-attr"), valeur);
+      } else if (rempli(valeur)) {
         noeud.textContent = valeur;
         noeud.hidden = false;
         var lien = noeud.getAttribute("data-cms-lien");
@@ -111,6 +114,9 @@
       // Le chemin du CMS fait autorité : on désactive la bascule
       // automatique .svg -> .jpg de main.js pour cette image.
       img.removeAttribute("data-photo");
+      // Une autre photo que celle livrée : les variantes (srcset) ne
+      // correspondent plus, le navigateur prend la photo choisie.
+      if (img.getAttribute("src") !== src) { img.removeAttribute("srcset"); img.removeAttribute("sizes"); }
       img.setAttribute("src", src);
     });
   }
@@ -153,6 +159,7 @@
       var img = document.createElement("img");
       img.setAttribute("src", o.image || "");
       img.setAttribute("alt", rempli(o.alt) ? o.alt : (o.titre || ""));
+      if (rempli(o.cadrage)) img.style.objectPosition = o.cadrage;
       img.setAttribute("loading", "lazy");
       img.setAttribute("decoding", "async");
       bouton.appendChild(img);
@@ -194,11 +201,25 @@
       var img = document.createElement("img");
       img.setAttribute("src", p.image);
       img.setAttribute("alt", rempli(p.alt) ? p.alt : "");
+      if (rempli(p.cadrage)) img.style.objectPosition = p.cadrage;
       img.setAttribute("decoding", "async");
       if (i === 0) img.setAttribute("fetchpriority", "high"); else img.setAttribute("loading", "lazy");
       figure.appendChild(img);
       cible.appendChild(figure);
     });
+  }
+
+  // Le cadre orange qui désigne l'ouvrage sur la photo de réalisation :
+  // « gauche haut largeur hauteur », en % de la photo. Vide = pas de cadre
+  // (une autre photo n'a pas l'ouvrage au même endroit).
+  function rendCadre(valeur) {
+    var cadre = document.getElementById("cadreRealisation");
+    if (!cadre) return;
+    var v = String(valeur || "").trim().split(/[\s;,]+/).map(parseFloat);
+    if (v.length !== 4 || v.some(isNaN)) { cadre.hidden = true; return; }
+    cadre.hidden = false;
+    cadre.style.left = v[0] + "%"; cadre.style.top = v[1] + "%";
+    cadre.style.width = v[2] + "%"; cadre.style.height = v[3] + "%";
   }
 
   // Les engagements du bandeau orange : un titre et une phrase.
@@ -345,6 +366,8 @@
     hydrateImages(data);
     hydrateTelephones(data);
     rendPhotosAccueil(get(data, "hero.photos"));
+    if (data.realisation) rendCadre(data.realisation.cadre);
+    else { var rea = document.getElementById("realisation"); if (rea) masque(rea); }
     rendEngagements(data.engagements);
     rendPrestations(get(data, "prestations.liste"));
     rendChantiers(get(data, "chantiers.ouvrages"));
