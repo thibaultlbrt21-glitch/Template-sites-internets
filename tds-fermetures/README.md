@@ -199,8 +199,6 @@ naissance, nationalité du gérant.
   confirme que son assurance est en règle (25/10/2026) : site laissé tel
   quel.** Sujet clos à la demande de Thibault : Tiago gère son assurance
   (dont le renouvellement) lui-même
-- Relecture TVA réduite : Tiago la demande à son comptable ; durées de
-  conservation à valider
 - Photos de chantiers, photo de Tiago, logo original, stores et vérandas
 - Fiche Google Business : **une fois le site hébergé** sur son domaine
 
@@ -214,7 +212,10 @@ naissance, nationalité du gérant.
 - Intégration des photos de chantiers
 - Validation manuelle des déploiements : la garder ou non
 
-**Réglé** : 4 promesses validées par Tiago (visite sur place, devis
+**Réglé** : section TVA validée ; photo du portail (prise par Tiago,
+accord du client, seuls plantations et éclairages retouchés) ; durées de
+conservation conformes CNIL (texte en place, rien à valider de plus) ;
+4 promesses validées par Tiago (visite sur place, devis
 détaillé, même numéro après la pose, chantier laissé net), horaires « Sur rendez-vous », lien Facebook (pied de page, données structurées), assurance
 (confirmée par Tiago), droits des photos FenêtréA (confirmés par Thibault), photos
 brutes supprimées de `main`, saccades à 120 Hz.
