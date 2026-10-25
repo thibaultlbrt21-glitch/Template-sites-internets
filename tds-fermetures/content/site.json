@@ -217,6 +217,11 @@
     "texte": "Dans un logement achevé depuis plus de deux ans, la fourniture et la pose peuvent être facturées à 10 % ou à 5,5 % au lieu de 20 %. Le taux retenu pour votre chantier figure sur le devis.",
     "dispositifs": [
       {
+        "sigle": "TVA 20 %",
+        "titre": "Construction neuve et autres cas",
+        "texte": "Le taux normal de 20 % s'applique notamment aux travaux réalisés dans une construction neuve, un logement achevé depuis moins de deux ans, un local professionnel, ainsi qu'aux produits vendus sans pose."
+      },
+      {
         "sigle": "TVA 10 %",
         "titre": "Amélioration et entretien",
         "texte": "Remplacement ou pose dans un logement achevé depuis plus de deux ans, produits fournis et posés par l'entreprise."
@@ -295,7 +300,12 @@
     "email_fournisseurs": "sarltdsfermetures.21@hotmail.com",
     "adresse_1": "24 rue Lavoisier",
     "adresse_2": "21000 Dijon",
-    "horaires": [],
+    "horaires": [
+      {
+        "jours": "Horaires",
+        "horaire": "Sur rendez-vous"
+      }
+    ],
     "zones": [
       "Côte-d'Or (21)"
     ]

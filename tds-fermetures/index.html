@@ -452,7 +452,14 @@
         </p>
       </div>
 
-      <div class="metiers apparait d1" data-cms-list="aides.dispositifs">
+      <div class="metiers metiers--quatre apparait d1" data-cms-list="aides.dispositifs">
+        <article class="metier" data-tilt>
+          <div class="metier__profondeur">
+            <span class="metier__num">TVA 20 %</span>
+            <h3>Construction neuve et autres cas</h3>
+            <p>Le taux normal de 20 % s'applique notamment aux travaux réalisés dans une construction neuve, un logement achevé depuis moins de deux ans, un local professionnel, ainsi qu'aux produits vendus sans pose.</p>
+          </div>
+        </article>
         <article class="metier" data-tilt>
           <div class="metier__profondeur">
             <span class="metier__num">TVA 10 %</span>
@@ -794,14 +801,14 @@
           </p>
         </div>
         <div class="bloc-info">
-          <span class="bloc-info__label">Siège</span>
+          <span class="bloc-info__label">Siège &amp; horaires</span>
           <p>
             <span data-cms="infos.adresse_1">24 rue Lavoisier</span><br>
             <span data-cms="infos.adresse_2">21000 Dijon</span>
           </p>
-          <!-- Horaires non communiqués : le tableau reste masqué tant que la
-               liste est vide dans l'espace client. -->
-          <table class="horaires" data-cms-list="infos.horaires" hidden></table>
+          <table class="horaires" data-cms-list="infos.horaires">
+            <tr><td>Horaires</td><td>Sur rendez-vous</td></tr>
+          </table>
         </div>
       </div>
 

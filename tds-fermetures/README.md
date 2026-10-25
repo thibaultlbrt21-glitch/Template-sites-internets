@@ -70,7 +70,7 @@ changer avec la photo.
 
 ## Le reste des fonctionnalités
 
-- **Section « TVA réduite »** (l'entreprise n'est pas RGE) : TVA 10 % et 5,5 %,
+- **Section « TVA réduite »** (l'entreprise n'est pas RGE) : TVA 20 %, 10 % et 5,5 %,
   primes réservées aux entreprises RGE ; anciennement MaPrimeRénov', CEE, TVA 5,5 %,
   éco-PTZ, avec les critères techniques opposables (Uw ≤ 1,3 W/m²·K, Sw ≥ 0,3,
   RGE obligatoire) et **aucun montant promis** — voir plus bas
@@ -181,7 +181,7 @@ qualification non détenue est un faux, et prive le client de ses aides.
 | Photos de chantier | « Déjà envoyé » (photos FenêtréA) | Galerie et accueil, avec crédit |
 | Avis | « Pas d'avis » | Section masquée |
 | Réseaux | Facebook : https://www.facebook.com/share/19ZKpWqVXY/ (25/10/2026) | Pied de page, données structurées |
-| Horaires | Non communiqués | Rien d'affiché |
+| Horaires | « Sur rendez-vous » (25/10/2026) | Contact, bloc « Siège & horaires » |
 
 Données du Kbis volontairement **non publiées** : date et lieu de
 naissance, nationalité du gérant.
@@ -202,8 +202,8 @@ naissance, nationalité du gérant.
   numéro après la pose, chantier laissé net)
 - Relecture TVA réduite : Tiago la demande à son comptable ; durées de
   conservation à valider
-- Horaires, photos de chantiers, photo de Tiago, fiche
-  Google Business, logo original, stores et vérandas
+- Photos de chantiers, photo de Tiago, logo original, stores et vérandas
+- Fiche Google Business : **une fois le site hébergé** sur son domaine
 
 **À voir ensemble avec Thibault dans quelques jours** (reporté à sa demande) :
 
@@ -215,7 +215,7 @@ naissance, nationalité du gérant.
 - Intégration des photos de chantiers
 - Validation manuelle des déploiements : la garder ou non
 
-**Réglé** : lien Facebook (pied de page, données structurées), assurance
+**Réglé** : horaires « Sur rendez-vous », lien Facebook (pied de page, données structurées), assurance
 (confirmée par Tiago), droits des photos FenêtréA (confirmés par Thibault), photos
 brutes supprimées de `main`, saccades à 120 Hz.
 
