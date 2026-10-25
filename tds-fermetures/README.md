@@ -197,7 +197,8 @@ naissance, nationalité du gérant.
   menuiseries extérieures **bois et PVC** et la vitrerie, pas l'aluminium,
   et ne cite ni pergolas, ni portes de garage, ni automatismes. **Tiago
   confirme que son assurance est en règle (25/10/2026) : site laissé tel
-  quel.** Nouvelle attestation à récupérer à l'échéance
+  quel.** Sujet clos à la demande de Thibault : Tiago gère son assurance
+  (dont le renouvellement) lui-même
 - Validation des 4 promesses (visite sur place, devis détaillé, même
   numéro après la pose, chantier laissé net)
 - Relecture TVA réduite : Tiago la demande à son comptable ; durées de
