@@ -180,7 +180,7 @@ qualification non détenue est un faux, et prive le client de ses aides.
 | RGE | « Pas de certificat » | Section devenue « TVA réduite » |
 | Photos de chantier | « Déjà envoyé » (photos FenêtréA) | Galerie et accueil, avec crédit |
 | Avis | « Pas d'avis » | Section masquée |
-| Réseaux | « Facebook TDS FERMETURES », sans lien | Pied de page, en texte |
+| Réseaux | Facebook : https://www.facebook.com/share/19ZKpWqVXY/ (25/10/2026) | Pied de page, données structurées |
 | Horaires | Non communiqués | Rien d'affiché |
 
 Données du Kbis volontairement **non publiées** : date et lieu de
@@ -191,16 +191,18 @@ naissance, nationalité du gérant.
 **À obtenir de Tiago** (Thibault s'en charge) :
 
 - **Médiateur de la consommation** : obligatoire (L612-1 du code de la
-  consommation), seul champ encore « à renseigner » des mentions légales
+  consommation), seul champ encore « à renseigner » des mentions légales.
+  Tiago va le transmettre
 - **Décennale** : l'attestation expire le **01/01/2027** ; elle couvre les
   menuiseries extérieures **bois et PVC** et la vitrerie, pas l'aluminium,
-  et ne cite ni pergolas, ni portes de garage, ni automatismes. Décision
-  de Thibault : **ne rien changer au site** tant qu'ils n'ont pas regardé
-  l'assurance ensemble
+  et ne cite ni pergolas, ni portes de garage, ni automatismes. **Tiago
+  confirme que son assurance est en règle (25/10/2026) : site laissé tel
+  quel.** Nouvelle attestation à récupérer à l'échéance
 - Validation des 4 promesses (visite sur place, devis détaillé, même
   numéro après la pose, chantier laissé net)
-- Relecture TVA réduite (comptable) et durées de conservation
-- Lien Facebook, horaires, photos de chantiers, photo de Tiago, fiche
+- Relecture TVA réduite : Tiago la demande à son comptable ; durées de
+  conservation à valider
+- Horaires, photos de chantiers, photo de Tiago, fiche
   Google Business, logo original, stores et vérandas
 
 **À voir ensemble avec Thibault dans quelques jours** (reporté à sa demande) :
@@ -213,7 +215,8 @@ naissance, nationalité du gérant.
 - Intégration des photos de chantiers
 - Validation manuelle des déploiements : la garder ou non
 
-**Réglé** : droits des photos FenêtréA (confirmés par Thibault), photos
+**Réglé** : lien Facebook (pied de page, données structurées), assurance
+(confirmée par Tiago), droits des photos FenêtréA (confirmés par Thibault), photos
 brutes supprimées de `main`, saccades à 120 Hz.
 
 ## Ce qui a été vérifié
