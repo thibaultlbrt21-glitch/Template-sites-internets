@@ -186,39 +186,58 @@ qualification non détenue est un faux, et prive le client de ses aides.
 Données du Kbis volontairement **non publiées** : date et lieu de
 naissance, nationalité du gérant.
 
-## ⚠️ Suivi (mis à jour le 24 octobre 2026)
+## ⚠️ Suivi (mis à jour le 25 octobre 2026)
 
 **À obtenir de Tiago** (Thibault s'en charge) :
 
 - **Médiateur de la consommation** : obligatoire (L612-1 du code de la
   consommation), seul champ encore « à renseigner » des mentions légales.
   Tiago va le transmettre
-- **Décennale** : l'attestation expire le **01/01/2027** ; elle couvre les
-  menuiseries extérieures **bois et PVC** et la vitrerie, pas l'aluminium,
-  et ne cite ni pergolas, ni portes de garage, ni automatismes. **Tiago
-  confirme que son assurance est en règle (25/10/2026) : site laissé tel
-  quel.** Sujet clos à la demande de Thibault : Tiago gère son assurance
-  (dont le renouvellement) lui-même
 - Photos de chantiers, photo de Tiago, logo original, stores et vérandas
-- Fiche Google Business : **une fois le site hébergé** sur son domaine
 
-**À voir ensemble avec Thibault dans quelques jours** (reporté à sa demande) :
+**À voir ensemble avec Thibault** (reporté à sa demande) :
 
 - Activation de FormSubmit et demande de test
 - Espace client : branche `main` sans le site, connexion GitHub à configurer
-- Nom de domaine (balises SEO, `sitemap.xml`, `robots.txt`) et adresse
-  e-mail professionnelle
-- Hébergement : rester sur GitHub Pages ou changer
+- Nom de domaine et adresse e-mail professionnelle
+- Hébergement : Netlify (le plus simple, connexion de l'espace client
+  intégrée) ou hébergeur français (o2switch, OVH) avec mise en ligne
+  automatique depuis GitHub, identifiants dans les secrets GitHub
 - Intégration des photos de chantiers
 - Validation manuelle des déploiements : la garder ou non
+- **Fiche Google Business**, ouverte ensemble une fois le site hébergé
 
-**Réglé** : section TVA validée ; photo du portail (prise par Tiago,
-accord du client, seuls plantations et éclairages retouchés) ; durées de
-conservation conformes CNIL (texte en place, rien à valider de plus) ;
-4 promesses validées par Tiago (visite sur place, devis
-détaillé, même numéro après la pose, chantier laissé net), horaires « Sur rendez-vous », lien Facebook (pied de page, données structurées), assurance
-(confirmée par Tiago), droits des photos FenêtréA (confirmés par Thibault), photos
-brutes supprimées de `main`, saccades à 120 Hz.
+**À faire par Claude une fois le site hébergé** (confié par Thibault) :
+
+- Mentions légales : nom, adresse **et téléphone** du nouvel hébergeur
+  (obligation LCEN, il manque aujourd'hui le téléphone de GitHub)
+- Politique de confidentialité, partie « Hébergement » : le nouvel hébergeur
+- Domaine définitif dans `canonical`, `og:url`, les données structurées,
+  `sitemap.xml` et `robots.txt` ; image d'aperçu pour les partages
+- FormSubmit : réactivation si le domaine change (même clic pour Tiago)
+- **Avis clients** : relier la fiche Google au site (lien vers la fiche,
+  et avis réels affichés avec leur source, en précisant s'ils sont
+  vérifiés — L111-7-2 du code de la consommation). Aucun widget Google
+  intégré sans bandeau de consentement (voir la règle ci-dessous)
+
+**Règles confiées à Claude** :
+
+- **Cookies** : Thibault laisse Claude gérer. Aujourd'hui le site n'en
+  dépose aucun, donc aucun bandeau n'est nécessaire. Ne rien ajouter qui en
+  dépose (Google Maps intégrée, Google Analytics, widget Facebook ou avis
+  Google intégrés, polices Google…) sans ajouter en même temps un bandeau
+  de consentement conforme CNIL et compléter la politique de
+  confidentialité. Préférer les simples liens, qui n'en déposent pas
+- **Prix** : aucun prix sur le site (décision de Thibault)
+
+**Clos** : assurance décennale (gérée par Tiago, site laissé tel quel) ;
+devis et factures (Tiago s'en occupe) ; section TVA validée ; photo du
+portail (prise par Tiago, accord du client, seuls plantations et
+éclairages retouchés) ; durées de conservation (texte conforme CNIL) ;
+4 promesses validées par Tiago ; horaires « Sur rendez-vous » ; lien
+Facebook ; mention « entreprise artisanale » (mentions légales, pied de
+page) ; droits des photos FenêtréA ; photos brutes supprimées de `main` ;
+saccades à 120 Hz.
 
 ## Ce qui a été vérifié
 
