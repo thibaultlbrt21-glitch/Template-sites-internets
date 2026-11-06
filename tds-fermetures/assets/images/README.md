@@ -33,11 +33,12 @@ la galerie et le panneau photo de l'accueil.
 
 ## Ajouter les photos de chantier
 
-Le plus simple, c'est l'espace client (`/admin/`) :
+Tiago envoie ses photos à Thibault, qui les fait intégrer (pas d'espace
+client) : préparation, métadonnées retirées, ajout dans `content/site.json`.
 
-- **Bandeau d'accueil → Photos** : celles qui défilent à droite du titre.
+- **Accueil (`hero.photos`)** : celles qui défilent à droite du titre.
   Format en hauteur (4:5), 800 px de large au moins.
-- **En images (galerie) → Photos** : n'importe quel format. Une photo en
+- **Galerie (`chantiers.ouvrages`)** : n'importe quel format. Une photo en
   largeur prend automatiquement deux cases de la mosaïque.
 
 Pour une photo de chantier, laissez « Crédit photo » vide et décrivez le

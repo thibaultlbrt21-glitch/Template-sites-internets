@@ -1,6 +1,4 @@
 User-agent: *
 Allow: /
-# L'espace client n'a rien à faire dans les résultats de recherche.
-Disallow: /admin/
 
 Sitemap: https://thibaultlbrt21-glitch.github.io/Template-sites-internets/tds-fermetures/sitemap.xml

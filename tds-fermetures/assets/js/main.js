@@ -6,7 +6,7 @@
      ========================================================= */
   var SITE_CONFIG = {
     // Adresse qui reçoit les demandes de devis (l'email « Client » de la
-    // carte de visite). Elle peut aussi être changée depuis l'espace client,
+    // carte de visite). Elle peut aussi être changée dans content/site.json,
     // qui l'emporte.
     devisEmail: "tiagotdsfermetures.21@hotmail.com",
 

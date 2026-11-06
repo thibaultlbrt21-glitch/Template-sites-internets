@@ -16,8 +16,6 @@
      data-cms-list="prestations.liste"   -> conteneur reconstruit par un rendu dédié
      data-cms-lien="tel" | "mailto"      -> ...et met à jour le lien (href)
 
-   Prévisualisation : si sessionStorage contient "webly:preview", son contenu
-   est utilisé à la place du fichier. Voir admin/demo.html.
    ========================================================================= */
 (function () {
   "use strict";
@@ -381,32 +379,10 @@
     document.body.setAttribute("data-content", "loaded");
   }
 
-  function contenuDeParcours() {
-    try {
-      var brut = window.sessionStorage.getItem("webly:preview");
-      return brut ? JSON.parse(brut) : null;
-    } catch (e) {
-      // Navigation privée, stockage désactivé : on ignore sans casser la page.
-      return null;
-    }
-  }
-
   window.WEBLY_CONTENT = null;
 
   if (!window.Promise || !window.fetch) {
     window.WEBLY_CONTENT_READY = null;
-    return;
-  }
-
-  var apercu = contenuDeParcours();
-  if (apercu) {
-    try {
-      hydrate(apercu);
-      document.body.setAttribute("data-content", "preview");
-    } catch (e) {
-      console.warn("[Webly] Prévisualisation ignorée :", e);
-    }
-    window.WEBLY_CONTENT_READY = Promise.resolve(apercu);
     return;
   }
 

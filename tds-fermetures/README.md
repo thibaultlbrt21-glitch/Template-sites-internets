@@ -3,7 +3,8 @@
 Site vitrine de **TDS Fermetures** (Tiago Dos Santos) : portes, fenêtres,
 volets roulants, portails et clôtures, portes de garage, pergolas,
 automatismes et visiophones. Construit sur le modèle « menuisier » de la gamme
-Webly, avec **espace client** et **devis envoyé par e-mail**.
+Webly, avec **devis envoyé par e-mail**. Pas d'espace client : Thibault
+gère les demandes de modification de Tiago, Claude les applique.
 HTML / CSS / JavaScript purs, aucune dépendance, aucun build step, aucun CDN.
 
 ## Ce qui vient de la carte de visite
@@ -47,7 +48,7 @@ légende et le crédit de la photo affichée, et un bouton **Pause** (un
 contenu qui défile seul doit pouvoir être arrêté). Sous 960 px, la photo
 passe en plein fond sous un voile anthracite.
 
-Les photos se changent depuis l'espace client (*Bandeau d'accueil → Photos*).
+Les photos se changent dans `content/site.json` (`hero.photos`).
 Liste vide : l'accueil redevient un bandeau de texte seul, sans trou.
 L'ancienne fenêtre 3D et l'animation d'ouverture restent dans l'historique
 Git (commit « l'intro ouvre une vraie photo de fenêtre »).
@@ -64,7 +65,7 @@ uniquement en `transform` / `opacity` ; sans script ou en mouvement réduit,
 la photo et le cadre s'affichent directement. La même photo ouvre le
 diaporama de l'accueil et la galerie (filtre « Portails & pergolas »).
 
-Modifiable dans l'espace client (*Réalisation mise en avant*) ; la position
+Modifiable dans `content/site.json` (`realisation`) ; la position
 du cadre orange est un champ « gauche haut largeur hauteur » en %, à
 changer avec la photo.
 
@@ -87,7 +88,6 @@ changer avec la photo.
   crédit de la photo. La navigation suit le filtre actif
 - **Cartes en relief** qui suivent le curseur — désactivées au doigt, où
   l'effet n'apporte rien
-- **Espace client** : voir `ADMIN.md`
 - Tout est désactivé sous `prefers-reduced-motion: reduce`
 
 ## Les images
@@ -100,7 +100,7 @@ la visionneuse, mention sous la galerie et sous la fenêtre de la section
 Aides. Métadonnées retirées, détail dans `assets/images/README.md`.
 
 👉 **Dès que les photos de chantiers arrivent**, les ajouter en tête de
-galerie et de l'accueil depuis l'espace client, et adapter la mention sous la
+galerie et de l'accueil (`content/site.json`), et adapter la mention sous la
 galerie.
 
 ## Le formulaire de devis — il arrive dans la boîte mail de Tiago
@@ -138,9 +138,8 @@ demande qui le remplit n'est pas envoyée), et l'envoi est abandonné après
 
 ### Réglages
 
-- Adresse de réception : espace client, *Demande de devis → Email qui reçoit
-  les demandes* (elle l'emporte), ou `devisEmail` en haut de
-  `assets/js/main.js`.
+- Adresse de réception : `devis.email_reception` dans `content/site.json`
+  (elle l'emporte), ou `devisEmail` en haut de `assets/js/main.js`.
 - `serviceEnvoi: ""` dans `assets/js/main.js` pour revenir à l'ancien
   fonctionnement (ouverture de la messagerie du visiteur).
 - Après activation, FormSubmit propose une adresse d'envoi masquée (une
@@ -159,8 +158,7 @@ un. Le template affiche donc **les conditions, jamais les montants** :
   foyer — les afficher, c'est promettre ce qu'on ne maîtrise pas ;
 - le site renvoie donc vers **France Rénov'**, le service public gratuit.
 
-L'aide du CMS le rappelle au client à chaque modification de cette section, et
-un contrôle automatique vérifie qu'aucune somme en euros ne s'y est glissée.
+Un contrôle automatique vérifie qu'aucune somme en euros ne s'y est glissée.
 
 Toutes ces aides exigent une entreprise **qualifiée RGE** : le champ prévu doit
 recevoir l'organisme, le numéro et la date de validité. Afficher une
@@ -231,9 +229,10 @@ naissance, nationalité du gérant.
 - **Prix** : aucun prix sur le site (décision de Thibault)
 
 **Clos** : pas d'espace client pour Tiago (Thibault gère les modifications,
-Claude les pousse directement, autorisé le 06/11/2026) ; validation
-manuelle des déploiements supprimée (à décocher par Thibault dans GitHub,
-Settings → Environments → github-pages) ; adhésion de Tiago à CM2C confirmée par Thibault ; site testé
+Claude les pousse directement, autorisé le 06/11/2026) : `admin/`,
+`tools/` et `ADMIN.md` supprimés le 06/11/2026 (restent dans l'historique
+Git) ; déploiements sans validation manuelle (vérifié : en ligne en 20 à
+30 s après chaque push) ; adhésion de Tiago à CM2C confirmée par Thibault ; site testé
 sur iPhone (Safari) par Thibault ; photos de chantiers, photo de Tiago,
 logo : on verra après la mise en ligne ; médiateur de la consommation (CM2C, transmis par Tiago le
 05/11/2026 d'après la CAPEB, mentions légales + règlement des litiges) ;
@@ -263,37 +262,26 @@ Mesuré dans Chromium, pas estimé.
 | Parcours | menu mobile, devis complet avec envoi simulé à l'adresse de Tiago, liens « Appeler », mentions légales |
 | Devis 4 étapes | cas valides et invalides, retour arrière |
 | Envoi du devis (FormSubmit simulé) | adresse de Tiago, tous les champs, remerciement ; secours si non activé, erreur 500 ou coupure ; robot écarté — 24 contrôles |
-| Liens de contact | tous les « Appeler » en `tel:+33658008226`, e-mails client et fournisseurs, mis à jour depuis l'espace client |
+| Liens de contact | tous les « Appeler » en `tel:+33658008226`, e-mails client et fournisseurs, mis à jour depuis `content/site.json` |
 | Galerie | 12 photos, 4 en largeur détectées, filtres (catégorie vide masquée), crédit dans la visionneuse |
 | Accueil | défilement, pause, choix par la jauge, arrêt en mouvement réduit, liste vide → texte seul |
 | Largeurs | 390 px et 1440 px, sans scroll horizontal |
 | Erreurs JavaScript | aucune |
 
 **Non vérifiable ici** : l'envoi réel par FormSubmit (aucun faux devis n'a été
-envoyé à Tiago : le service est simulé dans les tests), l'interface Decap réelle
-et la connexion GitHub — les CDN et le registre npm sont inaccessibles depuis
-l'environnement de génération.
-`admin/demo.html` permet malgré tout de montrer l'espace client.
+envoyé à Tiago : le service est simulé dans les tests).
 
 ## Structure
 
 ```
 tds-fermetures/
 ├── index.html                    Page unique
-├── ADMIN.md                      Guide d'activation de l'espace client
 ├── mentions-legales.html
 ├── politique-de-confidentialite.html
 ├── robots.txt
 ├── sitemap.xml
 ├── content/
 │   └── site.json                 Contenu modifiable (source de vérité)
-├── admin/
-│   ├── index.html                Espace client (Decap CMS)
-│   ├── config.yml                Champs éditables, en français
-│   └── demo.html                 Aperçu autonome (généré)
-├── tools/
-│   ├── build-admin-demo.py       Regénère demo.html depuis config.yml
-│   └── admin-demo.template.html
 └── assets/
     ├── favicon.svg               La maison du logo
     ├── logo/                     Logo TDS Fermetures (et variante claire)
@@ -310,6 +298,3 @@ cd tds-fermetures
 python3 -m http.server 8080
 # puis http://localhost:8080
 ```
-
-Pour montrer l'espace client à un prospect, sans rien installer :
-`http://localhost:8080/admin/demo.html`.
