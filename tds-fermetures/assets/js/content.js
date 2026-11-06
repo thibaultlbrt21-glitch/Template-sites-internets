@@ -15,6 +15,7 @@
      data-cms-image="chemin.vers.image" -> remplace le src de l'image
      data-cms-list="prestations.liste"   -> conteneur reconstruit par un rendu dédié
      data-cms-lien="tel" | "mailto"      -> ...et met à jour le lien (href)
+     data-cms-attr="alt"                 -> ...écrit la valeur dans cet attribut, pas dans le texte
 
    ========================================================================= */
 (function () {
@@ -119,16 +120,19 @@
     });
   }
 
-  /* ---------- Rendus dédiés ---------- */
+  /* ---------- Rendus dédiés ----------
+     Une clé absente du JSON laisse le contenu du HTML en place (une faute
+     de frappe n'efface pas une section) ; seule une liste vide la masque. */
 
   function rendPrestations(liste) {
     var cible = conteneur("prestations.liste");
     if (!cible) return;
+    if (liste === undefined) return;
     if (!Array.isArray(liste) || !liste.length) { videEtMasque(cible, document.getElementById("prestations")); return; }
 
     cible.textContent = "";
     liste.forEach(function (m, i) {
-      var carte = el("article", "apparait est-visible metier");
+      var carte = el("article", "metier");
       carte.setAttribute("data-tilt", "");
       var fond = el("div", "metier__profondeur");
       fond.appendChild(el("span", "metier__num", String(i + 1).padStart(2, "0")));
@@ -142,17 +146,23 @@
   function rendChantiers(liste) {
     var cible = conteneur("chantiers.ouvrages");
     if (!cible) return;
+    if (liste === undefined) return;
     if (!Array.isArray(liste) || !liste.length) { videEtMasque(cible, document.getElementById("chantiers")); return; }
 
     cible.textContent = "";
     var categories = {};
-    liste.forEach(function (o, i) {
+    liste.forEach(function (o) {
       var bouton = el("button", "oeuvre");
       bouton.type = "button";
       if (rempli(o.credit)) bouton.setAttribute("data-credit", o.credit);
       bouton.setAttribute("data-categorie", o.categorie || "tout");
-      bouton.setAttribute("data-index", String(i));
       if (rempli(o.categorie)) categories[o.categorie] = true;
+      // « paysage » ou « portrait » : connu d'avance, la mosaïque ne bouge
+      // pas au chargement des photos.
+      if (o.format === "paysage" || o.format === "portrait") {
+        bouton.setAttribute("data-format", o.format);
+        if (o.format === "paysage") bouton.classList.add("oeuvre--paysage");
+      }
 
       var img = document.createElement("img");
       img.setAttribute("src", o.image || "");
@@ -181,8 +191,7 @@
   // légende d'après les attributs data-legende et data-credit.
   function rendPhotosAccueil(liste) {
     var cible = conteneur("hero.photos");
-    if (!cible) return;
-    if (!Array.isArray(liste)) return;
+    if (!cible || !Array.isArray(liste)) return;
     liste = liste.filter(function (p) { return p && rempli(p.image); });
     if (!liste.length) {
       var visuel = cible.closest(".hero__visuel");
@@ -197,11 +206,13 @@
       if (rempli(p.legende)) figure.setAttribute("data-legende", p.legende);
       if (rempli(p.credit)) figure.setAttribute("data-credit", p.credit);
       var img = document.createElement("img");
-      img.setAttribute("src", p.image);
+      // Seule la première photo se charge avec la page ; main.js charge les
+      // suivantes (data-src) au fil du diaporama.
+      img.setAttribute(i === 0 ? "src" : "data-src", p.image);
       img.setAttribute("alt", rempli(p.alt) ? p.alt : "");
       if (rempli(p.cadrage)) img.style.objectPosition = p.cadrage;
       img.setAttribute("decoding", "async");
-      if (i === 0) img.setAttribute("fetchpriority", "high"); else img.setAttribute("loading", "lazy");
+      if (i === 0) img.setAttribute("fetchpriority", "high");
       figure.appendChild(img);
       cible.appendChild(figure);
     });
@@ -224,11 +235,12 @@
   function rendEngagements(liste) {
     var cible = conteneur("engagements");
     if (!cible) return;
+    if (liste === undefined) return;
     if (!Array.isArray(liste) || !liste.length) { videEtMasque(cible, document.getElementById("engagements")); return; }
 
     cible.textContent = "";
     liste.forEach(function (e) {
-      var bloc = el("div", "engagement apparait est-visible");
+      var bloc = el("div", "engagement");
       bloc.appendChild(el("h3", null, e.titre || ""));
       if (rempli(e.texte)) bloc.appendChild(el("p", null, e.texte));
       cible.appendChild(bloc);
@@ -240,6 +252,7 @@
   function rendDispositifs(liste) {
     var cible = conteneur("aides.dispositifs");
     if (!cible) return;
+    if (liste === undefined) return;
     if (!Array.isArray(liste) || !liste.length) { videEtMasque(cible, document.getElementById("aides")); return; }
 
     cible.textContent = "";
@@ -258,6 +271,7 @@
   function rendEtapes(liste) {
     var cible = conteneur("processus.etapes");
     if (!cible) return;
+    if (liste === undefined) return;
     if (!Array.isArray(liste) || !liste.length) { videEtMasque(cible, sectionDe(cible)); return; }
 
     cible.textContent = "";
@@ -273,6 +287,7 @@
   function rendGaranties(liste) {
     var cible = conteneur("devis.garanties");
     if (!cible) return;
+    if (liste === undefined) return;
     if (!Array.isArray(liste) || !liste.length) { cible.textContent = ""; cible.hidden = true; return; }
 
     cible.textContent = "";
@@ -315,7 +330,7 @@
 
   function rendHoraires(liste) {
     var table = conteneur("infos.horaires");
-    if (!table) return;
+    if (!table || liste === undefined) return;
     // Pas d'horaires renseignés : rien d'affiché, plutôt qu'un « à renseigner ».
     if (!Array.isArray(liste) || !liste.length) { table.textContent = ""; table.hidden = true; return; }
     table.hidden = false;
@@ -332,6 +347,7 @@
   function rendZones(liste) {
     var cible = conteneur("infos.zones");
     if (!cible) return;
+    if (liste === undefined) return;
     if (!Array.isArray(liste) || !liste.length) { cible.textContent = ""; cible.hidden = true; return; }
     cible.textContent = "";
     liste.forEach(function (z) { cible.appendChild(el("span", null, String(z))); });
@@ -340,13 +356,15 @@
   function rendReseaux(liste) {
     var cible = conteneur("pied.reseaux");
     if (!cible) return;
+    if (liste === undefined) return;
     if (!Array.isArray(liste) || !liste.length) { cible.textContent = ""; cible.hidden = true; return; }
     cible.textContent = "";
     cible.hidden = false;
     liste.forEach(function (r) {
       var li = document.createElement("li");
-      // Sans adresse de profil, le nom s'affiche en texte : jamais de lien mort.
-      if (!rempli(r.url)) { li.appendChild(el("span", null, r.nom || "")); cible.appendChild(li); return; }
+      // Sans adresse de profil valide (https uniquement), le nom s'affiche en
+      // texte : jamais de lien mort, jamais de lien « javascript: ».
+      if (!/^https:\/\//i.test(String(r.url || ""))) { li.appendChild(el("span", null, r.nom || "")); cible.appendChild(li); return; }
       var a = el("a", null, r.nom || "");
       a.setAttribute("href", r.url);
       a.setAttribute("rel", "noopener");
@@ -365,7 +383,7 @@
     hydrateTelephones(data);
     rendPhotosAccueil(get(data, "hero.photos"));
     if (data.realisation) rendCadre(data.realisation.cadre);
-    else { var rea = document.getElementById("realisation"); if (rea) masque(rea); }
+    else if (data.realisation === null) { var rea = document.getElementById("realisation"); if (rea) masque(rea); }
     rendEngagements(data.engagements);
     rendPrestations(get(data, "prestations.liste"));
     rendChantiers(get(data, "chantiers.ouvrages"));
@@ -392,6 +410,9 @@
       return r.json();
     })
     .then(function (data) {
+      // Arrivé après le démarrage de main.js (réseau lent) : la page garde
+      // son contenu HTML, déjà actif ; seule l'adresse de réception compte.
+      if (window.WEBLY_DEMARRE) { window.WEBLY_CONTENT = data; return data; }
       try { hydrate(data); }
       catch (e) { console.warn("[Webly] Hydratation partielle :", e); }
       return data;

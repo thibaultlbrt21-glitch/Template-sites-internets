@@ -95,6 +95,10 @@ a { color: inherit; }
 .skip-link:focus { left: 0; }
 
 :focus-visible { outline: 2px solid var(--plan); outline-offset: 3px; }
+/* Sur les fonds anthracite, le contour passe à l'orange clair (7,8:1). */
+.hero :focus-visible, .entete:not(.est-pose) :focus-visible, .section--encre :focus-visible,
+.pied :focus-visible, .menu-mobile :focus-visible, .visionneuse :focus-visible,
+.appel-mobile :focus-visible { outline-color: var(--plan-sur-encre); }
 
 /* =========================================================================
    MISE EN PAGE
@@ -154,14 +158,20 @@ a { color: inherit; }
   text-decoration: none; cursor: pointer;
   transition: background var(--transition), color var(--transition), border-color var(--transition), transform 0.2s;
 }
-.btn:hover { background: var(--encre); color: var(--papier); }
 .btn:active { transform: translateY(1px); }
 
 .btn--plein { background: var(--bois); border-color: var(--bois); color: var(--encre); }
-.btn--plein:hover { background: var(--encre); border-color: var(--encre); color: var(--papier); }
 
 .btn--clair { border-color: rgba(247, 247, 245, 0.5); color: var(--papier); }
-.btn--clair:hover { background: var(--papier); border-color: var(--papier); color: var(--encre); }
+
+/* Survols réservés aux appareils qui survolent : au doigt, l'état de
+   survol resterait « collé » après un toucher. Le bouton orange s'éclaircit
+   au lieu de passer à l'anthracite, qui se confondait avec les fonds sombres. */
+@media (hover: hover) {
+  .btn:hover { background: var(--encre); color: var(--papier); }
+  .btn--plein:hover { background: var(--bois-clair); border-color: var(--bois-clair); color: var(--encre); }
+  .btn--clair:hover { background: var(--papier); border-color: var(--papier); color: var(--encre); }
+}
 
 .btn--sm { padding: 11px 19px; font-size: 0.72rem; }
 
@@ -191,22 +201,12 @@ a { color: inherit; }
 
 /* Tant que l'en-tête survole le haut de page sombre, texte clair. Il ne
    reprend l'encre qu'une fois posé sur fond papier. */
-.entete:not(.est-pose) .marque__nom { color: var(--papier); }
-.entete:not(.est-pose) .marque__sous,
 .entete:not(.est-pose) .nav-liens a { color: rgba(247, 247, 245, 0.86); }
 .entete:not(.est-pose) .nav-liens a:hover { color: var(--papier); }
 .entete:not(.est-pose) .burger { border-color: rgba(247, 247, 245, 0.4); }
 .entete:not(.est-pose) .burger span { background: var(--papier); }
 
 .marque { display: flex; flex-direction: column; text-decoration: none; margin-right: auto; }
-.marque__nom {
-  font-family: var(--font-display); font-weight: 800;
-  font-size: 1.12rem; letter-spacing: -0.02em; line-height: 1.1;
-}
-.marque__sous {
-  font-family: var(--font-mono); font-size: 0.64rem;
-  letter-spacing: 0.2em; text-transform: uppercase; color: var(--texte-doux);
-}
 
 .nav-liens { display: flex; gap: 30px; list-style: none; margin: 0; padding: 0; white-space: nowrap; }
 .nav-liens a {
@@ -241,9 +241,13 @@ a { color: inherit; }
   background: var(--encre); color: var(--papier);
   padding: 92px 28px 40px;
   flex-direction: column;
-  transform: translateY(-100%); transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transform: translateY(-100%);
+  /* Fermé, le menu est aussi invisible : ses liens sortent de l'ordre du
+     clavier. visibility attend la fin du glissement pour basculer. */
+  visibility: hidden;
+  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1), visibility 0s linear 0.5s;
 }
-.menu-mobile.est-ouvert { transform: translateY(0); }
+.menu-mobile.est-ouvert { transform: translateY(0); visibility: visible; transition-delay: 0s; }
 .menu-mobile ul { list-style: none; margin: 0 0 32px; padding: 0; }
 .menu-mobile ul a {
   display: block; padding: 15px 0;
@@ -339,11 +343,11 @@ a { color: inherit; }
 }
 .hero__jauge button::before {
   content: ""; position: absolute; left: 0; right: 0; top: 13px; height: 2px;
-  background: var(--ligne-encre); transition: background var(--transition);
+  background: #808079; transition: background var(--transition);
 }
 .hero__jauge button[aria-current="true"]::before { background: var(--bois-sur-encre); }
 .hero__jauge button:hover::before { background: var(--texte-doux-sur-encre); }
-.hero__legende { margin: 0; display: flex; gap: 12px; flex-wrap: wrap; text-transform: uppercase; }
+.hero__legende { margin: 0; display: flex; gap: 12px; flex-wrap: wrap; text-transform: uppercase; flex: 1 1 240px; }
 .hero__legende-num { color: var(--plan-sur-encre); }
 .hero__legende-texte { color: var(--papier); }
 .hero__legende-credit { color: var(--texte-doux-sur-encre); text-transform: none; letter-spacing: 0.04em; }
@@ -364,13 +368,15 @@ a { color: inherit; }
 
 /* Cartouche de plan : la « fiche technique » du hero. */
 .cartouche {
-  position: absolute; right: var(--gouttiere); bottom: 40px; z-index: 5;
+  /* Aligné sur le bord droit du contenu de l'en-tête, même sur très grand écran. */
+  position: absolute; bottom: 40px; z-index: 5;
+  right: max(var(--gouttiere), calc((100vw - var(--largeur-large)) / 2 + var(--gouttiere)));
+  width: max-content;
   border: 1px solid rgba(243, 146, 0, 0.45);
   background: rgba(35, 35, 34, 0.86);
   padding: 16px 20px; border-radius: var(--rayon);
   font-family: var(--font-mono); font-size: 0.7rem; line-height: 1.9;
   color: var(--plan-sur-encre); letter-spacing: 0.06em;
-  max-width: 240px;
 }
 .cartouche dl { display: grid; grid-template-columns: auto 1fr; gap: 2px 14px; margin: 0; }
 .cartouche dt { color: rgba(247, 165, 52, 0.85); }
@@ -518,10 +524,11 @@ a { color: inherit; }
 .filtre:hover { border-color: var(--encre); color: var(--encre); }
 .filtre[aria-pressed="true"] { background: var(--encre); border-color: var(--encre); color: var(--papier); }
 
-/* Mosaïque : une photo en hauteur prend une colonne, une photo en largeur
+/* Mosaïque (3 colonnes : 5 photos en largeur et 8 en hauteur remplissent
+   exactement 6 rangées) : une photo en hauteur prend une colonne, une photo en largeur
    en prend deux (classe posée par main.js d'après le format réel). */
 .galerie {
-  --colonnes: 4;
+  --colonnes: 3;
   display: grid; grid-template-columns: repeat(var(--colonnes), 1fr); gap: 16px; grid-auto-flow: dense;
   /* Hauteur de rangée = largeur d'une colonne × 5/4 : chaque photo en
      hauteur tombe juste en 4:5, chaque photo en largeur en 8:5 environ. */
@@ -601,17 +608,17 @@ a { color: inherit; }
 .choix { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
 .choix label {
   display: block; padding: 15px 17px; cursor: pointer;
-  border: 1px solid var(--ligne-encre); border-radius: var(--rayon);
-  transition: all var(--transition);
+  border: 1px solid #808079; border-radius: var(--rayon);
+  transition: border-color var(--transition), background-color var(--transition);
   font-size: 0.95rem;
 }
 .choix label:hover { border-color: var(--bois-sur-encre); }
 .choix input { position: absolute; opacity: 0; pointer-events: none; }
-.choix input:checked + label,
 .choix label:has(input:checked) {
   border-color: var(--bois-sur-encre); background: var(--orange-voile);
 }
-.choix input:focus-visible + label { outline: 2px solid var(--plan-sur-encre); outline-offset: 2px; }
+/* L'input est dans son label : le repère de focus va sur le label. */
+.choix label:has(input:focus-visible) { outline: 2px solid var(--plan-sur-encre); outline-offset: 2px; }
 .choix__note {
   display: block; font-family: var(--font-mono); font-size: 0.68rem;
   letter-spacing: 0.06em; color: var(--texte-doux-sur-encre); margin-top: 3px;
@@ -627,16 +634,18 @@ a { color: inherit; }
 .champ input, .champ select, .champ textarea {
   width: 100%; font: inherit; font-size: 0.97rem;
   padding: 13px 15px; border-radius: var(--rayon);
-  background: var(--encre-3); border: 1px solid var(--ligne-encre); color: var(--papier);
+  background: var(--encre-3); border: 1px solid #808079; color: var(--papier);
   transition: border-color var(--transition);
 }
 .champ textarea { resize: vertical; min-height: 92px; }
 .champ input:focus, .champ select:focus, .champ textarea:focus { border-color: var(--bois-sur-encre); }
-.champ input::placeholder, .champ textarea::placeholder { color: #a29c92; }
+.champ input::placeholder, .champ textarea::placeholder { color: #b3b3ae; }
 .champ__erreur {
   margin: 6px 0 0; min-height: 1.1em;
   font-family: var(--font-mono); font-size: 0.7rem; color: #f0a07a;
 }
+/* Plus fort que « .section--encre p » : les erreurs restent saumon. */
+.section--encre .champ__erreur { color: #f0a07a; }
 .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
 .devis__pied { display: flex; align-items: center; gap: 12px; margin-top: 26px; flex-wrap: wrap; }
@@ -670,7 +679,7 @@ a { color: inherit; }
 .avis-carte__nom { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; color: var(--texte-doux); margin: 0; }
 .note-honnete {
   margin-top: 26px; font-family: var(--font-mono); font-size: 0.72rem;
-  color: var(--texte-doux); line-height: 1.8;
+  color: var(--texte-doux); line-height: 1.8; max-width: 75ch;
 }
 .section--encre .note-honnete { color: var(--texte-doux-sur-encre); }
 
@@ -692,11 +701,6 @@ a { color: inherit; }
 }
 
 .pied { background: var(--encre); color: var(--texte-doux-sur-encre); padding: 76px 0 32px; }
-.pied__marque {
-  font-family: var(--font-display); font-weight: 800;
-  font-size: clamp(2.4rem, 9vw, 6.5rem); letter-spacing: -0.04em;
-  color: rgba(247, 247, 245, 0.09); line-height: 1; margin-bottom: 44px;
-}
 .pied__cols { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 34px; margin-bottom: 44px; }
 .pied h4 {
   font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500;
@@ -778,7 +782,7 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
 }
 
 @media (max-width: 860px) {
-  .metiers, .metiers--quatre, .galerie, .avis-grille, .infos-grille { grid-template-columns: repeat(2, 1fr); }
+  .metiers, .galerie, .avis-grille, .infos-grille { grid-template-columns: repeat(2, 1fr); }
   .galerie { --colonnes: 2; }
   .pied__cols { grid-template-columns: 1fr 1fr; }
 }
@@ -799,16 +803,18 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
     background: rgba(35, 35, 34, 0.9);
   }
   .hero__legende { order: 3; flex-basis: 100%; gap: 4px 12px; }
-  .galerie { grid-auto-rows: auto; }
+  /* Galerie en deux colonnes : une seule colonne faisait plus de 4 600 px. */
+  .galerie { grid-auto-rows: auto; gap: 10px; }
   .oeuvre { aspect-ratio: 4 / 5; }
-  .oeuvre--paysage { grid-column: auto; aspect-ratio: 4 / 3; }
+  .oeuvre--paysage { grid-column: span 2; aspect-ratio: 8 / 5; }
+  .oeuvre__voile { padding: 12px; }
 
-  .metiers, .metiers--quatre, .galerie, .avis-grille, .infos-grille, .etapes, .choix, .duo {
+  .metiers, .metiers--quatre, .avis-grille, .infos-grille, .etapes, .choix, .duo {
     grid-template-columns: 1fr;
   }
   .etape { padding: 0 0 4px; }
   .etape::before { display: none; }
-  .etape::after { top: 42px; }
+  .etape::after { top: 26px; }
   .etape__num { margin-top: 22px; padding-left: 24px; }
   .etape h3, .etape p { padding-left: 24px; }
 
@@ -816,7 +822,10 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
   .pied__bas { flex-direction: column; }
 
   .appel-mobile { display: flex; }
-  .visionneuse__nav { display: none; }
+  /* La barre d'appel flottante ne doit pas recouvrir les liens du pied. */
+  .pied { padding-bottom: 100px; }
+  /* Visionneuse : les flèches passent en bas de l'écran. */
+  .visionneuse__nav { top: auto; bottom: 20px; transform: none; }
 }
 
 /* =========================================================================
@@ -833,7 +842,6 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
 .marque__logo { height: 60px; width: auto; transform-origin: left center; transition: transform var(--transition); }
 .entete.est-pose .marque__logo { transform: scale(0.84); }
 .hero .annot { color: var(--plan-sur-encre); }
-.cartouche { min-width: 320px; }
 .cartouche dt, .cartouche dd { white-space: nowrap; }
 .entete:not(.est-pose) .marque { color: #fff; }
 .entete.est-pose { background: #fff; }
@@ -842,7 +850,7 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
   text-decoration: none; color: var(--encre); white-space: nowrap;
   padding: 10px 4px;
 }
-.entete__tel::before { content: "☎ "; color: var(--bois-texte); }
+.entete__tel::before { content: "\260E\FE0E "; color: var(--bois-texte); }
 .entete:not(.est-pose) .entete__tel { color: #fff; }
 .entete:not(.est-pose) .entete__tel::before { color: var(--bois); }
 .nav-liens a:hover { color: var(--bois-texte); }
@@ -886,8 +894,11 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
 /* Aides : la fenêtre en photo produit, à côté des critères. */
 .aides__detail {
   margin-top: 44px; display: grid; grid-template-columns: minmax(180px, 0.7fr) 1fr 1fr;
-  gap: 34px; align-items: center;
+  gap: 34px; align-items: start;
 }
+.aides__produit { align-self: center; }
+/* La carte « Primes et éco-PTZ » décrit une exclusion : liseré anthracite. */
+#aides .metier:last-child { border-top-color: var(--encre); }
 .aides__produit {
   margin: 0; background: #fff; border: 1px solid var(--ligne); border-top: 3px solid var(--bois);
   border-radius: var(--rayon); padding: 18px 18px 10px;
@@ -930,15 +941,15 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
 @media (max-width: 1080px) {
   .entete__tel { display: none; }
 }
-/* Section TVA : sous 1100 px, quatre cartes côte à côte deviendraient
-   étroites et très hautes ; elles passent en deux rangées de deux. */
+/* Sous 1100 px, quatre cartes côte à côte deviendraient étroites et très
+   hautes (prestations comme TVA) : elles passent en rangées de deux. */
 @media (max-width: 1100px) and (min-width: 721px) {
-  #aides .metiers--quatre { grid-template-columns: repeat(2, 1fr); }
+  .metiers--quatre { grid-template-columns: repeat(2, 1fr); }
 }
 /* Tablettes : le menu complet ne tient pas sur une ligne, il passe dans le
    menu déroulant ; le bouton « Demander un devis » reste visible. */
 @media (max-width: 1100px) {
-  .nav-liens { display: none; }
+  .nav-principale { display: none; }
   .burger { display: block; }
   .menu-mobile { display: flex; }
 }
@@ -966,6 +977,9 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
   .engagements { grid-template-columns: 1fr; gap: 22px; }
   .aides__detail { grid-template-columns: 1fr; gap: 26px; }
   .menu-mobile .btn--clair { margin-top: 10px; }
+  .appel-mobile .btn--sombre { border-color: rgba(247, 247, 245, 0.5); }
+  /* Pages légales : le bouton de retour reste visible sur téléphone. */
+  .nav-actions .btn--retour { display: inline-flex; }
 }
 
 /* =========================================================================
@@ -980,6 +994,12 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
     transition-duration: 0.001ms !important;
   }
   .apparait { opacity: 1; transform: none; }
-  .hero__photo img { transform: none !important; }
   .metier { transform: none !important; }
 }
+
+/* =========================================================================
+   PAGES LÉGALES
+   ========================================================================= */
+
+.page-legale { padding-top: 150px; }
+.page-legale h2 { font-size: clamp(1.3rem, 2.4vw, 1.6rem); margin: 2em 0 0.5em; }

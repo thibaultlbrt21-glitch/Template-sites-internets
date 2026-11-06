@@ -103,48 +103,33 @@ Aides. Métadonnées retirées, détail dans `assets/images/README.md`.
 galerie et de l'accueil (`content/site.json`), et adapter la mention sous la
 galerie.
 
-## Le formulaire de devis — il arrive dans la boîte mail de Tiago
+## Le formulaire de devis
 
 Quatre étapes (projet, détail, délai et commune, coordonnées), validées une à
-une. À l'envoi, la demande part **directement par e-mail** à
-`tiagotdsfermetures.21@hotmail.com`, sous forme de tableau lisible, avec
-l'adresse du client en « répondre à » : Tiago répond d'un clic.
+une (la touche Entrée passe à l'étape suivante, un double-clic n'envoie
+pas).
 
-L'envoi passe par **FormSubmit** (formsubmit.co), gratuit et sans compte, qui
-transforme le formulaire en e-mail — un site statique ne peut pas envoyer
-d'e-mail lui-même.
+**Aujourd'hui (6 novembre 2026), aucun service tiers** : `serviceEnvoi: ""`
+dans `assets/js/main.js`. À la fin, le site affiche « Votre demande est
+prête » avec **« Envoyer par ma messagerie »** (e-mail déjà rédigé, adressé
+à Tiago) et **« Appeler »**. Décidé après la relecture juridique : tant que
+le service d'envoi n'est pas activé, aucune donnée ne part chez un tiers.
 
-### ⚠️ Activation, une seule fois
+**À la mise en ligne sur le domaine définitif** (Claude s'en charge) :
+choisir le service d'envoi — de préférence un script d'envoi chez Hostinger
+(serveurs dans l'UE, contrat de sous-traitance), sinon FormSubmit
+(`https://formsubmit.co/ajax/`, une activation par clic de Tiago, pas de
+contrat de sous-traitance publié) — puis, dans le même commit :
+`serviceEnvoi`, `connect-src` de la Content-Security-Policy (`index.html`),
+la mention sous le formulaire et la partie « Le formulaire de devis » de la
+politique de confidentialité.
 
-La **toute première** demande envoyée depuis le site en ligne déclenche un
-e-mail de FormSubmit à `tiagotdsfermetures.21@hotmail.com`, intitulé
-« Action Required: Activate FormSubmit ». **Il faut cliquer sur « Activate
-Form »** : à partir de là, toutes les demandes arrivent. Pensez à regarder
-dans les courriers indésirables.
-
-Le plus simple : dès la mise en ligne, faire soi-même une demande de test,
-puis faire cliquer Tiago sur le lien d'activation.
-
-### Si l'envoi échoue
-
-Formulaire pas encore activé, service injoignable, réseau coupé : la demande
-n'est jamais perdue. Le site affiche « L'envoi automatique n'a pas abouti » et
-propose **« Envoyer par ma messagerie »** (le mail est déjà rédigé, adressé à
-Tiago) ou **« Appeler »**.
-
-Autres protections : un **champ piège** invisible écarte les robots (une
-demande qui le remplit n'est pas envoyée), et l'envoi est abandonné après
-15 secondes sans réponse.
-
-### Réglages
+Protections : **champ piège** invisible (une demande qui le remplit n'est
+pas envoyée), abandon après 15 secondes sans réponse, lien de secours qui
+encode chaque champ (pas d'injection d'en-têtes).
 
 - Adresse de réception : `devis.email_reception` dans `content/site.json`
   (elle l'emporte), ou `devisEmail` en haut de `assets/js/main.js`.
-- `serviceEnvoi: ""` dans `assets/js/main.js` pour revenir à l'ancien
-  fonctionnement (ouverture de la messagerie du visiteur).
-- Après activation, FormSubmit propose une adresse d'envoi masquée (une
-  chaîne aléatoire à la place de l'e-mail) : on peut la mettre dans
-  `devisEmail` pour que l'adresse n'apparaisse plus dans le code.
 
 ## Les aides à la rénovation — parti pris
 
@@ -194,8 +179,8 @@ naissance, nationalité du gérant.
 
 **À voir ensemble avec Thibault** (reporté à sa demande) :
 
-- Activation de FormSubmit et demande de test : **après l'hébergement**,
-  sur le domaine définitif (un seul clic pour Tiago)
+- Envoi automatique du devis : **après l'hébergement** (voir « Le formulaire
+  de devis » : script Hostinger de préférence, sinon FormSubmit)
 - Nom de domaine et adresse e-mail professionnelle
 - Hébergement : **Hostinger** (choix de Thibault, 06/11/2026), avec nom de
   domaine et e-mail pro chez eux ; domaine au nom de TDS FERMETURES. Mise
@@ -212,11 +197,26 @@ naissance, nationalité du gérant.
 - Domaine définitif dans `canonical`, `og:url`, `og:image`, les données
   structurées, `sitemap.xml` et `robots.txt` (pointent aujourd'hui vers
   l'adresse GitHub Pages)
-- FormSubmit : réactivation si le domaine change (même clic pour Tiago)
+- Envoi du devis : `serviceEnvoi`, CSP (`connect-src`), mention sous le
+  formulaire et politique de confidentialité, dans le même commit
+- Exclure les `*.md` de l'envoi FTP vers Hostinger (comme dans le workflow
+  GitHub Pages) ; envoyer `frame-ancestors 'none'` en en-tête HTTP si
+  l'hébergeur le permet (ignoré dans une balise meta)
 - **Avis clients** : relier la fiche Google au site (lien vers la fiche,
   et avis réels affichés avec leur source, en précisant s'ils sont
   vérifiés — L111-7-2 du code de la consommation). Aucun widget Google
   intégré sans bandeau de consentement (voir la règle ci-dessous)
+
+**Questions à poser à Tiago** (relecture du 06/11/2026) :
+
+- Qualité d'artisan : la CMA a-t-elle validé l'activité artisanale (Kbis :
+  « sous réserve de validation ») ? Tant qu'il n'y a pas de preuve, le mot
+  « artisan » et ses dérivés restent hors du site (code de l'artisanat,
+  L241-2) ; la mention « entreprise artisanale » a été retirée
+- Devis et visite gratuits ? Délai de rappel ? (à n'afficher que s'il
+  confirme)
+- « Clôtures » et « commandes centralisées » : les fait-il ? (absents du
+  Kbis et de la carte)
 
 **Règles confiées à Claude** :
 
@@ -241,8 +241,7 @@ devis et factures (Tiago s'en occupe) ; section TVA validée ; photo du
 portail (prise par Tiago, accord du client, seuls plantations et
 éclairages retouchés) ; durées de conservation (texte conforme CNIL) ;
 4 promesses validées par Tiago ; horaires « Sur rendez-vous » ; lien
-Facebook ; mention « entreprise artisanale » (mentions légales, pied de
-page) ; droits des photos FenêtréA ; photos brutes supprimées de `main` ;
+Facebook ; droits des photos FenêtréA ; photos brutes supprimées de `main` ;
 saccades à 120 Hz.
 
 ## Ce qui a été vérifié
@@ -256,14 +255,14 @@ Mesuré dans Chromium, pas estimé.
 | Repli sans `site.json` | page complète et identique |
 | Liste vidée | section masquée, lien de menu masqué, contenu retiré du DOM |
 | Contrastes de la charte orange | anthracite sur orange 7:1, orange foncé sur clair 5:1, orange sur anthracite 6,7:1 |
-| Section TVA réduite | 3 cartes, critères techniques, pas de RGE dit clairement, renvoi France Rénov', **aucune somme en euros** |
+| Section TVA réduite | 4 cartes (20 %, 10 %, 5,5 %, primes), critères techniques, pas de RGE dit clairement, renvoi France Rénov', **aucune somme en euros** |
 | Fluidité (60 / 120 / 144 Hz) | en plein défilement : 1 recalcul de mise en page au lieu de 72 à 135 ; aucune parallaxe, aucun zoom continu, une seule passe de composition par image (au lieu de 4), en-tête de taille fixe, aucun flou d'arrière-plan, diaporama en pause hors écran |
 | Affichage | 360, 390, 768, 1024, 1280, 1440, 1920 px : aucun débordement, aucune erreur JS, menu burger sous 1100 px, cibles tactiles ≥ 24 px |
 | Parcours | menu mobile, devis complet avec envoi simulé à l'adresse de Tiago, liens « Appeler », mentions légales |
 | Devis 4 étapes | cas valides et invalides, retour arrière |
 | Envoi du devis (FormSubmit simulé) | adresse de Tiago, tous les champs, remerciement ; secours si non activé, erreur 500 ou coupure ; robot écarté — 24 contrôles |
 | Liens de contact | tous les « Appeler » en `tel:+33658008226`, e-mails client et fournisseurs, mis à jour depuis `content/site.json` |
-| Galerie | 12 photos, 4 en largeur détectées, filtres (catégorie vide masquée), crédit dans la visionneuse |
+| Galerie | 13 photos, 5 en largeur (format indiqué dans le HTML et le JSON), filtres (catégorie vide masquée), crédit dans la visionneuse |
 | Accueil | défilement, pause, choix par la jauge, arrêt en mouvement réduit, liste vide → texte seul |
 | Largeurs | 390 px et 1440 px, sans scroll horizontal |
 | Erreurs JavaScript | aucune |

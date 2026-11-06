@@ -64,6 +64,8 @@ jobs:
           cp -r webly-template-restaurant-premium/. _site/webly-template-restaurant-premium/
           mkdir -p _site/tds-fermetures
           cp -r tds-fermetures/. _site/tds-fermetures/
+          # Notes internes (README) : jamais publiées sur le site.
+          find _site/tds-fermetures -name '*.md' -delete
           mkdir -p _site/pilliard-menuiserie
           cp -r pilliard-menuiserie/. _site/pilliard-menuiserie/
           # L'ancienne adresse du site (avant qu'il devienne TDS Fermetures)

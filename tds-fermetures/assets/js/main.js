@@ -2,26 +2,32 @@
   "use strict";
 
   /* =========================================================
-     CONFIG — tout se règle ici (ou demandez à Claude)
+     CONFIG — tout se règle ici
      ========================================================= */
   var SITE_CONFIG = {
-    // Adresse qui reçoit les demandes de devis (l'email « Client » de la
+    // Adresse qui reçoit les demandes de devis (l'e-mail « Client » de la
     // carte de visite). Elle peut aussi être changée dans content/site.json,
     // qui l'emporte.
     devisEmail: "tiagotdsfermetures.21@hotmail.com",
 
-    // Service qui transforme le formulaire en e-mail : FormSubmit
-    // (formsubmit.co), gratuit, sans compte. À la toute première demande
-    // reçue, FormSubmit envoie à l'adresse ci-dessus un e-mail « Activate
-    // Form » : il faut cliquer une fois sur le lien pour activer l'envoi.
-    // Mettre "" pour revenir à l'ouverture de la messagerie du visiteur.
-    serviceEnvoi: "https://formsubmit.co/ajax/",
+    // Service qui transforme le formulaire en e-mail, par exemple
+    // FormSubmit : "https://formsubmit.co/ajax/" (à la toute première
+    // demande, il envoie à l'adresse ci-dessus un e-mail « Activate Form »
+    // sur lequel il faut cliquer une fois). Vide : aucun service tiers, la
+    // demande est préparée et le visiteur l'envoie depuis sa messagerie.
+    // Vide tant que le site n'est pas sur son domaine définitif ; à
+    // réactiver alors, en mettant à jour la politique de confidentialité,
+    // la mention sous le formulaire et la Content-Security-Policy.
+    serviceEnvoi: "",
 
     // Durée d'affichage de chaque photo de l'accueil, en millisecondes.
     dureePhoto: 6500
   };
 
   function boot() {
+  // content.js n'hydrate plus la page une fois les écouteurs posés : un
+  // site.json arrivé après le délai remplacerait des éléments déjà actifs.
+  window.WEBLY_DEMARRE = true;
 
   var reduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var pointeurFin = window.matchMedia("(pointer: fine)").matches;
@@ -48,23 +54,34 @@
   window.addEventListener("scroll", function () {
     if (!defilementPrevu) { defilementPrevu = true; window.requestAnimationFrame(auDefilement); }
   }, { passive: true });
-  window.addEventListener("resize", function () { mesure(); auDefilement(); }, { passive: true });
+  window.addEventListener("resize", function () {
+    mesure(); auDefilement();
+    // Tablette tournée avec le menu ouvert : le menu n'existe plus en
+    // grand écran, la page ne doit pas rester bloquée.
+    if (window.innerWidth > 1100) fermeMenu();
+  }, { passive: true });
 
   /* ---------- Menu mobile ---------- */
   var burger = document.getElementById("burger");
   var menuMobile = document.getElementById("menuMobile");
   var fermerMenu = document.getElementById("fermerMenu");
 
+  // Menu ouvert : le reste de la page devient inerte, la touche Tab reste
+  // dans le menu. Fermé, le menu est invisible et hors de l'ordre du
+  // clavier (visibility: hidden dans la feuille de style).
+  var horsMenu = [entete, document.getElementById("principal"), document.querySelector(".pied")];
   function fermeMenu() {
-    if (!menuMobile) return;
+    if (!menuMobile || !menuMobile.classList.contains("est-ouvert")) return;
     menuMobile.classList.remove("est-ouvert");
     burger.setAttribute("aria-expanded", "false");
     document.body.style.overflow = "";
+    horsMenu.forEach(function (el) { if (el) el.inert = false; });
   }
   function ouvreMenu() {
     menuMobile.classList.add("est-ouvert");
     burger.setAttribute("aria-expanded", "true");
     document.body.style.overflow = "hidden";
+    horsMenu.forEach(function (el) { if (el) el.inert = true; });
     var premier = menuMobile.querySelector("a");
     if (premier) premier.focus();
   }
@@ -75,11 +92,18 @@
     if (fermerMenu) fermerMenu.addEventListener("click", function () { fermeMenu(); burger.focus(); });
     menuMobile.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", fermeMenu); });
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && menuMobile.classList.contains("est-ouvert")) { fermeMenu(); burger.focus(); }
+      if (!menuMobile.classList.contains("est-ouvert")) return;
+      if (e.key === "Escape") { fermeMenu(); burger.focus(); return; }
+      if (e.key === "Tab") {
+        var cibles = menuMobile.querySelectorAll("a, button");
+        var premier = cibles[0], dernier = cibles[cibles.length - 1];
+        if (e.shiftKey && document.activeElement === premier) { e.preventDefault(); dernier.focus(); }
+        else if (!e.shiftKey && document.activeElement === dernier) { e.preventDefault(); premier.focus(); }
+      }
     });
   }
 
-  /* ---------- Apparitions au défilement (+ filet de sécurité) ---------- */
+  /* ---------- Apparitions au défilement ---------- */
   var aReveler = document.querySelectorAll(".apparait");
   if (aReveler.length) {
     if (reduit || !("IntersectionObserver" in window)) {
@@ -91,26 +115,22 @@
         });
       }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
       aReveler.forEach(function (el) { io.observe(el); });
-
-      // Si le défilement n'est jamais simulé (capture automatique, robot
-      // d'indexation, erreur JS ailleurs), on révèle quand même.
-      window.setTimeout(function () {
-        aReveler.forEach(function (el) { el.classList.add("est-visible"); });
-        io.disconnect();
-      }, 2600);
     }
   }
 
   /* ---------- Étapes du processus ---------- */
   var etapes = document.querySelectorAll(".etape");
   if (etapes.length && "IntersectionObserver" in window && !reduit) {
+    var restantes = etapes.length;
     var ioEtapes = new IntersectionObserver(function (entrees) {
       entrees.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add("est-vue"); ioEtapes.unobserve(e.target); }
+        if (!e.isIntersecting) return;
+        e.target.classList.add("est-vue");
+        ioEtapes.unobserve(e.target);
+        if (--restantes === 0) ioEtapes.disconnect();
       });
     }, { threshold: 0.5 });
     etapes.forEach(function (el) { ioEtapes.observe(el); });
-    window.setTimeout(function () { etapes.forEach(function (el) { el.classList.add("est-vue"); }); }, 2600);
   } else {
     etapes.forEach(function (el) { el.classList.add("est-vue"); });
   }
@@ -162,14 +182,23 @@
       return trait;
     });
 
+    // Seule la première photo se charge avec la page (data-src sur les
+    // autres) : chacune est demandée quand elle s'affiche, la suivante
+    // pendant que la précédente est à l'écran.
+    var charge = function (photo) {
+      var img = photo && photo.querySelector("img[data-src]");
+      if (!img) return;
+      img.setAttribute("src", img.getAttribute("data-src"));
+      img.removeAttribute("data-src");
+    };
+    var legende = repere.querySelector(".hero__legende");
     var montrePhoto = function (i) {
       photoCourante = (i + photos.length) % photos.length;
+      charge(photos[photoCourante]);
       photos.forEach(function (p, j) { p.classList.toggle("est-active", j === photoCourante); });
       traits.forEach(function (t, j) { t.setAttribute("aria-current", String(j === photoCourante)); });
       var photo = photos[photoCourante];
-      // La photo suivante se charge pendant que celle-ci s'affiche.
-      var suivante = photos[(photoCourante + 1) % photos.length].querySelector("img");
-      if (suivante) suivante.removeAttribute("loading");
+      charge(photos[(photoCourante + 1) % photos.length]);
       numPhoto.textContent = deux(photoCourante + 1) + " / " + deux(photos.length);
       textePhoto.textContent = photo.getAttribute("data-legende") || "";
       creditPhoto.textContent = photo.getAttribute("data-credit") || "";
@@ -178,17 +207,19 @@
     var aLEcran = true;
     var relance = function () {
       window.clearInterval(minuteur);
-      if (!enPause && aLEcran && !document.hidden && photos.length > 1) {
+      var defile = !enPause && aLEcran && !document.hidden && photos.length > 1;
+      // La légende n'est annoncée aux lecteurs d'écran que quand le
+      // visiteur change lui-même de photo, pas toutes les 6,5 s.
+      if (legende) legende.setAttribute("aria-live", defile ? "off" : "polite");
+      if (defile) {
         minuteur = window.setInterval(function () { montrePhoto(photoCourante + 1); }, SITE_CONFIG.dureePhoto);
       }
     };
 
     repere.classList.toggle("est-fixe", photos.length < 2);
-    pause.setAttribute("aria-pressed", String(enPause));
     pause.textContent = enPause ? "Lecture" : "Pause";
     pause.addEventListener("click", function () {
       enPause = !enPause;
-      pause.setAttribute("aria-pressed", String(enPause));
       pause.textContent = enPause ? "Lecture" : "Pause";
       relance();
     });
@@ -227,6 +258,7 @@
         });
       });
       carte.addEventListener("pointerleave", function () {
+        if (cadre) { window.cancelAnimationFrame(cadre); cadre = null; }
         carte.style.transform = "";
       });
     });
@@ -239,11 +271,13 @@
   var oeuvres = galerie ? Array.prototype.slice.call(galerie.querySelectorAll(".oeuvre")) : [];
   var filtres = Array.prototype.slice.call(document.querySelectorAll(".filtre"));
 
-  // Une photo en largeur occupe deux colonnes de la mosaïque : le format est
-  // lu sur l'image elle-même, le client n'a rien à régler.
+  // Une photo en largeur occupe deux colonnes de la mosaïque. Le format est
+  // indiqué dans le HTML (classe oeuvre--paysage, champ « format » du JSON)
+  // pour que la mosaïque ne bouge pas au chargement ; à défaut, il est lu
+  // sur l'image elle-même.
   oeuvres.forEach(function (o) {
     var img = o.querySelector("img");
-    if (!img) return;
+    if (!img || o.hasAttribute("data-format")) return;
     var classe = function () {
       if (img.naturalWidth) o.classList.toggle("oeuvre--paysage", img.naturalWidth > img.naturalHeight * 1.15);
     };
@@ -281,8 +315,9 @@
     var meta = oeuvre.querySelector(".oeuvre__meta");
     vueImage.src = img.getAttribute("src");
     vueImage.alt = img.getAttribute("alt") || "";
+    // Sans doublon : le sous-titre et le crédit peuvent être identiques.
     vueLegende.textContent = [titre && titre.textContent, meta && meta.textContent, oeuvre.getAttribute("data-credit")]
-      .filter(Boolean).join(" · ");
+      .filter(function (v, i, a) { return v && a.indexOf(v) === i; }).join(" · ");
   }
 
   function ouvreVue(oeuvre) {
@@ -313,7 +348,9 @@
       if (e.key === "ArrowLeft") { montreVue(positionVue - 1); return; }
       if (e.key === "ArrowRight") { montreVue(positionVue + 1); return; }
       if (e.key === "Tab") {
-        var cibles = visionneuse.querySelectorAll("button");
+        // Seulement les boutons affichés (les flèches peuvent être masquées).
+        var cibles = Array.prototype.filter.call(visionneuse.querySelectorAll("button"),
+          function (b) { return b.offsetParent !== null; });
         var premier = cibles[0], dernier = cibles[cibles.length - 1];
         if (e.shiftKey && document.activeElement === premier) { e.preventDefault(); dernier.focus(); }
         else if (!e.shiftKey && document.activeElement === dernier) { e.preventDefault(); premier.focus(); }
@@ -323,11 +360,10 @@
 
   /* =========================================================
      DEVIS — formulaire par étapes
-     Validation réelle, puis envoi à l'adresse de l'entreprise par
-     FormSubmit (voir SITE_CONFIG). Si l'envoi échoue — service
-     injoignable, formulaire pas encore activé — la demande n'est pas
-     perdue : le visiteur peut l'envoyer depuis sa propre messagerie,
-     déjà rédigée, ou appeler.
+     Validation réelle, puis envoi à l'adresse de l'entreprise par le
+     service configuré (SITE_CONFIG.serviceEnvoi). Sans service, ou si
+     l'envoi échoue, la demande n'est pas perdue : le visiteur l'envoie
+     depuis sa propre messagerie, déjà rédigée, ou appelle.
      ========================================================= */
   var form = document.getElementById("formDevis");
   if (form) {
@@ -339,6 +375,7 @@
     var etat = document.getElementById("etatDevis");
     var annonce = document.getElementById("etapeCourante");
     var courante = 0;
+    var changement = 0; // heure du dernier changement d'étape
 
     // « focalise » : seulement quand le visiteur change lui-même d'étape.
     // Au chargement, déplacer le focus dans le formulaire volerait la
@@ -346,6 +383,7 @@
     // de page.
     function montreVolet(position, focalise) {
       courante = Math.max(0, Math.min(volets.length - 1, position));
+      changement = Date.now();
       volets.forEach(function (v, i) { v.classList.toggle("est-active", i === courante); });
       jauge.forEach(function (s, i) { s.classList.toggle("est-faite", i <= courante); });
       btnPrec.hidden = courante === 0;
@@ -362,7 +400,7 @@
 
     function messageErreur(champ) {
       if (champ.validity.valueMissing) return "Champ obligatoire.";
-      if (champ.validity.typeMismatch && champ.type === "email") return "Adresse email invalide.";
+      if (champ.validity.typeMismatch && champ.type === "email") return "Adresse e-mail invalide.";
       if (champ.validity.patternMismatch && champ.type === "tel") return "Numéro invalide.";
       return "";
     }
@@ -405,6 +443,7 @@
     });
 
     btnSuiv.addEventListener("click", function () {
+      if (tropTot()) return;
       if (!valideVolet(courante)) {
         etat.textContent = "Merci de compléter cette étape.";
         etat.className = "devis__etat est-ko";
@@ -439,7 +478,7 @@
         ["Budget", valeur("budget")],
         ["Commune", valeur("adresseChantier")],
         ["Nom", valeur("nom")],
-        ["Email", valeur("courriel")],
+        ["E-mail", valeur("courriel")],
         ["Téléphone", valeur("telephone")]
       ].filter(function (l) { return l[1] !== ""; });
       return { sujet: "Demande de devis — " + ouvrage + " — " + valeur("nom"), lignes: lignes };
@@ -448,7 +487,7 @@
     function lienMessagerie(d) {
       var corps = ["Demande de devis envoyée depuis le site :", ""].concat(
         d.lignes.map(function (l) { return l[0] + " : " + l[1]; })).join("\n");
-      return "mailto:" + encodeURIComponent(destinataire()) +
+      return "mailto:" + destinataire() +
         "?subject=" + encodeURIComponent(d.sujet) + "&body=" + encodeURIComponent(corps);
     }
 
@@ -462,11 +501,17 @@
       merci.scrollIntoView({ block: "center", behavior: reduit ? "auto" : "smooth" });
     }
 
-    function echec(d) {
+    // Le panneau « Envoyer par ma messagerie / Appeler » : affiché quand
+    // aucun service d'envoi n'est configuré, ou quand l'envoi a échoué.
+    function proposeMessagerie(d, message) {
       btnEnvoi.disabled = false;
-      etat.textContent = "";
-      document.getElementById("secoursMail").setAttribute("href", lienMessagerie(d));
+      etat.textContent = message;
+      etat.className = "devis__etat";
+      var lien = document.getElementById("secoursMail");
+      lien.setAttribute("href", lienMessagerie(d));
       secours.hidden = false;
+      lien.focus({ preventScroll: true });
+      secours.scrollIntoView({ block: "nearest", behavior: reduit ? "auto" : "smooth" });
     }
 
     function envoieDevis() {
@@ -475,9 +520,7 @@
 
       // Sans service configuré (ou navigateur trop ancien) : messagerie.
       if (!SITE_CONFIG.serviceEnvoi || !window.fetch) {
-        window.location.href = lienMessagerie(d);
-        etat.textContent = "Votre messagerie s'ouvre avec la demande pré-rédigée.";
-        etat.className = "devis__etat est-ok";
+        proposeMessagerie(d, "Votre demande est prête.");
         return;
       }
 
@@ -487,10 +530,9 @@
         _captcha: "false",
         // « email » : FormSubmit s'en sert comme adresse de réponse, pour que
         // Tiago puisse répondre directement au client.
-        email: valeur("courriel"),
-        name: valeur("nom")
+        email: valeur("courriel")
       };
-      d.lignes.forEach(function (l) { donnees[l[0]] = l[1]; });
+      d.lignes.forEach(function (l) { if (l[0] !== "E-mail") donnees[l[0]] = l[1]; });
 
       btnEnvoi.disabled = true;
       etat.textContent = "Envoi en cours…";
@@ -512,16 +554,25 @@
           window.clearTimeout(minuteur);
           // FormSubmit répond { success: "true" } quand l'e-mail est parti.
           if (res.ok && String(res.j.success) === "true") reussite();
-          else echec(d);
+          else proposeMessagerie(d, "L'envoi automatique n'a pas abouti.");
         })
         .catch(function () {
           window.clearTimeout(minuteur);
-          echec(d);
+          proposeMessagerie(d, "L'envoi automatique n'a pas abouti.");
         });
     }
 
+    // Un clic arrivé juste après un changement d'étape (double-clic sur
+    // « Suivant ») ne doit pas valoir « Envoyer » sur l'étape suivante.
+    function tropTot() { return Date.now() - changement < 400; }
+    btnEnvoi.addEventListener("click", function (e) { if (tropTot()) e.preventDefault(); });
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
+
+      // Touche Entrée (ou « OK » du clavier d'un téléphone) avant la
+      // dernière étape : on passe à l'étape suivante, on n'envoie pas.
+      if (courante < volets.length - 1) { if (!tropTot()) btnSuiv.click(); return; }
 
       // Piège à robots rempli : on fait comme si tout allait bien, sans rien
       // envoyer.
