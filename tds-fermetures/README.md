@@ -180,19 +180,17 @@ qualification non détenue est un faux, et prive le client de ses aides.
 | RGE | « Pas de certificat » | Section devenue « TVA réduite » |
 | Photos de chantier | « Déjà envoyé » (photos FenêtréA) | Galerie et accueil, avec crédit |
 | Avis | « Pas d'avis » | Section masquée |
+| Médiateur | CM2C, 49 rue de Ponthieu, 75008 Paris, cm2c.net (mail du 05/11/2026) | Mentions légales |
 | Réseaux | Facebook : https://www.facebook.com/share/19ZKpWqVXY/ (25/10/2026) | Pied de page, données structurées |
 | Horaires | « Sur rendez-vous » (25/10/2026) | Contact, bloc « Siège & horaires » |
 
 Données du Kbis volontairement **non publiées** : date et lieu de
 naissance, nationalité du gérant.
 
-## ⚠️ Suivi (mis à jour le 25 octobre 2026)
+## ⚠️ Suivi (mis à jour le 6 novembre 2026)
 
 **À obtenir de Tiago** (Thibault s'en charge) :
 
-- **Médiateur de la consommation** : obligatoire (L612-1 du code de la
-  consommation), seul champ encore « à renseigner » des mentions légales.
-  Tiago va le transmettre
 - Photos de chantiers, photo de Tiago, logo original, stores et vérandas
 
 **À voir ensemble avec Thibault** (reporté à sa demande) :
@@ -212,8 +210,9 @@ naissance, nationalité du gérant.
 - Mentions légales : nom, adresse **et téléphone** du nouvel hébergeur
   (obligation LCEN, il manque aujourd'hui le téléphone de GitHub)
 - Politique de confidentialité, partie « Hébergement » : le nouvel hébergeur
-- Domaine définitif dans `canonical`, `og:url`, les données structurées,
-  `sitemap.xml` et `robots.txt` ; image d'aperçu pour les partages
+- Domaine définitif dans `canonical`, `og:url`, `og:image`, les données
+  structurées, `sitemap.xml` et `robots.txt` (pointent aujourd'hui vers
+  l'adresse GitHub Pages)
 - FormSubmit : réactivation si le domaine change (même clic pour Tiago)
 - **Avis clients** : relier la fiche Google au site (lien vers la fiche,
   et avis réels affichés avec leur source, en précisant s'ils sont
@@ -230,7 +229,9 @@ naissance, nationalité du gérant.
   confidentialité. Préférer les simples liens, qui n'en déposent pas
 - **Prix** : aucun prix sur le site (décision de Thibault)
 
-**Clos** : assurance décennale (gérée par Tiago, site laissé tel quel) ;
+**Clos** : médiateur de la consommation (CM2C, transmis par Tiago le
+05/11/2026 d'après la CAPEB, mentions légales + règlement des litiges) ;
+image de partage et icône d'écran d'accueil ; assurance décennale (gérée par Tiago, site laissé tel quel) ;
 devis et factures (Tiago s'en occupe) ; section TVA validée ; photo du
 portail (prise par Tiago, accord du client, seuls plantations et
 éclairages retouchés) ; durées de conservation (texte conforme CNIL) ;

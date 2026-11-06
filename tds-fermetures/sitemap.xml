@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Remplacez le domaine d'exemple par le domaine réel avant la mise en ligne. -->
+<!-- Adresse actuelle (GitHub Pages) : à remplacer par le nom de domaine définitif. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://votre-domaine-a-renseigner.fr/</loc>
+    <loc>https://thibaultlbrt21-glitch.github.io/Template-sites-internets/tds-fermetures/</loc>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://votre-domaine-a-renseigner.fr/mentions-legales.html</loc>
+    <loc>https://thibaultlbrt21-glitch.github.io/Template-sites-internets/tds-fermetures/mentions-legales.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.2</priority>
   </url>
   <url>
-    <loc>https://votre-domaine-a-renseigner.fr/politique-de-confidentialite.html</loc>
+    <loc>https://thibaultlbrt21-glitch.github.io/Template-sites-internets/tds-fermetures/politique-de-confidentialite.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.2</priority>
   </url>
