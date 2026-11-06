@@ -198,18 +198,12 @@ naissance, nationalité du gérant.
 
 - Activation de FormSubmit et demande de test : **après l'hébergement**,
   sur le domaine définitif (un seul clic pour Tiago)
-- Espace client : d'abord vérifier que Tiago le veut ; sortir le site dans
-  son propre dépôt (le dépôt actuel contient les sites des autres clients) ;
-  compte GitHub de Tiago, OAuth App GitHub, service de connexion gratuit
-  sur Cloudflare (sveltia-cms-auth), puis `base_url`, dépôt et branche dans
-  `admin/config.yml`
 - Nom de domaine et adresse e-mail professionnelle
 - Hébergement : **Hostinger** (choix de Thibault, 06/11/2026), avec nom de
   domaine et e-mail pro chez eux ; domaine au nom de TDS FERMETURES. Mise
   en ligne : GitHub Actions qui envoie uniquement `tds-fermetures/` en FTP,
   identifiants dans les secrets GitHub (Claude ne les voit pas)
 - Intégration des photos de chantiers
-- Validation manuelle des déploiements : la garder ou non
 - **Fiche Google Business**, ouverte ensemble une fois le site hébergé
 
 **À faire par Claude une fois le site hébergé** (confié par Thibault) :
@@ -236,7 +230,10 @@ naissance, nationalité du gérant.
   confidentialité. Préférer les simples liens, qui n'en déposent pas
 - **Prix** : aucun prix sur le site (décision de Thibault)
 
-**Clos** : adhésion de Tiago à CM2C confirmée par Thibault ; site testé
+**Clos** : pas d'espace client pour Tiago (Thibault gère les modifications,
+Claude les pousse directement, autorisé le 06/11/2026) ; validation
+manuelle des déploiements supprimée (à décocher par Thibault dans GitHub,
+Settings → Environments → github-pages) ; adhésion de Tiago à CM2C confirmée par Thibault ; site testé
 sur iPhone (Safari) par Thibault ; photos de chantiers, photo de Tiago,
 logo : on verra après la mise en ligne ; médiateur de la consommation (CM2C, transmis par Tiago le
 05/11/2026 d'après la CAPEB, mentions légales + règlement des litiges) ;
