@@ -447,6 +447,7 @@
         if (champ.type === "radio") {
           var err = document.getElementById("ouvrageErreur");
           if (err) err.textContent = "";
+          if (etat.classList.contains("est-ko")) { etat.textContent = ""; etat.className = "devis__etat"; }
           return;
         }
         var e = document.getElementById(champ.id + "Erreur");

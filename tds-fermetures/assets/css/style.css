@@ -298,6 +298,12 @@ a { color: inherit; }
   background: var(--bois);
 }
 /* Fondu vers l'anthracite côté texte : la photo s'ouvre, elle ne coupe pas. */
+/* Sur ordinateur, la photo commence sous l'en-tête : son bord ne coupe
+   plus un lien du menu. */
+@media (min-width: 961px) {
+  .hero__visuel { top: 96px; }
+  .hero__visuel::before { top: 0; }
+}
 .hero__visuel::after {
   content: ""; position: absolute; inset: 0; pointer-events: none;
   background:
@@ -615,6 +621,8 @@ a { color: inherit; }
   font-size: 0.95rem;
 }
 .choix label:hover { border-color: var(--bois-sur-encre); }
+/* Nombre impair de choix : le dernier (« SAV ») prend toute la ligne. */
+.choix label:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .choix input { position: absolute; opacity: 0; pointer-events: none; }
 .choix label:has(input:checked) {
   border-color: var(--bois-sur-encre); background: var(--orange-voile);
@@ -713,7 +721,7 @@ a { color: inherit; }
 .pied a { color: var(--texte-doux-sur-encre); text-decoration: none; transition: color var(--transition); }
 .pied a:hover { color: var(--bois-sur-encre); }
 .pied__bas {
-  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px;
+  display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 14px;
   padding-top: 26px; border-top: 1px solid var(--ligne-encre);
   font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em;
 }
@@ -727,7 +735,7 @@ a { color: inherit; }
 
 .visionneuse {
   position: fixed; inset: 0; z-index: 120;
-  background: rgba(12, 15, 16, 0.96);
+  background: #0c0f10;
   display: none; place-items: center; padding: 70px 20px;
 }
 .visionneuse.est-ouverte { display: grid; }
@@ -739,7 +747,7 @@ a { color: inherit; }
   letter-spacing: 0.1em; color: rgba(237, 237, 234, 0.72);
 }
 .visionneuse__fermer, .visionneuse__nav {
-  position: absolute; background: none; cursor: pointer;
+  position: absolute; background: rgba(12, 15, 16, 0.8); cursor: pointer;
   border: 1px solid rgba(237, 237, 234, 0.28); border-radius: var(--rayon);
   color: var(--papier); font-family: var(--font-mono); font-size: 0.74rem;
   letter-spacing: 0.1em; text-transform: uppercase; padding: 11px 16px;
@@ -749,6 +757,7 @@ a { color: inherit; }
 .visionneuse__fermer { top: 20px; right: 20px; }
 .visionneuse__nav--prec { left: 20px; top: 50%; transform: translateY(-50%); }
 .visionneuse__nav--suiv { right: 20px; top: 50%; transform: translateY(-50%); }
+.visionneuse__nav { font-size: 1.1rem; padding: 8px 16px; }
 
 /* =========================================================================
    APPARITIONS AU DÉFILEMENT
@@ -783,8 +792,7 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
 }
 
 @media (max-width: 860px) {
-  .metiers, .galerie, .avis-grille, .infos-grille { grid-template-columns: repeat(2, 1fr); }
-  .galerie { --colonnes: 2; }
+  .metiers, .avis-grille, .infos-grille { grid-template-columns: repeat(2, 1fr); }
   .pied__cols { grid-template-columns: 1fr 1fr; }
 }
 
@@ -805,7 +813,7 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
   }
   .hero__legende { order: 3; flex-basis: 100%; gap: 4px 12px; }
   /* Galerie en deux colonnes : une seule colonne faisait plus de 4 600 px. */
-  .galerie { grid-auto-rows: auto; gap: 10px; }
+  .galerie { --colonnes: 2; grid-auto-rows: auto; gap: 10px; }
   .oeuvre { aspect-ratio: 4 / 5; }
   .oeuvre--paysage { grid-column: span 2; aspect-ratio: 8 / 5; }
   .oeuvre__voile { padding: 12px; }
@@ -825,9 +833,14 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
   .appel-mobile { display: flex; }
   /* La barre d'appel flottante ne doit pas recouvrir les liens du pied. */
   .pied { padding-bottom: 100px; }
-  /* Visionneuse : les flèches passent en bas de l'écran. */
+}
+/* Visionneuse sur téléphone et tablette : les flèches passent en bas de
+   l'écran, hors de la photo. */
+@media (max-width: 1100px) {
   .visionneuse__nav { top: auto; bottom: 20px; transform: none; }
 }
+/* Pages légales : pas de barre d'appel, donc pas de marge pour elle. */
+.pied.pied--court { padding: 32px 0; }
 
 /* =========================================================================
    TDS FERMETURES — éléments de marque
@@ -985,8 +998,9 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
   .appel-mobile .btn { padding: 14px 10px; letter-spacing: 0.06em; font-size: 0.72rem; white-space: nowrap; }
   .engagements { grid-template-columns: 1fr; gap: 22px; }
   .aides__detail { grid-template-columns: 1fr; gap: 26px; }
-  .menu-mobile .btn--clair { margin-top: 10px; }
   .appel-mobile .btn--sombre { border-color: rgba(247, 247, 245, 0.5); }
+  /* Boutons empilés : même largeur, sur toute la ligne. */
+  .hero__actions .btn, .rea__actions .btn, .devis__secours-actions .btn, .devis__pied .btn { flex: 1 1 100%; }
   /* Pages légales : le bouton de retour reste visible sur téléphone. */
   .nav-actions .btn--retour { display: inline-flex; }
 }
@@ -1012,6 +1026,12 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
 
 .page-legale { padding-top: 150px; }
 .page-legale h2 { font-size: clamp(1.3rem, 2.4vw, 1.6rem); margin: 2em 0 0.5em; }
+
+/* Menu mobile : boutons séparés et de largeur raisonnable sur tablette. */
+.menu-mobile .btn { max-width: 420px; }
+.menu-mobile .btn--clair { margin-top: 10px; }
+/* Visionneuse ouverte : la barre d'appel ne transparaît plus. */
+body:has(.visionneuse.est-ouverte) .appel-mobile { visibility: hidden; }
 
 /* Impression : tout est visible, même ce qui n'a pas encore défilé. */
 @media print {

@@ -241,12 +241,12 @@
       {
         "sigle": "TVA 5,5 %",
         "titre": "Rénovation énergétique",
-        "texte": "Même logement, avec des fenêtres ou portes-fenêtres qui atteignent les performances thermiques exigées (voir ci-dessous)."
+        "texte": "Même logement, avec des fenêtres ou portes-fenêtres qui atteignent les performances thermiques exigées (voir ci‑dessous)."
       },
       {
-        "sigle": "Primes et éco-PTZ",
+        "sigle": "Primes et éco‑PTZ",
         "titre": "Réservés aux entreprises RGE",
-        "texte": "MaPrimeRénov', primes CEE et éco-PTZ exigent une entreprise qualifiée RGE, ce que TDS Fermetures n'est pas à ce jour."
+        "texte": "MaPrimeRénov', primes CEE et éco‑PTZ exigent une entreprise qualifiée RGE, ce que TDS Fermetures n'est pas à ce jour."
       }
     ],
     "qualification": "TDS Fermetures n'est pas qualifiée RGE. Les taux de TVA réduits ne l'exigent pas : ils dépendent de l'âge du logement et des produits posés.",
