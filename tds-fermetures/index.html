@@ -12,7 +12,7 @@
 <link rel="canonical" href="https://thibaultlbrt21-glitch.github.io/Template-sites-internets/tds-fermetures/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TDS Fermetures">
-<meta property="og:title" content="TDS Fermetures — Portes, fenêtres, volets, portails, automatismes">
+<meta property="og:title" content="TDS Fermetures — Fenêtres, volets, portes et portails à Dijon et en Côte-d'Or">
 <meta property="og:description" content="Pose de fenêtres, volets, portes, portails et automatismes à Dijon et en Côte-d'Or. Devis au 06 58 00 82 26.">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:url" content="https://thibaultlbrt21-glitch.github.io/Template-sites-internets/tds-fermetures/">
@@ -26,7 +26,7 @@
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="stylesheet" href="assets/css/style.css">
 <!-- Sans JavaScript, les blocs qui apparaissent au défilement restent visibles. -->
-<noscript><style>.apparait{opacity:1;transform:none}.hero__repere,.devis__pied,.devis__jauge{display:none}</style></noscript>
+<noscript><style>.apparait{opacity:1;transform:none}.hero__repere,.devis__pied,.devis__jauge,#formDevis .volet,.burger{display:none}</style></noscript>
 
 <script type="application/ld+json">
 {
@@ -40,7 +40,6 @@
   "image": "https://thibaultlbrt21-glitch.github.io/Template-sites-internets/tds-fermetures/assets/images/partage.jpg",
   "telephone": "+33658008226",
   "email": "tiagotdsfermetures.21@hotmail.com",
-  "founder": { "@type": "Person", "name": "Tiago Dos Santos" },
   "vatID": "FR53108023805",
   "address": {
     "@type": "PostalAddress",
@@ -483,7 +482,7 @@
           <div class="metier__profondeur">
             <span class="metier__num">TVA 5,5 %</span>
             <h3>Rénovation énergétique</h3>
-            <p>Même logement, avec des fenêtres ou portes-fenêtres qui atteignent les performances thermiques exigées (voir ci‑dessous).</p>
+            <p>Même logement, en remplacement de fenêtres ou portes-fenêtres existantes, avec des produits qui atteignent les performances thermiques exigées (voir ci‑dessous).</p>
           </div>
         </article>
         <article class="metier" data-tilt>
@@ -497,14 +496,14 @@
 
       <div class="aides__detail apparait d2">
         <figure class="aides__produit">
-          <img src="assets/images/fenetre-deux-vantaux.jpg" alt="Fenêtre deux vantaux à cadre noir, vue de l'extérieur" loading="lazy" decoding="async">
+          <img src="assets/images/fenetre-deux-vantaux.jpg" alt="Fenêtre deux vantaux à cadre noir, vue de l'extérieur" width="816" height="1000" loading="lazy" decoding="async">
           <figcaption>Photo FenêtréA</figcaption>
         </figure>
         <div>
           <span class="bloc-info__label">Les critères techniques</span>
           <p>
-            Pour la TVA à 5,5 %, une fenêtre ou une porte-fenêtre
-            doit atteindre
+            Pour la TVA à 5,5 %, une fenêtre ou une porte-fenêtre posée en
+            remplacement d'une menuiserie existante doit atteindre
             <strong>Uw ≤ 1,3 W/m²·K avec Sw ≥ 0,3</strong>, ou
             <strong>Uw ≤ 1,7 W/m²·K avec Sw ≥ 0,36</strong>. Ces valeurs figurent
             sur la fiche technique du fabricant.
@@ -514,7 +513,7 @@
           <span class="bloc-info__label">Qualification de l'entreprise</span>
           <p data-cms="aides.qualification">
             TDS Fermetures n'est pas qualifiée RGE. Les taux de TVA réduits ne
-            l'exigent pas : ils dépendent de l'âge du logement et des produits posés.
+            l'exigent pas : ils dépendent de l'âge du logement, de la nature des travaux et des produits posés.
           </p>
         </div>
       </div>
@@ -533,7 +532,7 @@
     <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center;" data-split>
       <figure class="apparait entreprise__logo" style="margin:0;">
         <img src="assets/logo/tds-fermetures.svg" data-cms-image="images.entreprise"
-             alt="Logo TDS Fermetures" loading="lazy" decoding="async">
+             alt="Logo TDS Fermetures" width="240" height="196" loading="lazy" decoding="async">
       </figure>
       <div>
         <span class="annot apparait">L'entreprise</span>
@@ -546,7 +545,7 @@
           Basée à Dijon, TDS Fermetures intervient dans toute la Côte-d'Or, avec
           la même exigence de pose pour chaque porte, fenêtre, volet ou portail.
         </p>
-        <div class="apparait d2" style="margin-top:30px;display:grid;grid-template-columns:minmax(0,max-content);gap:12px;">
+        <div class="apparait d2 entreprise__actions" style="margin-top:30px;display:grid;grid-template-columns:minmax(0,max-content);gap:12px;">
           <a href="#devis" class="btn btn--plein">Parler de votre projet</a>
           <a href="tel:+33658008226" class="btn">Appeler le 06 58 00 82 26</a>
         </div>
@@ -636,7 +635,7 @@
               <label><input type="radio" name="ouvrage" value="Visiophone"> Visiophone
                 <span class="choix__note">Portail, entrée</span></label>
               <label><input type="radio" name="ouvrage" value="Service après-vente"> SAV
-                <span class="choix__note">Réglage, dépannage</span></label>
+                <span class="choix__note">Réglage, réparation</span></label>
             </div>
             <p class="champ__erreur" id="ouvrageErreur" aria-live="polite"></p>
           </fieldset>
@@ -647,7 +646,7 @@
             <div class="duo">
               <div class="champ">
                 <label for="quantite">Quantité ou dimensions</label>
-                <input type="text" id="quantite" name="quantite" placeholder="ex. 4 fenêtres, portail 3,5 m">
+                <input type="text" id="quantite" name="quantite" maxlength="80" placeholder="ex. 4 fenêtres, portail 3,5 m">
               </div>
               <div class="champ">
                 <label for="motorisation">Motorisation</label>
@@ -666,7 +665,7 @@
                   <option value="Non précisé">Je ne sais pas</option>
                   <option value="Remplacement de l'existant">Remplacement de l'existant</option>
                   <option value="Construction neuve ou extension">Construction neuve ou extension</option>
-                  <option value="Dépannage ou réglage">Dépannage ou réglage</option>
+                  <option value="Réglage ou réparation (SAV)">Réglage ou réparation (SAV)</option>
                 </select>
               </div>
               <div class="champ">
@@ -701,15 +700,15 @@
               <label for="budget">Budget envisagé</label>
               <select id="budget" name="budget">
                 <option value="Non défini">Je ne sais pas encore</option>
-                <option value="Moins de 3 000 €">Moins de 3 000 €</option>
-                <option value="3 000 à 8 000 €">3 000 à 8 000 €</option>
-                <option value="8 000 à 15 000 €">8 000 à 15 000 €</option>
-                <option value="Plus de 15 000 €">Plus de 15 000 €</option>
+                <option value="Moins de 3 000 €">Moins de 3 000 €</option>
+                <option value="3 000 à 8 000 €">3 000 à 8 000 €</option>
+                <option value="8 000 à 15 000 €">8 000 à 15 000 €</option>
+                <option value="Plus de 15 000 €">Plus de 15 000 €</option>
               </select>
             </div>
             <div class="champ">
               <label for="adresseChantier">Commune</label>
-              <input type="text" id="adresseChantier" name="adresseChantier" autocomplete="address-level2" placeholder="Votre commune">
+              <input type="text" id="adresseChantier" name="adresseChantier" maxlength="80" autocomplete="address-level2" placeholder="Votre commune">
             </div>
           </fieldset>
 
@@ -719,25 +718,25 @@
             <div class="duo">
               <div class="champ">
                 <label for="nom">Nom <span class="obl">*</span></label>
-                <input type="text" id="nom" name="nom" required autocomplete="name" placeholder="Votre nom">
+                <input type="text" id="nom" name="nom" maxlength="80" required aria-describedby="nomErreur" autocomplete="name" placeholder="Votre nom">
                 <p class="champ__erreur" id="nomErreur" aria-live="polite"></p>
               </div>
               <div class="champ">
                 <label for="courriel">E-mail <span class="obl">*</span></label>
-                <input type="email" id="courriel" name="courriel" required autocomplete="email" placeholder="vous@exemple.fr">
+                <input type="email" id="courriel" name="courriel" maxlength="120" required aria-describedby="courrielErreur" autocomplete="email" placeholder="vous@exemple.fr">
                 <p class="champ__erreur" id="courrielErreur" aria-live="polite"></p>
               </div>
             </div>
             <div class="champ">
               <label for="telephone">Téléphone <span class="obl">*</span></label>
-              <input type="tel" id="telephone" name="telephone" required autocomplete="tel"
+              <input type="tel" id="telephone" name="telephone" required aria-describedby="telephoneErreur" autocomplete="tel"
                      pattern="^[0-9+\(\)\s.\-]{6,20}$" placeholder="06 12 34 56 78">
               <p class="champ__erreur" id="telephoneErreur" aria-live="polite"></p>
             </div>
             <p class="devis__note">
               Votre demande est préparée par le site et envoyée depuis votre propre
-              messagerie à TDS Fermetures, uniquement pour vous répondre et établir
-              un devis. Vous pouvez y accéder, la rectifier ou la faire effacer en
+              messagerie à TDS Fermetures, uniquement pour vous répondre, établir
+              un devis ou assurer le service après-vente. Vous pouvez y accéder, la rectifier ou la faire effacer en
               écrivant à tiagotdsfermetures.21@hotmail.com. Durée de conservation,
               droits et réclamation auprès de la CNIL : voir la
               <a href="politique-de-confidentialite.html">politique de confidentialité</a>.
@@ -751,9 +750,9 @@
             <p class="devis__etat" id="etatDevis" role="status" aria-live="polite"></p>
           </div>
           <div class="devis__secours" id="secoursDevis" hidden>
-            <p>Il ne reste qu'à l'envoyer : le bouton ci-dessous ouvre votre
-              messagerie avec l'e-mail déjà rédigé pour TDS Fermetures. Vérifiez-le,
-              puis appuyez sur « Envoyer ».</p>
+            <p>Il ne reste qu'à l'envoyer : le bouton ci‑dessous ouvre votre
+              messagerie avec l'e-mail déjà rédigé pour TDS Fermetures. Vérifiez-le,
+              puis envoyez-le.</p>
             <div class="devis__secours-actions">
               <a class="btn btn--plein" id="secoursMail" href="#">Ouvrir ma messagerie</a>
               <a class="btn btn--clair" href="tel:+33658008226">Appeler le 06 58 00 82 26</a>
@@ -879,7 +878,7 @@
       </div>
     </div>
     <div class="pied__bas">
-      <span>&copy; <span id="annee"></span> <span data-cms="marque.nom">TDS Fermetures</span> — SARL au capital de 5 000 € — RCS Dijon 108 023 805 — 24 rue Lavoisier, 21000 Dijon</span>
+      <span>&copy; <span id="annee">2026</span> <span data-cms="marque.nom">TDS Fermetures</span> — SARL au capital de 5 000 € — RCS Dijon 108 023 805 — 24 rue Lavoisier, 21000 Dijon</span>
       <div class="pied__legal">
         <a href="mentions-legales.html">Mentions légales</a>
         <a href="politique-de-confidentialite.html">Politique de confidentialité</a>

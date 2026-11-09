@@ -223,7 +223,11 @@ naissance, nationalité du gérant.
   gratuit ou payant du devis. Sinon, remplacer « dépannage » par « SAV de
   nos installations »
 - TVA à 5,5 % : faire relire la section TVA par son comptable (critères
-  Uw/Sw de l'article 18 bis de l'annexe IV du CGI)
+  article 278-0 bis A du CGI et articles 30-0 D et suivants de l'annexe IV,
+  issus de l'arrêté du 4 décembre 2024, en vigueur depuis le 1er janvier
+  2025 : remplacement d'une menuiserie existante, Uw/Sw). Lui demander aussi
+  si les portes d'entrée et volets isolants qu'il pose relèvent du 5,5 % :
+  le site ne parle que des fenêtres)
 
 **Règles confiées à Claude** :
 

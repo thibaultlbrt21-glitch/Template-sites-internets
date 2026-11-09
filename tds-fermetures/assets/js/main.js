@@ -52,6 +52,15 @@
   }
   mesure();
   auDefilement();
+
+  // Barre d'appel masquée pendant que le devis est à l'écran : elle
+  // recouvrait le formulaire, et le panneau final propose déjà d'appeler.
+  var sectionDevis = document.getElementById("devis");
+  if (sectionDevis && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (entrees) {
+      document.body.classList.toggle("devis-visible", entrees[0].isIntersecting);
+    }).observe(sectionDevis);
+  }
   window.addEventListener("scroll", function () {
     if (!defilementPrevu) { defilementPrevu = true; window.requestAnimationFrame(auDefilement); }
   }, { passive: true });
@@ -435,6 +444,7 @@
         var err = document.getElementById(champ.id + "Erreur");
         var message = messageErreur(champ);
         if (err) err.textContent = message;
+        champ.setAttribute("aria-invalid", message ? "true" : "false");
         if (message) ok = false;
       });
       return ok;
@@ -451,7 +461,10 @@
           return;
         }
         var e = document.getElementById(champ.id + "Erreur");
-        if (e && e.textContent) e.textContent = messageErreur(champ);
+        if (e && e.textContent) {
+          e.textContent = messageErreur(champ);
+          champ.setAttribute("aria-invalid", e.textContent ? "true" : "false");
+        }
       });
     });
 
@@ -486,14 +499,19 @@
         ["Motorisation", valeur("motorisation")],
         ["Type de projet", valeur("typePose")],
         ["Âge du logement", valeur("anciennete")],
-        ["Description", valeur("details")],
         ["Délai", valeur("delai")],
         ["Budget", valeur("budget")],
         ["Commune", valeur("adresseChantier")],
         ["Nom", valeur("nom")],
         ["E-mail", valeur("courriel")],
-        ["Téléphone", valeur("telephone")]
-      ].filter(function (l) { return l[1] !== ""; });
+        ["Téléphone", valeur("telephone")],
+        // En dernier : la seule ligne longue. Si une messagerie tronque un
+        // lien trop long, les coordonnées sont déjà passées.
+        ["Description", valeur("details")]
+      ].filter(function (l) {
+        // Les choix laissés par défaut n'apprennent rien à Tiago.
+        return l[1] !== "" && l[1] !== "Non précisé" && l[1] !== "Non défini";
+      });
       var sujet = ouvrage === "Service après-vente" ?
         "Demande de SAV — " + valeur("nom") :
         "Demande de devis — " + ouvrage + " — " + valeur("nom");
@@ -529,7 +547,7 @@
       copieBloc.hidden = false;
       copieBtn.addEventListener("click", function () {
         var d = demande();
-        navigator.clipboard.writeText(d.sujet + "\n\n" + texteDemande(d)).then(function () {
+        navigator.clipboard.writeText((d.sujet + "\n\n" + texteDemande(d)).replace(/\r\n/g, "\n")).then(function () {
           copieEtat.textContent = "Demande copiée.";
         }, function () {
           copieEtat.textContent = "La copie n'a pas fonctionné.";

@@ -110,7 +110,9 @@ a { color: inherit; }
 .section { padding: clamp(72px, 11vh, 132px) 0; position: relative; }
 /* L'en-tête est fixe : sans cette marge, un lien d'ancre amènerait le titre
    de section juste dessous, à moitié caché. */
-.section[id], .hero[id] { scroll-margin-top: 96px; }
+/* Ancres et éléments focalisés : jamais sous l'en-tête fixe (ni, sur
+   téléphone, sous la barre d'appel). */
+html { scroll-padding-top: 96px; }
 .section--encre { background: var(--encre); color: var(--texte-sur-encre); }
 .section--encre h1, .section--encre h2, .section--encre h3 { color: var(--papier); }
 .section--encre p { color: var(--texte-doux-sur-encre); }
@@ -155,7 +157,7 @@ a { color: inherit; }
   letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500;
   padding: 15px 28px; border-radius: var(--rayon);
   border: 1px solid var(--encre); background: transparent; color: var(--encre);
-  text-decoration: none; cursor: pointer;
+  text-decoration: none; cursor: pointer; text-align: center;
   transition: background var(--transition), color var(--transition), border-color var(--transition), transform 0.2s;
 }
 .btn:active { transform: translateY(1px); }
@@ -174,6 +176,14 @@ a { color: inherit; }
   /* Après .btn:hover, sur lequel ils doivent l'emporter. */
   .section--encre .btn:not(.btn--plein):not(.btn--clair):hover { background: var(--papier); color: var(--encre); }
   .btn--sombre:hover { background: #000; border-color: #000; }
+  .hero__jauge button:hover::before { background: var(--texte-doux-sur-encre); }
+  .hero__pause:hover { border-color: var(--bois-sur-encre); color: var(--papier); }
+  .metier:hover { border-color: var(--bois); box-shadow: 0 24px 48px -22px rgba(35, 35, 34, 0.35); }
+  .filtre:hover { border-color: var(--encre); color: var(--encre); }
+  .oeuvre:hover::after { width: 100%; }
+  .oeuvre:hover img { transform: scale(1.06); }
+  .choix label:hover { border-color: var(--bois-sur-encre); }
+  .visionneuse__fermer:hover, .visionneuse__nav:hover { background: rgba(237, 237, 234, 0.12); border-color: var(--papier); }
 }
 
 .btn--sm { padding: 11px 19px; font-size: 0.72rem; }
@@ -243,6 +253,7 @@ a { color: inherit; }
   background: var(--encre); color: var(--papier);
   padding: 92px 28px 40px;
   flex-direction: column;
+  overflow-y: auto; overscroll-behavior: contain;
   transform: translateY(-100%);
   /* Fermé, le menu est aussi invisible : ses liens sortent de l'ordre du
      clavier. visibility attend la fin du glissement pour basculer. */
@@ -354,7 +365,6 @@ a { color: inherit; }
   background: #808079; transition: background var(--transition);
 }
 .hero__jauge button[aria-current="true"]::before { background: var(--bois-sur-encre); }
-.hero__jauge button:hover::before { background: var(--texte-doux-sur-encre); }
 .hero__legende { margin: 0; display: flex; gap: 12px; flex-wrap: wrap; text-transform: uppercase; flex: 1 1 240px; }
 .hero__legende-num { color: var(--plan-sur-encre); }
 .hero__legende-texte { color: var(--papier); }
@@ -365,7 +375,6 @@ a { color: inherit; }
   color: var(--texte-doux-sur-encre); font: inherit; letter-spacing: 0.12em; text-transform: uppercase;
   padding: 6px 11px; transition: border-color var(--transition), color var(--transition);
 }
-.hero__pause:hover { border-color: var(--bois-sur-encre); color: var(--papier); }
 /* Une seule photo : rien à faire défiler. */
 .hero__repere.est-fixe .hero__jauge,
 .hero__repere.est-fixe .hero__legende-num,
@@ -405,10 +414,6 @@ a { color: inherit; }
   border: 1px solid var(--ligne);
   border-radius: var(--rayon);
   transition: transform 0.25s ease-out, box-shadow var(--transition), border-color var(--transition);
-}
-.metier:hover {
-  border-color: var(--bois);
-  box-shadow: 0 24px 48px -22px rgba(35, 35, 34, 0.35);
 }
 .metier__num {
   font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em;
@@ -529,7 +534,6 @@ a { color: inherit; }
   border: 1px solid var(--ligne); background: transparent; color: var(--texte-doux);
   cursor: pointer; transition: all var(--transition);
 }
-.filtre:hover { border-color: var(--encre); color: var(--encre); }
 .filtre[aria-pressed="true"] { background: var(--encre); border-color: var(--encre); color: var(--papier); }
 
 /* Mosaïque (3 colonnes : 5 photos en largeur et 8 en hauteur remplissent
@@ -554,9 +558,8 @@ a { color: inherit; }
   content: ""; position: absolute; left: 0; bottom: 0; height: 3px; width: 0;
   background: var(--bois); transition: width 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
-.oeuvre:hover::after, .oeuvre:focus-visible::after { width: 100%; }
+.oeuvre:focus-visible::after { width: 100%; }
 .oeuvre img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1); }
-.oeuvre:hover img { transform: scale(1.06); }
 .oeuvre__voile {
   position: absolute; inset: 0;
   background: linear-gradient(to top, rgba(35, 35, 34, 0.9) 0%, rgba(35, 35, 34, 0.15) 45%, transparent 70%);
@@ -620,7 +623,6 @@ a { color: inherit; }
   transition: border-color var(--transition), background-color var(--transition);
   font-size: 0.95rem;
 }
-.choix label:hover { border-color: var(--bois-sur-encre); }
 /* Nombre impair de choix : le dernier (« SAV ») prend toute la ligne. */
 .choix label:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .choix input { position: absolute; opacity: 0; pointer-events: none; }
@@ -753,7 +755,6 @@ a { color: inherit; }
   letter-spacing: 0.1em; text-transform: uppercase; padding: 11px 16px;
   transition: border-color var(--transition), background var(--transition);
 }
-.visionneuse__fermer:hover, .visionneuse__nav:hover { background: rgba(237, 237, 234, 0.12); border-color: var(--papier); }
 .visionneuse__fermer { top: 20px; right: 20px; }
 .visionneuse__nav--prec { left: 20px; top: 50%; transform: translateY(-50%); }
 .visionneuse__nav--suiv { right: 20px; top: 50%; transform: translateY(-50%); }
@@ -804,7 +805,6 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
 
   .hero__cadre { min-height: 92svh; padding: 118px 0 64px; }
   .hero__texte { max-width: none; }
-  .cartouche { display: none; }
   /* Sur la photo, le repère garde un fond sombre : lisible même sur les
      zones claires de l'image. */
   .hero__repere {
@@ -818,7 +818,7 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
   .oeuvre--paysage { grid-column: span 2; aspect-ratio: 8 / 5; }
   .oeuvre__voile { padding: 12px; }
 
-  .metiers, .metiers--quatre, .avis-grille, .infos-grille, .etapes, .choix, .duo {
+  .metiers, .metiers--quatre, .avis-grille, .infos-grille, .etapes, .duo {
     grid-template-columns: 1fr;
   }
   .etape { padding: 0 0 4px; }
@@ -902,7 +902,7 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
   background: #fff; border: 1px solid var(--ligne); border-top: 4px solid var(--bois);
   border-radius: var(--rayon); padding: clamp(28px, 6vw, 64px);
 }
-.entreprise__logo img { width: min(100%, 360px); margin: 0 auto; }
+.entreprise__logo img { width: min(100%, 360px); height: auto; margin: 0 auto; }
 
 /* Aides : la fenêtre en photo produit, à côté des critères. */
 .aides__detail {
@@ -916,7 +916,7 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
   margin: 0; background: #fff; border: 1px solid var(--ligne); border-top: 3px solid var(--bois);
   border-radius: var(--rayon); padding: 18px 18px 10px;
 }
-.aides__produit img { width: 100%; max-width: 240px; margin: 0 auto; }
+.aides__produit img { width: 100%; max-width: 240px; height: auto; margin: 0 auto; }
 .aides__produit figcaption {
   margin-top: 8px; text-align: right;
   font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.06em; color: var(--texte-doux);
@@ -936,8 +936,6 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
 }
 .devis__secours p { margin: 0 0 14px; color: var(--texte-sur-encre); }
 .devis__secours-actions { display: flex; gap: 12px; flex-wrap: wrap; }
-.devis__secours { scroll-margin-bottom: 110px; }
-#formDevis { scroll-margin-top: 96px; }
 .devis__secours .devis__secours-aide { margin: 16px 0 0; font-size: 0.9rem; }
 .devis__secours-aide + .devis__secours-aide { margin-top: 8px; }
 .devis__secours-aide a { color: var(--bois-sur-encre); overflow-wrap: anywhere; }
@@ -984,6 +982,9 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
   }
   .hero__contenu > * { max-width: 620px; }
   .hero .grille-plan { display: none; }
+  /* Plus de place à côté du texte : le cartouche recouvrait la légende et
+     le bouton Pause du diaporama. */
+  .cartouche { display: none; }
 }
 @media (max-width: 860px) {
   .engagements { grid-template-columns: repeat(2, 1fr); }
@@ -1001,6 +1002,8 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
   .appel-mobile .btn--sombre { border-color: rgba(247, 247, 245, 0.5); }
   /* Boutons empilés : même largeur, sur toute la ligne. */
   .hero__actions .btn, .rea__actions .btn, .devis__secours-actions .btn, .devis__pied .btn { flex: 1 1 100%; }
+  .entreprise__actions { grid-template-columns: 1fr !important; }
+  .devis__secours .btn { padding-inline: 16px; letter-spacing: 0.06em; }
   /* Pages légales : le bouton de retour reste visible sur téléphone. */
   .nav-actions .btn--retour { display: inline-flex; }
 }
@@ -1032,8 +1035,37 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
 .menu-mobile .btn--clair { margin-top: 10px; }
 /* Visionneuse ouverte : la barre d'appel ne transparaît plus. */
 body:has(.visionneuse.est-ouverte) .appel-mobile { visibility: hidden; }
+/* Devis à l'écran : la barre d'appel s'efface (voir main.js). */
+body.devis-visible .appel-mobile { transform: translateY(150%); }
+
+@media (max-width: 720px) {
+  html { scroll-padding-bottom: 100px; }
+}
+/* Écran peu haut (téléphone à l'horizontale). */
+@media (max-height: 520px) {
+  .menu-mobile { padding-top: 72px; }
+  .menu-mobile ul a { font-size: 1.3rem; padding: 9px 0; }
+  .visionneuse { padding: 12px 110px; }
+  .visionneuse img { max-height: calc(100vh - 60px); }
+  .visionneuse figcaption { margin-top: 6px; }
+  .visionneuse__nav { top: 50%; bottom: auto; transform: translateY(-50%); }
+}
+@media (max-width: 720px) and (orientation: landscape) {
+  .galerie { --colonnes: 3; }
+}
+/* Sur ordinateur, la photo commence sous l'en-tête : le voile du haut,
+   prévu pour l'en-tête posé sur la photo, n'a plus d'objet. */
+@media (min-width: 961px) {
+  .hero__cadre::before { display: none; }
+}
 
 /* Impression : tout est visible, même ce qui n'a pas encore défilé. */
 @media print {
   .apparait { opacity: 1 !important; transform: none !important; }
+  .entete { position: absolute; }
+  .anim-portail .rea__portail { display: none; }
+  .anim-portail .rea__photo img, .anim-portail .rea__cadre i, .anim-portail .rea__etiquette { opacity: 1; transform: none; }
+  .hero__repere, .appel-mobile, .visionneuse, .devis__pied, .filtres, .burger, .cartouche, .grille-plan { display: none !important; }
+  .hero, .section--encre, .pied { background: #fff !important; color: #232322 !important; }
+  .hero h1, .hero__texte, .section--encre h2, .section--encre h3, .section--encre p, .btn--clair { color: #232322 !important; }
 }
