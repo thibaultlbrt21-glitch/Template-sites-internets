@@ -26,7 +26,7 @@
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="stylesheet" href="assets/css/style.css">
 <!-- Sans JavaScript, les blocs qui apparaissent au défilement restent visibles. -->
-<noscript><style>.apparait{opacity:1;transform:none}</style></noscript>
+<noscript><style>.apparait{opacity:1;transform:none}.hero__repere,.devis__pied,.devis__jauge{display:none}</style></noscript>
 
 <script type="application/ld+json">
 {
@@ -601,6 +601,7 @@
 
       <div class="devis">
         <form id="formDevis" class="apparait d1" novalidate>
+          <noscript><p class="devis__note">Ce formulaire a besoin de JavaScript : appelez le 06 58 00 82 26 ou écrivez à <a href="mailto:tiagotdsfermetures.21@hotmail.com">tiagotdsfermetures.21@hotmail.com</a>.</p></noscript>
           <div class="devis__jauge" aria-hidden="true">
             <span class="est-faite"></span><span></span><span></span><span></span>
           </div>
@@ -679,7 +680,7 @@
             </div>
             <div class="champ">
               <label for="details">Décrivez votre projet</label>
-              <textarea id="details" name="details" rows="3" maxlength="800" placeholder="Matériau, coloris, accès, état de l'existant…"></textarea>
+              <textarea id="details" name="details" rows="3" maxlength="600" placeholder="Matériau, coloris, accès, état de l'existant…"></textarea>
             </div>
           </fieldset>
 

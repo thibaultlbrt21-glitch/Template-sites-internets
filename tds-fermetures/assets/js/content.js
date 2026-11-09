@@ -165,11 +165,12 @@
       }
 
       var img = document.createElement("img");
+      // loading="lazy" avant src : posé après, l'image partirait tout de suite.
+      img.setAttribute("loading", "lazy");
+      img.setAttribute("decoding", "async");
       img.setAttribute("src", o.image || "");
       img.setAttribute("alt", rempli(o.alt) ? o.alt : (o.titre || ""));
       if (rempli(o.cadrage)) img.style.objectPosition = o.cadrage;
-      img.setAttribute("loading", "lazy");
-      img.setAttribute("decoding", "async");
       bouton.appendChild(img);
 
       var voile = el("span", "oeuvre__voile");

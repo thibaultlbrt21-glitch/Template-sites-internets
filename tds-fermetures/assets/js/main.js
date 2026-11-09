@@ -70,7 +70,8 @@
   // Menu ouvert : le reste de la page devient inerte, la touche Tab reste
   // dans le menu. Fermé, le menu est invisible et hors de l'ordre du
   // clavier (visibility: hidden dans la feuille de style).
-  var horsMenu = [entete, document.getElementById("principal"), document.querySelector(".pied")];
+  var horsMenu = [entete, document.getElementById("principal"), document.querySelector(".pied"),
+    document.querySelector(".appel-mobile"), document.querySelector(".skip-link")];
   function fermeMenu() {
     if (!menuMobile || !menuMobile.classList.contains("est-ouvert")) return;
     menuMobile.classList.remove("est-ouvert");
@@ -114,7 +115,9 @@
         entrees.forEach(function (e) {
           if (e.isIntersecting) { e.target.classList.add("est-visible"); io.unobserve(e.target); }
         });
-      }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+      // Seuil 0 : un bloc plus haut que l'écran (la galerie, sur un
+      // téléphone à l'horizontale) n'atteindrait jamais 10 % visibles.
+      }, { threshold: 0, rootMargin: "0px 0px -50px 0px" });
       aReveler.forEach(function (el) { io.observe(el); });
     }
   }
@@ -400,12 +403,17 @@
       btnEnvoi.classList.add("btn--plein");
       var premier = volets[courante].querySelector("input, select, textarea");
       if (focalise && premier) premier.focus({ preventScroll: true });
+      // Le haut du formulaire est sorti de l'écran (étape précédente plus
+      // longue) : on y remonte pour montrer le titre de la nouvelle étape.
+      if (focalise && form.getBoundingClientRect().top < 80) {
+        form.scrollIntoView({ block: "start", behavior: reduit ? "auto" : "smooth" });
+      }
     }
 
     function messageErreur(champ) {
       if (champ.validity.valueMissing) return "Champ obligatoire.";
-      if (champ.validity.typeMismatch && champ.type === "email") return "Vérifiez l'adresse e-mail (exemple : vous@exemple.fr).";
-      if (champ.validity.patternMismatch && champ.type === "tel") return "Vérifiez le numéro (exemple : 06 12 34 56 78).";
+      if (champ.validity.typeMismatch && champ.type === "email") return "Vérifiez l'adresse e-mail (exemple\u00a0: vous@exemple.fr).";
+      if (champ.validity.patternMismatch && champ.type === "tel") return "Vérifiez le numéro (exemple\u00a0: 06 12 34 56 78).";
       return "";
     }
 
@@ -495,8 +503,8 @@
     // message de sa part, pas comme une notification de robot.
     function texteDemande(d) {
       return ["Bonjour,", "", "Voici ma demande, préparée sur le site de TDS Fermetures :", ""]
-        .concat(d.lignes.map(function (l) { return l[0] + " : " + l[1]; }))
-        .concat(["", "Merci de me recontacter."]).join("\n");
+        .concat(d.lignes.map(function (l) { return l[0] + " : " + l[1].replace(/\r?\n/g, "\r\n"); }))
+        .concat(["", "Merci de me recontacter."]).join("\r\n");
     }
 
     function lienMessagerie(d) {
