@@ -850,7 +850,7 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
   text-decoration: none; color: var(--encre); white-space: nowrap;
   padding: 10px 4px;
 }
-.entete__tel::before { content: "\260E\FE0E "; color: var(--bois-texte); }
+.entete__tel::before { content: "\260E\FE0E\A0"; color: var(--bois-texte); }
 .entete:not(.est-pose) .entete__tel { color: #fff; }
 .entete:not(.est-pose) .entete__tel::before { color: var(--bois); }
 .nav-liens a:hover { color: var(--bois-texte); }
@@ -923,6 +923,14 @@ body.est-descendu .appel-mobile { transform: translateY(0); }
 }
 .devis__secours p { margin: 0 0 14px; color: var(--texte-sur-encre); }
 .devis__secours-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.devis__secours { scroll-margin-bottom: 110px; }
+.devis__secours .devis__secours-aide { margin: 16px 0 0; font-size: 0.9rem; }
+.devis__secours-aide + .devis__secours-aide { margin-top: 8px; }
+.devis__secours-aide a { color: var(--bois-sur-encre); overflow-wrap: anywhere; }
+.lien-bouton {
+  padding: 0; border: 0; background: none; font: inherit; color: var(--bois-sur-encre);
+  text-decoration: underline; cursor: pointer;
+}
 .devis__merci {
   padding: 34px; border: 1px solid var(--bois-sur-encre); border-left: 6px solid var(--bois);
   border-radius: var(--rayon); background: var(--orange-voile); align-self: start;

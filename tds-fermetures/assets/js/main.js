@@ -17,7 +17,8 @@
     // demande est préparée et le visiteur l'envoie depuis sa messagerie.
     // Vide tant que le site n'est pas sur son domaine définitif ; à
     // réactiver alors, en mettant à jour la politique de confidentialité,
-    // la mention sous le formulaire et la Content-Security-Policy.
+    // la mention sous le formulaire, la phrase d'introduction du devis
+    // (index.html et site.json) et la Content-Security-Policy.
     serviceEnvoi: "",
 
     // Durée d'affichage de chaque photo de l'accueil, en millisecondes.
@@ -372,6 +373,8 @@
     var btnPrec = document.getElementById("precedent");
     var btnSuiv = document.getElementById("suivant");
     var btnEnvoi = document.getElementById("envoyer");
+    // Sans service d'envoi, le site prépare la demande ; avec, il l'envoie.
+    if (SITE_CONFIG.serviceEnvoi) btnEnvoi.textContent = "Envoyer la demande";
     var etat = document.getElementById("etatDevis");
     var annonce = document.getElementById("etapeCourante");
     var courante = 0;
@@ -394,14 +397,15 @@
       etat.className = "devis__etat";
       var aide = document.getElementById("secoursDevis");
       if (aide) aide.hidden = true;
+      btnEnvoi.classList.add("btn--plein");
       var premier = volets[courante].querySelector("input, select, textarea");
       if (focalise && premier) premier.focus({ preventScroll: true });
     }
 
     function messageErreur(champ) {
       if (champ.validity.valueMissing) return "Champ obligatoire.";
-      if (champ.validity.typeMismatch && champ.type === "email") return "Adresse e-mail invalide.";
-      if (champ.validity.patternMismatch && champ.type === "tel") return "Numéro invalide.";
+      if (champ.validity.typeMismatch && champ.type === "email") return "Vérifiez l'adresse e-mail (exemple : vous@exemple.fr).";
+      if (champ.validity.patternMismatch && champ.type === "tel") return "Vérifiez le numéro (exemple : 06 12 34 56 78).";
       return "";
     }
 
@@ -481,14 +485,47 @@
         ["E-mail", valeur("courriel")],
         ["Téléphone", valeur("telephone")]
       ].filter(function (l) { return l[1] !== ""; });
-      return { sujet: "Demande de devis — " + ouvrage + " — " + valeur("nom"), lignes: lignes };
+      var sujet = ouvrage === "Service après-vente" ?
+        "Demande de SAV — " + valeur("nom") :
+        "Demande de devis — " + ouvrage + " — " + valeur("nom");
+      return { sujet: sujet, lignes: lignes };
+    }
+
+    // Le visiteur envoie l'e-mail en son nom : il doit se lire comme un
+    // message de sa part, pas comme une notification de robot.
+    function texteDemande(d) {
+      return ["Bonjour,", "", "Voici ma demande, préparée sur le site de TDS Fermetures :", ""]
+        .concat(d.lignes.map(function (l) { return l[0] + " : " + l[1]; }))
+        .concat(["", "Merci de me recontacter."]).join("\n");
     }
 
     function lienMessagerie(d) {
-      var corps = ["Demande de devis envoyée depuis le site :", ""].concat(
-        d.lignes.map(function (l) { return l[0] + " : " + l[1]; })).join("\n");
       return "mailto:" + destinataire() +
-        "?subject=" + encodeURIComponent(d.sujet) + "&body=" + encodeURIComponent(corps);
+        "?subject=" + encodeURIComponent(d.sujet) + "&body=" + encodeURIComponent(texteDemande(d));
+    }
+
+    // « Copier ma demande » : pour qui n'a pas de messagerie installée
+    // (webmail seulement). Proposé seulement si le navigateur sait copier.
+    // Le lien est recalculé au clic : le visiteur a pu corriger un champ
+    // après avoir préparé sa demande.
+    var lienMail = document.getElementById("secoursMail");
+    if (lienMail) lienMail.addEventListener("click", function () {
+      lienMail.setAttribute("href", lienMessagerie(demande()));
+    });
+
+    var copieBloc = document.getElementById("copieBloc");
+    var copieBtn = document.getElementById("copieDevis");
+    var copieEtat = document.getElementById("copieEtat");
+    if (copieBloc && copieBtn && navigator.clipboard && window.isSecureContext) {
+      copieBloc.hidden = false;
+      copieBtn.addEventListener("click", function () {
+        var d = demande();
+        navigator.clipboard.writeText(d.sujet + "\n\n" + texteDemande(d)).then(function () {
+          copieEtat.textContent = "Demande copiée.";
+        }, function () {
+          copieEtat.textContent = "La copie n'a pas fonctionné.";
+        });
+      });
     }
 
     var secours = document.getElementById("secoursDevis");
@@ -509,6 +546,9 @@
       etat.className = "devis__etat";
       var lien = document.getElementById("secoursMail");
       lien.setAttribute("href", lienMessagerie(d));
+      // Un seul bouton orange : l'action qui reste à faire.
+      btnEnvoi.classList.remove("btn--plein");
+      if (copieEtat) copieEtat.textContent = "";
       secours.hidden = false;
       lien.focus({ preventScroll: true });
       secours.scrollIntoView({ block: "nearest", behavior: reduit ? "auto" : "smooth" });
@@ -576,8 +616,11 @@
 
       // Piège à robots rempli : on fait comme si tout allait bien, sans rien
       // envoyer.
+      // (Seulement avec l'envoi automatique : en mode messagerie, rien ne
+      // part sans le visiteur, et un remplissage automatique du navigateur
+      // ne doit pas afficher un faux « merci ».)
       var piege = document.getElementById("siteWeb");
-      if (piege && piege.value) { reussite(); return; }
+      if (piege && piege.value && SITE_CONFIG.serviceEnvoi) { reussite(); return; }
 
       // On revalide toutes les étapes : le visiteur a pu revenir en arrière
       // et vider un champ déjà validé.

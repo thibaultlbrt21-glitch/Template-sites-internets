@@ -241,7 +241,7 @@
       {
         "sigle": "TVA 5,5 %",
         "titre": "Rénovation énergétique",
-        "texte": "Même logement, en remplacement de fenêtres ou portes-fenêtres existantes, avec des produits qui atteignent les performances thermiques exigées (voir ci-dessous)."
+        "texte": "Même logement, avec des fenêtres ou portes-fenêtres qui atteignent les performances thermiques exigées (voir ci-dessous)."
       },
       {
         "sigle": "Primes et éco-PTZ",
@@ -280,7 +280,7 @@
   },
   "devis": {
     "titre": "Votre demande de devis",
-    "texte": "Quatre étapes, deux minutes. Votre demande est transmise par e-mail à TDS Fermetures.",
+    "texte": "Quatre étapes, deux minutes. Le site rédige votre demande, puis vous l'envoyez à TDS Fermetures depuis votre messagerie.",
     "email_reception": "tiagotdsfermetures.21@hotmail.com",
     "aparte_titre": "Ce qui vous attend",
     "garanties": [

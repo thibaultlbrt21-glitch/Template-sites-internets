@@ -217,6 +217,13 @@ naissance, nationalité du gérant.
   confirme)
 - « Clôtures » et « commandes centralisées » : les fait-il ? (absents du
   Kbis et de la carte)
+- Dépannage : fait-il des dépannages ou réparations payants (hors SAV de
+  ses propres poses) ? Si oui, l'arrêté du 24 janvier 2017 impose d'afficher
+  sur le site son taux horaire TTC, ses frais de déplacement et le caractère
+  gratuit ou payant du devis. Sinon, remplacer « dépannage » par « SAV de
+  nos installations »
+- TVA à 5,5 % : faire relire la section TVA par son comptable (critères
+  Uw/Sw de l'article 18 bis de l'annexe IV du CGI)
 
 **Règles confiées à Claude** :
 

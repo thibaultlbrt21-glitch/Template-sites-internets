@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'self'; object-src 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fenêtres, volets, portes et portails à Dijon | TDS Fermetures</title>
-<meta name="description" content="Pose de fenêtres, volets roulants, portes, portails et automatismes à Dijon et en Côte-d'Or. Visite sur place, devis détaillé : 06 58 00 82 26.">
+<meta name="description" content="Pose de fenêtres, volets roulants, portes, portails et automatismes à Dijon et en Côte-d'Or. Visite sur place et devis détaillé. Tél. 06 58 00 82 26.">
 <link rel="canonical" href="https://thibaultlbrt21-glitch.github.io/Template-sites-internets/tds-fermetures/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TDS Fermetures">
@@ -419,7 +419,7 @@
           </span>
         </button>
         <button type="button" data-format="portrait" class="oeuvre" data-categorie="portes" data-credit="Photo FenêtréA">
-          <img src="assets/images/porte-grise-vitrage.jpg" alt="Porte d&#39;entrée grise à vitrage ondulé, vue depuis l&#39;entrée" loading="lazy" decoding="async">
+          <img src="assets/images/porte-grise-vitrage.jpg" alt="Porte d&#39;entrée grise à vitrage ondulé, vue depuis l&#39;intérieur" loading="lazy" decoding="async">
           <span class="oeuvre__voile">
             <span class="oeuvre__titre">Porte d&#39;entrée</span>
             <span class="oeuvre__meta">Grise · vitrage ondulé</span>
@@ -483,7 +483,7 @@
           <div class="metier__profondeur">
             <span class="metier__num">TVA 5,5 %</span>
             <h3>Rénovation énergétique</h3>
-            <p>Même logement, en remplacement de fenêtres ou portes-fenêtres existantes, avec des produits qui atteignent les performances thermiques exigées (voir ci-dessous).</p>
+            <p>Même logement, avec des fenêtres ou portes-fenêtres qui atteignent les performances thermiques exigées (voir ci-dessous).</p>
           </div>
         </article>
         <article class="metier" data-tilt>
@@ -503,8 +503,8 @@
         <div>
           <span class="bloc-info__label">Les critères techniques</span>
           <p>
-            Pour la TVA à 5,5 %, une fenêtre ou une porte-fenêtre posée en
-            remplacement d'une menuiserie existante doit atteindre
+            Pour la TVA à 5,5 %, une fenêtre ou une porte-fenêtre
+            doit atteindre
             <strong>Uw ≤ 1,3 W/m²·K avec Sw ≥ 0,3</strong>, ou
             <strong>Uw ≤ 1,7 W/m²·K avec Sw ≥ 0,36</strong>. Ces valeurs figurent
             sur la fiche technique du fabricant.
@@ -594,8 +594,8 @@
         <span class="annot apparait">Devis</span>
         <h2 class="apparait d1" data-cms="devis.titre">Votre demande de devis</h2>
         <p class="apparait d1" data-cms="devis.texte">
-          Quatre étapes, deux minutes. Votre demande est transmise par e-mail à
-          TDS Fermetures.
+          Quatre étapes, deux minutes. Le site rédige votre demande, puis vous
+          l'envoyez à TDS Fermetures depuis votre messagerie.
         </p>
       </div>
 
@@ -679,7 +679,7 @@
             </div>
             <div class="champ">
               <label for="details">Décrivez votre projet</label>
-              <textarea id="details" name="details" rows="3" maxlength="1500" placeholder="Matériau, coloris, accès, état de l'existant…"></textarea>
+              <textarea id="details" name="details" rows="3" maxlength="800" placeholder="Matériau, coloris, accès, état de l'existant…"></textarea>
             </div>
           </fieldset>
 
@@ -689,6 +689,7 @@
             <div class="champ">
               <label for="delai">Pour quand ?</label>
               <select id="delai" name="delai">
+                <option value="Non précisé">Je ne sais pas encore</option>
                 <option value="Dès que possible">Dès que possible</option>
                 <option value="Sous 3 mois">Dans les 3 mois</option>
                 <option value="Sous 6 mois">Dans les 6 mois</option>
@@ -745,16 +746,22 @@
           <div class="devis__pied">
             <button type="button" class="btn" id="precedent" hidden>Précédent</button>
             <button type="button" class="btn btn--plein" id="suivant">Suivant</button>
-            <button type="submit" class="btn btn--plein" id="envoyer" hidden>Envoyer la demande</button>
+            <button type="submit" class="btn btn--plein" id="envoyer" hidden>Préparer ma demande</button>
             <p class="devis__etat" id="etatDevis" role="status" aria-live="polite"></p>
           </div>
           <div class="devis__secours" id="secoursDevis" hidden>
-            <p>Votre demande est déjà rédigée : envoyez-la en un clic depuis
-              votre messagerie, ou appelez directement Tiago.</p>
+            <p>Il ne reste qu'à l'envoyer : le bouton ci-dessous ouvre votre
+              messagerie avec l'e-mail déjà rédigé pour TDS Fermetures. Vérifiez-le,
+              puis appuyez sur « Envoyer ».</p>
             <div class="devis__secours-actions">
-              <a class="btn btn--plein" id="secoursMail" href="#">Envoyer par ma messagerie</a>
+              <a class="btn btn--plein" id="secoursMail" href="#">Ouvrir ma messagerie</a>
               <a class="btn btn--clair" href="tel:+33658008226">Appeler le 06 58 00 82 26</a>
             </div>
+            <p class="devis__secours-aide">Rien ne s'ouvre ? Écrivez à
+              <a href="mailto:tiagotdsfermetures.21@hotmail.com">tiagotdsfermetures.21@hotmail.com</a>
+              ou appelez directement Tiago.</p>
+            <p class="devis__secours-aide" id="copieBloc" hidden><button type="button" class="lien-bouton" id="copieDevis">Copier ma demande</button>
+              pour la coller dans votre e-mail. <span id="copieEtat" role="status"></span></p>
           </div>
         </form>
 
