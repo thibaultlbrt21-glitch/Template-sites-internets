@@ -207,27 +207,20 @@ naissance, nationalité du gérant.
   vérifiés — L111-7-2 du code de la consommation). Aucun widget Google
   intégré sans bandeau de consentement (voir la règle ci-dessous)
 
-**Questions à poser à Tiago** (relecture du 06/11/2026) :
+**Questions à poser à Tiago** :
 
-- Qualité d'artisan : la CMA a-t-elle validé l'activité artisanale (Kbis :
-  « sous réserve de validation ») ? Tant qu'il n'y a pas de preuve, le mot
-  « artisan » et ses dérivés restent hors du site (code de l'artisanat,
-  L241-2) ; la mention « entreprise artisanale » a été retirée
-- Devis et visite gratuits ? Délai de rappel ? (à n'afficher que s'il
-  confirme)
-- « Clôtures » et « commandes centralisées » : les fait-il ? (absents du
-  Kbis et de la carte)
-- Dépannage : fait-il des dépannages ou réparations payants (hors SAV de
-  ses propres poses) ? Si oui, l'arrêté du 24 janvier 2017 impose d'afficher
-  sur le site son taux horaire TTC, ses frais de déplacement et le caractère
-  gratuit ou payant du devis. Sinon, remplacer « dépannage » par « SAV de
-  nos installations »
-- TVA à 5,5 % : faire relire la section TVA par son comptable (critères
-  article 278-0 bis A du CGI et articles 30-0 D et suivants de l'annexe IV,
-  issus de l'arrêté du 4 décembre 2024, en vigueur depuis le 1er janvier
-  2025 : remplacement d'une menuiserie existante, Uw/Sw). Lui demander aussi
-  si les portes d'entrée et volets isolants qu'il pose relèvent du 5,5 % :
-  le site ne parle que des fenêtres)
+- Devis et visite gratuits ? Délai de rappel ? (Thibault voit avec lui ;
+  à n'afficher que s'il confirme)
+
+**Décisions de Thibault (10/11/2026)** :
+
+- « Entreprise artisanale » : affichée (pied de page, mentions légales) à
+  la demande de Thibault, sans attendre la validation de la CMA (Kbis :
+  « sous réserve de validation »). À retirer si la CMA refuse
+- « Clôtures » et « commandes centralisées » : Tiago les fait, on garde
+- Dépannage : pas de question à poser, le libellé reste « réparation »
+- TVA : pas de relecture par le comptable, la section reste telle quelle
+  (5,5 % : remplacement d'une menuiserie existante, critères Uw/Sw)
 
 **Règles confiées à Claude** :
 
