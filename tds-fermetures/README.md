@@ -1,5 +1,12 @@
 # TDS Fermetures — site internet
 
+> **Depuis le 11/11/2026, le site vit dans son propre dépôt :**
+> `thibaultlbrt21-glitch/tds-fermetures` (branche `main`, `index.html` à la
+> racine), récupéré par Hostinger (hPanel → Avancé → GIT). Les modifications
+> du site se font là-bas. Ce dossier garde les notes de suivi (ce README et
+> celui des images), volontairement absentes du nouveau dépôt, qui est
+> public et déployé tel quel.
+
 Site vitrine de **TDS Fermetures** (Tiago Dos Santos) : portes, fenêtres,
 volets roulants, portails et clôtures, portes de garage, pergolas,
 automatismes et visiophones. Construit sur le modèle « menuisier » de la gamme
