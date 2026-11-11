@@ -200,14 +200,13 @@ naissance, nationalité du gérant.
 déploiement automatique depuis le dépôt `tds-fermetures` (branche `main`).
 Domaine dans canonical, Open Graph, JSON-LD, sitemap et robots.txt ;
 Hostinger International Ltd (61 Lordou Vironos Street, 6023 Larnaca,
-Chypre) dans les mentions légales et la politique ; `.htaccess` (404,
+Chypre ; +370 645 03378, numéro donné par Hostinger, qui préfère qu'on ne
+l'appelle pas mais l'affichage est obligatoire) dans les mentions légales et la politique ; `.htaccess` (404,
 en-têtes de sécurité dont `frame-ancestors 'none'`, HSTS, cache) ; l'ancienne
 adresse GitHub Pages renvoie vers le domaine.
 
 **Reste à faire par Claude** :
 
-- Mentions légales : **téléphone** de l'hébergeur (obligation LCEN), non
-  trouvé sur une source officielle lisible depuis la session
 - Vérifier sur le site en ligne que le `.htaccess` est bien appliqué
   (en-têtes, page 404) : le site n'est pas joignable depuis la session
 - Envoi automatique du devis (script PHP Hostinger + boîte
