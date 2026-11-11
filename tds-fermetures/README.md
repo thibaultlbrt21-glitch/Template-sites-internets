@@ -196,19 +196,24 @@ naissance, nationalité du gérant.
 - Intégration des photos de chantiers
 - **Fiche Google Business**, ouverte ensemble une fois le site hébergé
 
-**À faire par Claude une fois le site hébergé** (confié par Thibault) :
+**Hébergement (fait le 11/11/2026)** : tds-fermetures.fr chez Hostinger,
+déploiement automatique depuis le dépôt `tds-fermetures` (branche `main`).
+Domaine dans canonical, Open Graph, JSON-LD, sitemap et robots.txt ;
+Hostinger International Ltd (61 Lordou Vironos Street, 6023 Larnaca,
+Chypre) dans les mentions légales et la politique ; `.htaccess` (404,
+en-têtes de sécurité dont `frame-ancestors 'none'`, HSTS, cache) ; l'ancienne
+adresse GitHub Pages renvoie vers le domaine.
 
-- Mentions légales : nom, adresse **et téléphone** du nouvel hébergeur
-  (obligation LCEN, il manque aujourd'hui le téléphone de GitHub)
-- Politique de confidentialité, partie « Hébergement » : le nouvel hébergeur
-- Domaine définitif dans `canonical`, `og:url`, `og:image`, les données
-  structurées, `sitemap.xml` et `robots.txt` (pointent aujourd'hui vers
-  l'adresse GitHub Pages)
-- Envoi du devis : `serviceEnvoi`, CSP (`connect-src`), mention sous le
-  formulaire et politique de confidentialité, dans le même commit
-- Exclure les `*.md` de l'envoi FTP vers Hostinger (comme dans le workflow
-  GitHub Pages) ; envoyer `frame-ancestors 'none'` en en-tête HTTP si
-  l'hébergeur le permet (ignoré dans une balise meta)
+**Reste à faire par Claude** :
+
+- Mentions légales : **téléphone** de l'hébergeur (obligation LCEN), non
+  trouvé sur une source officielle lisible depuis la session
+- Vérifier sur le site en ligne que le `.htaccess` est bien appliqué
+  (en-têtes, page 404) : le site n'est pas joignable depuis la session
+- Envoi automatique du devis (script PHP Hostinger + boîte
+  contact@tds-fermetures.fr) : `serviceEnvoi`, CSP (`connect-src`,
+  `form-action`), mention sous le formulaire, politique, dans le même
+  commit
 - **Avis clients** : relier la fiche Google au site (lien vers la fiche,
   et avis réels affichés avec leur source, en précisant s'ils sont
   vérifiés — L111-7-2 du code de la consommation). Aucun widget Google
