@@ -1,0 +1,62 @@
+# Images
+
+## Ce qui est en place
+
+Les photos actuelles sont des **photos du fabricant FenêtréA**, transmises
+par TDS Fermetures (photos de catalogue, filigrane « crédit photo :
+FenêtréA » d'origine conservé). Elles montrent des produits, **pas des
+chantiers de TDS Fermetures** : le site les crédite partout où elles
+apparaissent (légende de l'accueil, visionneuse, mention sous la galerie,
+section TVA) et ne les présente jamais comme des réalisations.
+
+| Fichier | Où | Sujet |
+|---|---|---|
+| `fenetre-facade-grise.jpg` | Accueil (2) + galerie | Façade, fenêtres et volets battants |
+| `baie-coulissante-terrasse.jpg` | Accueil (3) + galerie | Baie coulissante sur terrasse |
+| `porte-grise-vitrage.jpg` | Accueil (4) + galerie | Porte d'entrée, vitrage ondulé |
+| `fenetre-chambre.jpg`, `fenetre-cuisine.jpg`, `fenetre-facade-volets.jpg` | Galerie | Fenêtres |
+| `baie-coulissante-sejour.jpg`, `baie-coulissante-poignee.jpg` | Galerie | Baies coulissantes |
+| `porte-rouge.jpg`, `porte-grise-inox.jpg`, `porte-bleue.jpg`, `porte-anthracite-bois.jpg` | Galerie | Portes d'entrée |
+| `fenetre-deux-vantaux.jpg` | Section TVA | Fenêtre seule, sur fond blanc |
+
+Préparation : 13 photos retenues sur les 29 reçues (les autres sont des
+détourages et des doublons), réenregistrées en JPEG progressif, **toutes
+métadonnées retirées** (appareil, auteur, logiciel, dates). Les fichiers
+d'origine font 1000 px au plus : ils ne sont pas agrandis, ce qui suffit pour
+la galerie et le panneau photo de l'accueil.
+
+## Réalisation de l'entreprise
+
+| Fichier | Où | Sujet |
+|---|---|---|
+| `realisation-portail-coulissant.jpg` (1672 px) et `-960.jpg` | Section Réalisation, accueil (1), galerie | Portail coulissant posé par TDS Fermetures |
+
+## Ajouter les photos de chantier
+
+Tiago envoie ses photos à Thibault, qui les fait intégrer (pas d'espace
+client) : préparation, métadonnées retirées, ajout dans `content/site.json`.
+
+- **Accueil (`hero.photos`)** : celles qui défilent à droite du titre.
+  Format en hauteur (4:5), 800 px de large au moins.
+- **Galerie (`chantiers.ouvrages`)** : n'importe quel format. Une photo en
+  largeur prend deux cases de la mosaïque : renseigner `"format": "paysage"`
+  (ou `"portrait"`) pour que la mosaïque ne bouge pas au chargement.
+
+Pour une photo de chantier, laissez « Crédit photo » vide et décrivez le
+chantier dans le titre et le sous-titre. Pour une photo de fabricant,
+renseignez toujours le crédit.
+
+## Droits d'usage
+
+- Photos fabricant : utilisées avec l'autorisation de FenêtréA (contrat
+  d'utilisation des images), toujours avec le crédit.
+- Photos de chantier : elles appartiennent à l'entreprise. Demandez l'accord
+  du client avant de publier l'intérieur de chez lui.
+- Ne reprenez jamais les photos du site d'un concurrent : c'est une
+  contrefaçon, et une publicité trompeuse si elles sont présentées comme siennes.
+
+## Poids
+
+Visez 150 à 350 ko par photo. Une photo de téléphone (4 à 8 Mo) se réduit
+avec Squoosh ou TinyPNG avant d'être déposée. Pensez aussi à retirer la
+position GPS : elle donne l'adresse du client.

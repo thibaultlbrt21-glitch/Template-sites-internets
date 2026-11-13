@@ -1,0 +1,315 @@
+# TDS Fermetures — site internet
+
+> **Depuis le 11/11/2026, le site vit dans son propre dépôt :**
+> `thibaultlbrt21-glitch/tds-fermetures` (branche `main`, `index.html` à la
+> racine), récupéré par Hostinger (hPanel → Avancé → GIT). Les modifications
+> du site se font là-bas. Ce dossier garde les notes de suivi (ce README et
+> celui des images), volontairement absentes du nouveau dépôt, qui est
+> public et déployé tel quel.
+
+Site vitrine de **TDS Fermetures** (Tiago Dos Santos) : portes, fenêtres,
+volets roulants, portails et clôtures, portes de garage, pergolas,
+automatismes et visiophones. Construit sur le modèle « menuisier » de la gamme
+Webly, avec **devis envoyé par e-mail**. Pas d'espace client : Thibault
+gère les demandes de modification de Tiago, Claude les applique.
+HTML / CSS / JavaScript purs, aucune dépendance, aucun build step, aucun CDN.
+
+## Ce qui vient de la carte de visite
+
+Tout ce qui est affiché comme un fait vient de la carte de visite de
+l'entreprise — rien n'est inventé :
+
+| Information | Sur le site |
+|---|---|
+| Nom et logo : TDS Fermetures | En-tête, pied de page, section « L'entreprise », favicon |
+| Tiago Dos Santos | Encadré d'accueil, section « L'entreprise », contact, mentions légales |
+| 06 58 00 82 26 | Tous les boutons « Appeler » (lien `tel:+33658008226`) |
+| tiagotdsfermetures.21@hotmail.com (« Client ») | Contact, et **adresse qui reçoit les devis** |
+| sarltdsfermetures.21@hotmail.com (« Fournisseur ») | Contact, ligne « Fournisseurs » |
+| Porte, fenêtre, volet, portail, pergola, automatisme, visiophone, porte de garage | Les 8 prestations et le formulaire |
+| Accompagnement · Qualité · Pose soignée · SAV réactif | Le bandeau orange |
+
+Le **logo** est redessiné en vectoriel d'après la carte
+(`assets/logo/tds-fermetures.svg`, variante claire pour les fonds sombres).
+Si le graphiste a le fichier d'origine, il suffit de le déposer à la place.
+
+## Direction artistique — l'orange TDS
+
+L'orange de la marque (`#F39200`) porte tout ce qui agit ou signale : boutons,
+bandeau des engagements, filets, numéros, titres d'accent. L'anthracite du
+logo sert aux textes et aux grands aplats (devis, pied de page),
+le blanc cassé au reste — comme sur la carte.
+
+Contrastes vérifiés : texte anthracite sur orange 7:1 (les boutons orange ont
+donc un texte foncé, jamais blanc — blanc sur orange ne fait que 2,3:1) ;
+orange foncé `#A85200` pour le texte orange sur fond clair (5:1) ; orange de
+marque sur anthracite 6,7:1.
+
+## Haut de page
+
+Texte sur anthracite à gauche (titre, boutons « Demander un devis » et
+« Appeler »), **photos en fondu enchaîné à droite**, séparées par un filet
+orange, avec l'encadré du dirigeant posé dessus. Pas de parallaxe : la photo défile avec la page, pour rester fluide à 120 Hz. Sous les boutons, un repère
+dans le style du formulaire de devis : une jauge par photo (cliquable), la
+légende et le crédit de la photo affichée, et un bouton **Pause** (un
+contenu qui défile seul doit pouvoir être arrêté). Sous 960 px, la photo
+passe en plein fond sous un voile anthracite.
+
+Les photos se changent dans `content/site.json` (`hero.photos`).
+Liste vide : l'accueil redevient un bandeau de texte seul, sans trou.
+L'ancienne fenêtre 3D et l'animation d'ouverture restent dans l'historique
+Git (commit « l'intro ouvre une vraie photo de fenêtre »).
+
+## Réalisation mise en avant
+
+Première réalisation de l'entreprise : un **portail coulissant** posé par
+Tiago (photo transmise par Thibault le 24 octobre 2026). Section sombre
+entre les prestations et la galerie : un panneau à lames anthracite
+**coulisse comme un portail** pour dévoiler la photo quand elle arrive à
+l'écran, puis quatre coins orange se resserrent sur le portail avec
+l'étiquette « Réalisation TDS Fermetures ». Animation jouée une seule fois,
+uniquement en `transform` / `opacity` ; sans script ou en mouvement réduit,
+la photo et le cadre s'affichent directement. La même photo ouvre le
+diaporama de l'accueil et la galerie (filtre « Portails & pergolas »).
+
+Modifiable dans `content/site.json` (`realisation`) ; la position
+du cadre orange est un champ « gauche haut largeur hauteur » en %, à
+changer avec la photo.
+
+## Le reste des fonctionnalités
+
+- **Section « TVA réduite »** (l'entreprise n'est pas RGE) : TVA 20 %, 10 % et 5,5 %,
+  primes réservées aux entreprises RGE ; anciennement MaPrimeRénov', CEE, TVA 5,5 %,
+  éco-PTZ, avec les critères techniques opposables (Uw ≤ 1,3 W/m²·K, Sw ≥ 0,3,
+  RGE obligatoire) et **aucun montant promis** — voir plus bas
+- **Devis en quatre étapes** : projet (9 choix, SAV compris), quantité ou
+  dimensions, motorisation, type de projet, âge du logement (qui conditionne
+  les aides), délai, budget, commune. Jauge de progression, validation par
+  étape, re-validation complète à l'envoi, annonce de l'étape aux lecteurs
+  d'écran — et **envoi direct par e-mail** (voir plus bas)
+- **Bandeau orange des engagements** : les quatre mots de la carte de visite
+- **Boutons « Appeler »** partout (en-tête, accueil, contact, barre mobile)
+- **Galerie « En images » en mosaïque**, filtrable par catégorie : une photo
+  en largeur prend deux cases, le format est lu sur l'image elle-même.
+  **Visionneuse** au clavier (`←` `→` `Échap`, piège de focus), avec le
+  crédit de la photo. La navigation suit le filtre actif
+- **Cartes en relief** qui suivent le curseur — désactivées au doigt, où
+  l'effet n'apporte rien
+- Tout est désactivé sous `prefers-reduced-motion: reduce`
+
+## Les images
+
+Les photos en place sont des **photos du fabricant FenêtréA**, transmises par
+TDS Fermetures : fenêtres, baies coulissantes et portes d'entrée. Ce ne sont
+**pas des chantiers de l'entreprise**, et le site ne les présente jamais
+comme tels : crédit « Photo FenêtréA » dans la légende de l'accueil et dans
+la visionneuse, mention sous la galerie et sous la fenêtre de la section
+Aides. Métadonnées retirées, détail dans `assets/images/README.md`.
+
+👉 **Dès que les photos de chantiers arrivent**, les ajouter en tête de
+galerie et de l'accueil (`content/site.json`), et adapter la mention sous la
+galerie.
+
+## Le formulaire de devis
+
+Quatre étapes (projet, détail, délai et commune, coordonnées), validées une à
+une (la touche Entrée passe à l'étape suivante, un double-clic n'envoie
+pas).
+
+**Aujourd'hui (6 novembre 2026), aucun service tiers** : `serviceEnvoi: ""`
+dans `assets/js/main.js`. À la fin, le site affiche « Votre demande est
+prête » avec **« Envoyer par ma messagerie »** (e-mail déjà rédigé, adressé
+à Tiago) et **« Appeler »**. Décidé après la relecture juridique : tant que
+le service d'envoi n'est pas activé, aucune donnée ne part chez un tiers.
+
+**À la mise en ligne sur le domaine définitif** (Claude s'en charge) :
+choisir le service d'envoi — de préférence un script d'envoi chez Hostinger
+(serveurs dans l'UE, contrat de sous-traitance), sinon FormSubmit
+(`https://formsubmit.co/ajax/`, une activation par clic de Tiago, pas de
+contrat de sous-traitance publié) — puis, dans le même commit :
+`serviceEnvoi`, `connect-src` de la Content-Security-Policy (`index.html`),
+la mention sous le formulaire et la partie « Le formulaire de devis » de la
+politique de confidentialité.
+
+Protections : **champ piège** invisible (une demande qui le remplit n'est
+pas envoyée), abandon après 15 secondes sans réponse, lien de secours qui
+encode chaque champ (pas d'injection d'en-têtes).
+
+- Adresse de réception : `devis.email_reception` dans `content/site.json`
+  (elle l'emporte), ou `devisEmail` en haut de `assets/js/main.js`.
+
+## Les aides à la rénovation — parti pris
+
+C'est l'argument commercial numéro un du métier, et le piège juridique numéro
+un. Le template affiche donc **les conditions, jamais les montants** :
+
+- les critères techniques (Uw ≤ 1,3 W/m²·K, Sw ≥ 0,3 en métropole,
+  remplacement de simple vitrage, logement de plus de 15 ans pour
+  MaPrimeRénov', plus de 2 ans pour la TVA 5,5 %) sont stables et vérifiables ;
+- les barèmes et plafonds changent chaque année, et dépendent des revenus du
+  foyer — les afficher, c'est promettre ce qu'on ne maîtrise pas ;
+- le site renvoie donc vers **France Rénov'**, le service public gratuit.
+
+Un contrôle automatique vérifie qu'aucune somme en euros ne s'y est glissée.
+
+Toutes ces aides exigent une entreprise **qualifiée RGE** : le champ prévu doit
+recevoir l'organisme, le numéro et la date de validité. Afficher une
+qualification non détenue est un faux, et prive le client de ses aides.
+
+## Informations reçues de l'entreprise (réponse du 21 octobre 2026)
+
+| Sujet | Réponse / document | Sur le site |
+|---|---|---|
+| Zone d'intervention | « Côte-d'Or » | Contact, texte d'accueil, titre de page, données structurées |
+| Raison sociale, forme, capital | Kbis : TDS FERMETURES, SARL à associé unique, 5 000 € | Mentions légales, pied de page |
+| Siège | Kbis : 24 rue Lavoisier, 21000 Dijon | Contact (« Siège »), mentions, confidentialité |
+| RCS, SIRET, APE | RCS Dijon 108 023 805 ; SIRET 108 023 805 00014 ; 4332A | Mentions légales, pied de page |
+| TVA intracommunautaire | FR 53 108 023 805 | Mentions légales, données structurées |
+| Gérant | Tiago Tomé Dos Santos (Kbis) | Directeur de la publication |
+| Décennale | ACM IARD SA, contrat Acajou Décennale I7 1001920, France métropolitaine, **du 01/09/2026 au 01/01/2027** | Mentions légales (avec les activités couvertes) |
+| RGE | « Pas de certificat » | Section devenue « TVA réduite » |
+| Photos de chantier | « Déjà envoyé » (photos FenêtréA) | Galerie et accueil, avec crédit |
+| Avis | « Pas d'avis » | Section masquée |
+| Médiateur | CM2C, 49 rue de Ponthieu, 75008 Paris, cm2c.net (mail du 05/11/2026) | Mentions légales |
+| Réseaux | Facebook : https://www.facebook.com/share/19ZKpWqVXY/ (25/10/2026) | Pied de page, données structurées |
+| Horaires | « Sur rendez-vous » (25/10/2026) | Contact, bloc « Siège & horaires » |
+
+Données du Kbis volontairement **non publiées** : date et lieu de
+naissance, nationalité du gérant.
+
+## ⚠️ Suivi (mis à jour le 6 novembre 2026)
+
+**À obtenir de Tiago** (Thibault s'en charge) :
+
+- Après la mise en ligne : photos de chantiers, photo de Tiago, logo
+  original, stores et vérandas
+
+**À voir ensemble avec Thibault** (reporté à sa demande) :
+
+- Envoi automatique du devis : **après l'hébergement** (voir « Le formulaire
+  de devis » : script Hostinger de préférence, sinon FormSubmit)
+- Nom de domaine et adresse e-mail professionnelle
+- Hébergement : **Hostinger** (choix de Thibault, 06/11/2026), avec nom de
+  domaine et e-mail pro chez eux ; domaine au nom de TDS FERMETURES. Mise
+  en ligne : GitHub Actions qui envoie uniquement `tds-fermetures/` en FTP,
+  identifiants dans les secrets GitHub (Claude ne les voit pas)
+- Intégration des photos de chantiers
+- **Fiche Google Business**, ouverte ensemble une fois le site hébergé
+
+**Hébergement (fait le 11/11/2026)** : tds-fermetures.fr chez Hostinger,
+déploiement automatique depuis le dépôt `tds-fermetures` (branche `main`).
+Domaine dans canonical, Open Graph, JSON-LD, sitemap et robots.txt ;
+Hostinger International Ltd (61 Lordou Vironos Street, 6023 Larnaca,
+Chypre ; +370 645 03378, numéro donné par Hostinger, qui préfère qu'on ne
+l'appelle pas mais l'affichage est obligatoire) dans les mentions légales et la politique ; `.htaccess` (404,
+en-têtes de sécurité dont `frame-ancestors 'none'`, HSTS, cache) ; l'ancienne
+adresse GitHub Pages renvoie vers le domaine.
+
+**Reste à faire par Claude** :
+
+- Vérifier sur le site en ligne que le `.htaccess` est bien appliqué
+  (en-têtes, page 404) : le site n'est pas joignable depuis la session
+- Envoi automatique du devis : `envoi-devis.php` en place (13/11/2026),
+  expéditeur contact@tds-fermetures.fr, SMTP Hostinger. Le mot de passe est
+  dans `config-devis.php`, à côté de `public_html`, créé par Thibault (jamais
+  dans le dépôt). Vérifier https://tds-fermetures.fr/envoi-devis.php
+  (« pret »: true) puis faire un envoi test avec Tiago
+- **Avis clients** : relier la fiche Google au site (lien vers la fiche,
+  et avis réels affichés avec leur source, en précisant s'ils sont
+  vérifiés — L111-7-2 du code de la consommation). Aucun widget Google
+  intégré sans bandeau de consentement (voir la règle ci-dessous)
+
+**Questions à poser à Tiago** :
+
+- Devis et visite gratuits ? Délai de rappel ? (Thibault voit avec lui ;
+  à n'afficher que s'il confirme)
+
+**Décisions de Thibault (10/11/2026)** :
+
+- « Entreprise artisanale » : affichée (pied de page, mentions légales) à
+  la demande de Thibault, sans attendre la validation de la CMA (Kbis :
+  « sous réserve de validation »). À retirer si la CMA refuse
+- « Clôtures » et « commandes centralisées » : Tiago les fait, on garde
+- Dépannage : pas de question à poser, le libellé reste « réparation »
+- TVA : pas de relecture par le comptable, la section reste telle quelle
+  (5,5 % : remplacement d'une menuiserie existante, critères Uw/Sw)
+
+**Règles confiées à Claude** :
+
+- **Cookies** : Thibault laisse Claude gérer. Aujourd'hui le site n'en
+  dépose aucun, donc aucun bandeau n'est nécessaire. Ne rien ajouter qui en
+  dépose (Google Maps intégrée, Google Analytics, widget Facebook ou avis
+  Google intégrés, polices Google…) sans ajouter en même temps un bandeau
+  de consentement conforme CNIL et compléter la politique de
+  confidentialité. Préférer les simples liens, qui n'en déposent pas
+- **Prix** : aucun prix sur le site (décision de Thibault)
+
+**Clos** : pas d'espace client pour Tiago (Thibault gère les modifications,
+Claude les pousse directement, autorisé le 06/11/2026) : `admin/`,
+`tools/` et `ADMIN.md` supprimés le 06/11/2026 (restent dans l'historique
+Git) ; déploiements sans validation manuelle (vérifié : en ligne en 20 à
+30 s après chaque push) ; adhésion de Tiago à CM2C confirmée par Thibault ; site testé
+sur iPhone (Safari) par Thibault ; photos de chantiers, photo de Tiago,
+logo : on verra après la mise en ligne ; médiateur de la consommation (CM2C, transmis par Tiago le
+05/11/2026 d'après la CAPEB, mentions légales + règlement des litiges) ;
+image de partage et icône d'écran d'accueil ; assurance décennale (gérée par Tiago, site laissé tel quel) ;
+devis et factures (Tiago s'en occupe) ; section TVA validée ; photo du
+portail (prise par Tiago, accord du client, seuls plantations et
+éclairages retouchés) ; durées de conservation (texte conforme CNIL) ;
+4 promesses validées par Tiago ; horaires « Sur rendez-vous » ; lien
+Facebook ; droits des photos FenêtréA ; photos brutes supprimées de `main` ;
+saccades à 120 Hz.
+
+## Ce qui a été vérifié
+
+Mesuré dans Chromium, pas estimé.
+
+| Vérification | Résultat |
+|---|---|
+| Contrastes WCAG AA | 19 combinaisons calculées, toutes ≥ 4,5:1 |
+| Hydratation depuis `site.json` | textes, images et 11 listes (engagements compris) |
+| Repli sans `site.json` | page complète et identique |
+| Liste vidée | section masquée, lien de menu masqué, contenu retiré du DOM |
+| Contrastes de la charte orange | anthracite sur orange 7:1, orange foncé sur clair 5:1, orange sur anthracite 6,7:1 |
+| Section TVA réduite | 4 cartes (20 %, 10 %, 5,5 %, primes), critères techniques, pas de RGE dit clairement, renvoi France Rénov', **aucune somme en euros** |
+| Fluidité (60 / 120 / 144 Hz) | en plein défilement : 1 recalcul de mise en page au lieu de 72 à 135 ; aucune parallaxe, aucun zoom continu, une seule passe de composition par image (au lieu de 4), en-tête de taille fixe, aucun flou d'arrière-plan, diaporama en pause hors écran |
+| Affichage | 360, 390, 768, 1024, 1280, 1440, 1920 px : aucun débordement, aucune erreur JS, menu burger sous 1100 px, cibles tactiles ≥ 24 px |
+| Parcours | menu mobile, devis complet avec envoi simulé à l'adresse de Tiago, liens « Appeler », mentions légales |
+| Devis 4 étapes | cas valides et invalides, retour arrière |
+| Envoi du devis (FormSubmit simulé) | adresse de Tiago, tous les champs, remerciement ; secours si non activé, erreur 500 ou coupure ; robot écarté — 24 contrôles |
+| Liens de contact | tous les « Appeler » en `tel:+33658008226`, e-mails client et fournisseurs, mis à jour depuis `content/site.json` |
+| Galerie | 13 photos, 5 en largeur (format indiqué dans le HTML et le JSON), filtres (catégorie vide masquée), crédit dans la visionneuse |
+| Accueil | défilement, pause, choix par la jauge, arrêt en mouvement réduit, liste vide → texte seul |
+| Largeurs | 390 px et 1440 px, sans scroll horizontal |
+| Erreurs JavaScript | aucune |
+
+**Non vérifiable ici** : l'envoi réel par FormSubmit (aucun faux devis n'a été
+envoyé à Tiago : le service est simulé dans les tests).
+
+## Structure
+
+```
+tds-fermetures/
+├── index.html                    Page unique
+├── mentions-legales.html
+├── politique-de-confidentialite.html
+├── robots.txt
+├── sitemap.xml
+├── content/
+│   └── site.json                 Contenu modifiable (source de vérité)
+└── assets/
+    ├── favicon.svg               La maison du logo
+    ├── logo/                     Logo TDS Fermetures (et variante claire)
+    ├── css/style.css             Charte orange TDS
+    ├── js/content.js             Injecte site.json dans la page
+    ├── js/main.js                Navigation, filtres, visionneuse, devis (envoi e-mail)
+    └── images/                   Photos FenêtréA + README
+```
+
+## Aperçu local
+
+```bash
+cd tds-fermetures
+python3 -m http.server 8080
+# puis http://localhost:8080
+```

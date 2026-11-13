@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://votre-domaine-a-renseigner.fr/sitemap.xml
