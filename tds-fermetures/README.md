@@ -209,10 +209,11 @@ adresse GitHub Pages renvoie vers le domaine.
 
 - Vérifier sur le site en ligne que le `.htaccess` est bien appliqué
   (en-têtes, page 404) : le site n'est pas joignable depuis la session
-- Envoi automatique du devis (script PHP Hostinger + boîte
-  contact@tds-fermetures.fr) : `serviceEnvoi`, CSP (`connect-src`,
-  `form-action`), mention sous le formulaire, politique, dans le même
-  commit
+- Envoi automatique du devis : `envoi-devis.php` en place (13/11/2026),
+  expéditeur contact@tds-fermetures.fr, SMTP Hostinger. Le mot de passe est
+  dans `config-devis.php`, à côté de `public_html`, créé par Thibault (jamais
+  dans le dépôt). Vérifier https://tds-fermetures.fr/envoi-devis.php
+  (« pret »: true) puis faire un envoi test avec Tiago
 - **Avis clients** : relier la fiche Google au site (lien vers la fiche,
   et avis réels affichés avec leur source, en précisant s'ils sont
   vérifiés — L111-7-2 du code de la consommation). Aucun widget Google
